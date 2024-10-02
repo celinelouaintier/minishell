@@ -36,17 +36,30 @@
 int main(void)
 {
 	char	*line;
-	HIST_ENTRY **hist;
+	int		hist_size;
+	int		hist_count;
+	char	**hist;
+	char	**new_hist;
 
 	line = ft_strdup("");
-	hist = malloc(sizeof(HIST_ENTRY**));
+	hist_size = 10;
+	hist_count = 0;
+	hist = malloc(sizeof(char*) * hist_size);
 	while (ft_strncmp(line, "exit", 5))
 	{
 		line = readline("Minishell> ");
-		ft_printf("%s\n", line);
 		add_history(line);
+		if (hist_count >= hist_size)
+		{
+			hist_size *= 2;
+			new_hist = malloc(sizeof(char *) * hist_size);
+			ft_memcpy(new_hist, hist, hist_count * sizeof(char *));
+			hist = new_hist;
+		}
+		hist[hist_count++] = ft_strdup(line);
 	}
-	ft_printf("%s\n", hist[1]->line);
+	for (int i = 0; i < hist_count; i++)
+		ft_printf("%s\n", hist[i]);
 	return 0;
 }
 

@@ -32,34 +32,74 @@
 // 	close(pipe_fd[1]);
 // }
 
+void	ft_free(char **array)
+{
+	int	i;
 
-int main(void)
+	i = 0;
+	while (array[i] != NULL)
+	{
+		free(array[i]);
+		i++;
+	}
+	free(array);
+	array = NULL;
+}
+
+char	*get_command_path(char *command)
+{
+	int		i;
+	// char	*tmp_path;
+	char	*full_path;
+	char	*paths;
+
+	paths = "srcs/";
+	i = 0;
+	// tmp_path = ft_strjoin(paths[i], "/");
+	full_path = ft_strjoin(paths, command);
+	// free(tmp_path);
+	if (!access(full_path, X_OK))
+	{
+		ft_printf("Here !");
+		// free(paths);
+		return (full_path);
+	}
+	// free(full_path);
+	// while (paths[++i])
+	// {
+	// }
+	// free(paths);
+	return (NULL);
+}
+
+int main(int ac, char **av)
 {
 	char	*line;
-	int		hist_size;
-	int		hist_count;
-	char	**hist;
-	char	**new_hist;
+	char	*path;
+	char	**command;
+	// int i = 0;
 
+	(void)ac;
+	(void)av;
 	line = ft_strdup("");
-	hist_size = 10;
-	hist_count = 0;
-	hist = malloc(sizeof(char*) * hist_size);
 	while (ft_strncmp(line, "exit", 5))
 	{
-		line = readline("Minishell> ");
+		line = readline("Minaim> ");
+		command = ft_split(line, ' ');
+		char *newargv[] = {NULL, command[0], command[1], "1", "0", NULL};
 		add_history(line);
-		if (hist_count >= hist_size)
+		path = "./commands";
+		newargv[0] = path;
+		if (execve(path, newargv, NULL) == -1 && ft_strncmp(line, "exit", 5) && ft_strncmp(line, "", 2))
 		{
-			hist_size *= 2;
-			new_hist = malloc(sizeof(char *) * hist_size);
-			ft_memcpy(new_hist, hist, hist_count * sizeof(char *));
-			hist = new_hist;
+			perror("Error");
+			// free(path);
+			free(line);
 		}
-		hist[hist_count++] = ft_strdup(line);
+		// i++;
 	}
-	for (int i = 0; i < hist_count; i++)
-		ft_printf("%s\n", hist[i]);
+	// for (int i = 0; i < hist_count; i++)
+		
 	return 0;
 }
 

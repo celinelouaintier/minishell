@@ -2,7 +2,7 @@
 
 PROG	= minishell
 
-SRCS 	= main.c 
+SRCS 	= main.c
 SRCS_DIR = srcs/
 SRC 	= ${addprefix ${SRCS_DIR}, ${SRCS}}
 OBJS 	= ${SRC:.c=.o}

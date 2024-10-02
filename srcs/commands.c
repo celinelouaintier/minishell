@@ -29,5 +29,5 @@ int main(int argc, char *argv[])
 		return (-1);
 	if (!ft_strncmp(argv[1], "echo", 5))
 		echo(argv[2], atoi(argv[3]), atoi(argv[4]));
-	return 0;
+	return (-1);
 }

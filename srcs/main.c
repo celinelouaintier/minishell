@@ -77,6 +77,7 @@ int main(int ac, char **av)
 	char	*line;
 	char	*path;
 	char	**command;
+	// pid_t	pid;
 	// int i = 0;
 
 	(void)ac;

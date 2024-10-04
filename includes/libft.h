@@ -24,6 +24,7 @@
 # include <signal.h>
 # include <fcntl.h>
 # include <limits.h>
+# include <sys/wait.h>
 
 /* Utils functions */
 

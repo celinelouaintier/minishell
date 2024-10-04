@@ -17,4 +17,10 @@
 # include <readline/readline.h>
 # include <readline/history.h>
 
+typedef struct	s_data
+{
+	char	path[256];
+}				t_data;
+
+
 #endif

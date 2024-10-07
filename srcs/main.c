@@ -27,19 +27,13 @@ void	ft_free(char **array)
 	array = NULL;
 }
 
-// char **parse(char *line)
-// {
-
-// 	return (parse);
-// }
 
 void	exec(char **cmd, char *envp[], char *line)
 {
-	// char	**av;
 	char	*path;
 	char	*newargv[] = {NULL, cmd[0], cmd[1], "1", "0", NULL};
 
-	path = "./commands";
+	path = "/home/clouaint/cercle_3/minishell/Minaim/commands";
 	newargv[0] = cmd[0];
 	if (execve(path, newargv, envp) == -1 && ft_strncmp(line, "exit", 5) && ft_strncmp(line, "", 2))
 	{
@@ -72,10 +66,7 @@ void	process(char **cmd, char *line)
 int main(int ac, char **av)
 {
 	char	*line;
-	// char	*path;
-	// char	*pwd;
 	char	**command;
-	// pid_t	pid;
 
 	(void)ac;
 	(void)av;
@@ -84,16 +75,11 @@ int main(int ac, char **av)
 	{
 		line = readline("Minaim> ");
 		command = ft_split(line, ' ');
-		// printf("%s", command);
 		add_history(line);
 		if (!ft_strncmp(command[0], "pwd", 4))
 			ft_printf("%s\n", getcwd(NULL, 0));
 		else if (!ft_strncmp(command[0], "cd", 3))
-		{
-			chdir(command[1]); // ca marche pas du tout
-			// ft_printf("%s\n", getcwd(NULL, 0));
-			// getcwd(argv[5], sizeof(argv[5]));
-		}
+			chdir(command[1]);
 		else
 			process(command, line);
 	}		

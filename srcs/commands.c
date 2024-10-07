@@ -25,8 +25,6 @@ void	echo(char *line, int fd, int flag)
 
 int main(int argc, char *argv[])
 {
-	// char *path = getenv("PWD");
-	// ft_printf("%s\n", path);
 	if (argc <= 1)
 		return (-1);
 	if (!ft_strncmp(argv[1], "echo", 5))

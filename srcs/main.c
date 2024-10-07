@@ -1,17 +1,16 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   main.c                                             :+:      :+:    :+:   */
+/*   main.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: clouaint <clouaint@student.42.fr>          #+#  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2024-10-01 14:27:34 by clouaint          #+#    #+#             */
-/*   Updated: 2024-10-01 14:27:34 by clouaint         ###   ########.fr       */
+/*   Created: 2024-10-07 16:26:03 by clouaint          #+#    #+#             */
+/*   Updated: 2024-10-07 16:26:03 by clouaint         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
-
 
 void	ft_free(char **array)
 {
@@ -27,62 +26,74 @@ void	ft_free(char **array)
 	array = NULL;
 }
 
-
-void	exec(char **cmd, char *envp[], char *line)
+char	*get_command_path(char *command)
 {
-	char	*path;
-	char	*newargv[] = {NULL, cmd[0], cmd[1], "1", "0", NULL};
+	char	**paths;
+	char	*tmp_path;
+	char	*full_path;
+	int		i;
+	char	*env_path;
 
-	path = "/home/clouaint/cercle_3/minishell/Minaim/commands";
-	newargv[0] = cmd[0];
-	if (execve(path, newargv, envp) == -1 && ft_strncmp(line, "exit", 5) && ft_strncmp(line, "", 2))
+	env_path = getenv("PATH");
+	if (!env_path)
+		return (NULL);
+	paths = ft_split(env_path, ':');
+	i = 0;
+	while (paths[++i])
 	{
-		perror("Error");
-		free(line);
+		tmp_path = ft_strjoin(paths[i], "/");
+		full_path = ft_strjoin(tmp_path, command);
+		free(tmp_path);
+		if (access(full_path, X_OK) == 0)
+		{
+			ft_free(paths);
+			return (full_path);
+		}
+		free(full_path);
 	}
+	ft_free(paths);
+	return (NULL);
 }
 
-void	process(char **cmd, char *line)
+int	process(char **cmd, char *envp[])
 {
 	pid_t	pid;
-	int		pipe_fd[2];
-	char	*pwd;
 
-	if (pipe(pipe_fd) == -1)
-		exit(1);
 	pid = fork();
-	if (pid == -1)
-		exit(1);
-	pwd = ft_strjoin("PWD=", getcwd(NULL, 0));
-	char *envp[] = {pwd, NULL};
 	if (!pid)
 	{
-		exec(cmd, envp, line);
+		if (!ft_strncmp(cmd[0], "cd", 3))
+		{
+			chdir(cmd[1]);
+			return (0);
+		}
+		else if (execve(get_command_path(cmd[0]), cmd, envp) == -1)
+		{
+			perror("Error");
+			return (0);
+		}
 	}
 	else
 		wait(NULL);
+	return (1);
 }
 
-int main(int ac, char **av)
+int main(int argc, char **argv, char *envp[])
 {
 	char	*line;
-	char	**command;
+	char	**cmd;
 
-	(void)ac;
-	(void)av;
-	line = ft_strdup("");
-	while (ft_strncmp(line, "exit", 5))
+	(void)argv;
+	if (argc > 1)
+		return (-1);
+	cmd = NULL;
+	while (process(cmd, envp))
 	{
-		line = readline("Minaim> ");
-		command = ft_split(line, ' ');
+		line = readline("Minishell> ");
 		add_history(line);
-		if (!ft_strncmp(command[0], "pwd", 4))
-			ft_printf("%s\n", getcwd(NULL, 0));
-		else if (!ft_strncmp(command[0], "cd", 3))
-			chdir(command[1]);
-		else
-			process(command, line);
-	}		
+		cmd = ft_split(line, ' ');
+		if (!ft_strncmp(cmd[0], "exit", 5))
+			return (0);
+	}
 	return 0;
 }
-

@@ -55,27 +55,21 @@ char	*get_command_path(char *command)
 	return (NULL);
 }
 
-int	process(char **cmd, char *envp[])
+void	process(char **cmd, char *envp[], char *line)
 {
 	pid_t	pid;
 
 	pid = fork();
 	if (!pid)
 	{
-		if (!ft_strncmp(cmd[0], "cd", 3))
-		{
-			chdir(cmd[1]);
-			return (0);
-		}
-		else if (execve(get_command_path(cmd[0]), cmd, envp) == -1)
+		if (execve(get_command_path(cmd[0]), cmd, envp) == -1 && ft_strncmp(line, "exit", 5) && ft_strncmp(line, "", 2))
 		{
 			perror("Error");
-			return (0);
+			exit(0);
 		}
 	}
 	else
 		wait(NULL);
-	return (1);
 }
 
 int main(int argc, char **argv, char *envp[])
@@ -87,13 +81,19 @@ int main(int argc, char **argv, char *envp[])
 	if (argc > 1)
 		return (-1);
 	cmd = NULL;
-	while (process(cmd, envp))
+	while (1)
 	{
 		line = readline("Minishell> ");
 		add_history(line);
 		cmd = ft_split(line, ' ');
-		if (!ft_strncmp(cmd[0], "exit", 5))
-			return (0);
+		if (!ft_strncmp(cmd[0], "cd", 3))
+			chdir(cmd[1]);
+		else
+		{
+			process(cmd, envp, line);
+			if (!ft_strncmp(cmd[0], "exit", 5))
+				return (0);
+		}
 	}
 	return 0;
 }

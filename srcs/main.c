@@ -33,42 +33,69 @@ void	ft_free(char **array)
 // 	return (parse);
 // }
 
+void	exec(char **cmd, char *envp[], char *line)
+{
+	// char	**av;
+	char	*path;
+	char	*newargv[] = {NULL, cmd[0], cmd[1], "1", "0", NULL};
+
+	path = "./commands";
+	newargv[0] = cmd[0];
+	if (execve(path, newargv, envp) == -1 && ft_strncmp(line, "exit", 5) && ft_strncmp(line, "", 2))
+	{
+		perror("Error");
+		free(line);
+	}
+}
+
+void	process(char **cmd, char *line)
+{
+	pid_t	pid;
+	int		pipe_fd[2];
+	char	*pwd;
+
+	if (pipe(pipe_fd) == -1)
+		exit(1);
+	pid = fork();
+	if (pid == -1)
+		exit(1);
+	pwd = ft_strjoin("PWD=", getcwd(NULL, 0));
+	char *envp[] = {pwd, NULL};
+	if (!pid)
+	{
+		exec(cmd, envp, line);
+	}
+	else
+		wait(NULL);
+}
+
 int main(int ac, char **av)
 {
 	char	*line;
-	char	*path;
-	char	*pwd;
+	// char	*path;
+	// char	*pwd;
 	char	**command;
-	pid_t	pid;
+	// pid_t	pid;
 
 	(void)ac;
 	(void)av;
 	line = ft_strdup("");
-	// data = malloc(sizeof(t_data));
-	// getcwd(pwd, sizeof(pwd));
-	// pwd = ft_strdup();
-	pwd = ft_strjoin("PWD=", getcwd(NULL, 0));
 	while (ft_strncmp(line, "exit", 5))
 	{
 		line = readline("Minaim> ");
 		command = ft_split(line, ' ');
-		char *newargv[] = {NULL, command[0], command[1], "1", "0", NULL};
-		char *env[] = {pwd, NULL};
+		// printf("%s", command);
 		add_history(line);
-		path = "./commands";
-		newargv[0] = path;
-		pid = fork();
-		if (!pid)
+		if (!ft_strncmp(command[0], "pwd", 4))
+			ft_printf("%s\n", getcwd(NULL, 0));
+		else if (!ft_strncmp(command[0], "cd", 3))
 		{
-			if (execve(path, newargv, env) == -1 && ft_strncmp(line, "exit", 5) && ft_strncmp(line, "", 2))
-			{
-				perror("Error");
-				// free(path);
-				free(line);
-			}
+			chdir(command[1]); // ca marche pas du tout
+			// ft_printf("%s\n", getcwd(NULL, 0));
+			// getcwd(argv[5], sizeof(argv[5]));
 		}
 		else
-			wait(NULL);
+			process(command, line);
 	}		
 	return 0;
 }

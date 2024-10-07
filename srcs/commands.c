@@ -25,19 +25,11 @@ void	echo(char *line, int fd, int flag)
 
 int main(int argc, char *argv[])
 {
-	char *path = getenv("PWD");
-	ft_printf("%s\n", path);
+	// char *path = getenv("PWD");
+	// ft_printf("%s\n", path);
 	if (argc <= 1)
 		return (-1);
 	if (!ft_strncmp(argv[1], "echo", 5))
 		echo(argv[2], atoi(argv[3]), atoi(argv[4]));
-	else if (!ft_strncmp(argv[1], "pwd", 4))
-		ft_printf("%s\n", getcwd(NULL, 0));
-	else if (!ft_strncmp(argv[1], "cd", 3))
-	{
-		chdir(argv[2]); // ca marche pas du tout
-		ft_printf("%s\n", getcwd(NULL, 0));
-		// getcwd(argv[5], sizeof(argv[5]));
-	}
 	return (-1);
 }

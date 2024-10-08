@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   main.c                                            :+:      :+:    :+:   */
+/*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: clouaint <clouaint@student.42.fr>          #+#  +:+       +#+        */
+/*   By: nferrad <nferrad@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2024-10-07 16:26:03 by clouaint          #+#    #+#             */
-/*   Updated: 2024-10-07 16:26:03 by clouaint         ###   ########.fr       */
+/*   Created: 2024/10/07 16:26:03 by clouaint          #+#    #+#             */
+/*   Updated: 2024/10/08 16:27:31 by nferrad          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -76,17 +76,17 @@ int main(int argc, char **argv, char *envp[])
 {
 	char	*line;
 	char	**cmd;
+	t_token	*token;
 
 	(void)argv;
 	if (argc > 1)
 		return (-1);
-	cmd = NULL;
-	while (1)
+sa	while (1)
 	{
 		line = readline("Minishell> ");
 		add_history(line);
-		cmd = ft_split(line, ' ');
-		if (!ft_strncmp(cmd[0], "cd", 3))
+		parsing(line, t_token);
+		if (!ft_strncmp(cmd[0], "cd", 3))yy
 			chdir(cmd[1]);
 		else
 		{

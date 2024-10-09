@@ -6,7 +6,7 @@
 /*   By: nferrad <nferrad@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/07 16:26:03 by clouaint          #+#    #+#             */
-/*   Updated: 2024/10/08 16:27:31 by nferrad          ###   ########.fr       */
+/*   Updated: 2024/10/09 18:23:49 by nferrad          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -55,14 +55,38 @@ char	*get_command_path(char *command)
 	return (NULL);
 }
 
-void	process(char **cmd, char *envp[], char *line)
+void	process(t_token *cmd, char *env[])
 {
 	pid_t	pid;
+	char	**args;
+	t_token	*tmp;
+	int		nb_arg;
+	int		i;
 
+	tmp = cmd;
+	nb_arg = 0;
+	while (tmp)
+	{
+		if (tmp->index == ARG)
+			nb_arg++;
+		tmp = tmp->next;
+	}
+	args = malloc(sizeof(char *) * nb_arg + 1);
+	if (!args)
+		return ;
+	i = 0;
+	tmp = cmd;
+	while (i < nb_arg + 1)
+	{
+		args[i] = ft_strdup(tmp->str);
+		i++;
+		tmp = tmp->next;
+	}
+	args[i] = NULL;
 	pid = fork();
 	if (!pid)
 	{
-		if (execve(get_command_path(cmd[0]), cmd, envp) == -1 && ft_strncmp(line, "exit", 5) && ft_strncmp(line, "", 2))
+		if (execve(get_command_path(cmd->str), args, env) == -1 && ft_strncmp(cmd->str, "", 2))
 		{
 			perror("Error");
 			exit(0);
@@ -72,28 +96,28 @@ void	process(char **cmd, char *envp[], char *line)
 		wait(NULL);
 }
 
-int main(int argc, char **argv, char *envp[])
+int main(int argc, char **argv, char *env[])
 {
 	char	*line;
-	char	**cmd;
 	t_token	*token;
 
 	(void)argv;
+	token = NULL;
 	if (argc > 1)
 		return (-1);
-sa	while (1)
+	while (1)
 	{
 		line = readline("Minishell> ");
 		add_history(line);
-		parsing(line, t_token);
-		if (!ft_strncmp(cmd[0], "cd", 3))yy
-			chdir(cmd[1]);
-		else
-		{
-			process(cmd, envp, line);
-			if (!ft_strncmp(cmd[0], "exit", 5))
-				return (0);
-		}
+		parsing(line, &token);
+		// if (!ft_strncmp(, "cd", 3))
+			// chdir(cmd[1]);
+		// else
+		// {
+		process(token, env);
+		if (!ft_strncmp(token->str, "exit", 5))
+			return (0);
+		// }
 	}
 	return 0;
 }

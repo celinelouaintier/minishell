@@ -6,7 +6,7 @@
 /*   By: nferrad <nferrad@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/08 15:41:56 by nferrad           #+#    #+#             */
-/*   Updated: 2024/10/09 05:21:38 by nferrad          ###   ########.fr       */
+/*   Updated: 2024/10/09 17:26:10 by nferrad          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,7 +48,7 @@ void	lstadd_back(t_token **lst, t_token *new)
 //			Revoir Heredoc (demander a la vielle)
 //			Flag ?
 
-void	parsing(char *line, t_token *token)
+void	parsing(char *line, t_token **token)
 {
 	int		i;
 	int		j;
@@ -97,30 +97,22 @@ void	parsing(char *line, t_token *token)
 			j++;
 		else if (index == 5)
 			j += 2;
-		lstadd_back(&token, lstnew(ft_substr(line, i, j - i), index)); // Code de Celine //
+		lstadd_back(token, lstnew(ft_substr(line, i, j - i), index)); // Code de Celine //
 		i = j;
 	}
-	while (token)
-	{
-		if (token->index == CMD)
-			ft_printf("CMD	");
-		else if (token->index == ARG)
-			ft_printf("ARG	");
-		else if (token->index == PIPE)
-			ft_printf("PIPE	");
-		else if (token->index == FILE)
-			ft_printf("FILE	");
-		else
-			ft_printf("%d	", token->index);
-		ft_printf("/////	%s\n", token->str);
-		token = token->next;	
-	}
-}
-
-int	main(int argc, char **argv)
-{
-	t_token *token = NULL;
-	if (argc == 2)
-		parsing(argv[argc - 1], token);
-	return (0);
+	// while (token)
+	// {
+	// 	if (token->index == CMD)
+	// 		ft_printf("CMD	");
+	// 	else if (token->index == ARG)
+	// 		ft_printf("ARG	");
+	// 	else if (token->index == PIPE)
+	// 		ft_printf("PIPE	");
+	// 	else if (token->index == FILE)
+	// 		ft_printf("FILE	");
+	// 	else
+	// 		ft_printf("%d	", token->index);
+	// 	ft_printf("/////	%s\n", token->str);
+	// 	token = token->next;	
+	// }
 }

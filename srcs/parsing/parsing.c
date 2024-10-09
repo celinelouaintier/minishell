@@ -6,7 +6,7 @@
 /*   By: nferrad <nferrad@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/08 15:41:56 by nferrad           #+#    #+#             */
-/*   Updated: 2024/10/08 19:48:31 by nferrad          ###   ########.fr       */
+/*   Updated: 2024/10/09 05:21:38 by nferrad          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,6 +43,11 @@ void	lstadd_back(t_token **lst, t_token *new)
 		*lst = new;
 }
 
+// TODO :	Corriger les >> & <<
+//			Séparer > >> << < en 4 conditions distincts
+//			Revoir Heredoc (demander a la vielle)
+//			Flag ?
+
 void	parsing(char *line, t_token *token)
 {
 	int		i;
@@ -51,26 +56,30 @@ void	parsing(char *line, t_token *token)
 	int		next_index;
 
 	i = 0;
-	next_index = 0;
-	index = CMD;
-	while (line[i] == ' ')
-		i++;
-	j = i;
-	while(ft_isalpha(line[j]))
-		j++;
-	lstadd_back(&token, lstnew(ft_substr(line, i, j - i), index));
-	i = j;
+	next_index = CMD;
 	while (line[i])
 	{
 		while (line[i] == ' ')
 			i++;
+		j = i;
 		if (next_index == CMD)
-			index = CMD;
-		else if (lstlast(token)->index == CMD || lstlast(token)->index == ARG)
 		{
-			next_index = CMD;
+			index = CMD;
+			next_index = 0;
+		}
+		else if (next_index == FILE)
+		{
+			index = FILE;
+			next_index = 0;
+		}
+		else if (!next_index)
+		{
+			next_index = FILE;
 			if (line[i] == '|')
+			{
 				index = PIPE;
+				next_index = CMD;
+			}
 			else if (line[i] == '<' || line[i] == '>')
 				index = 4;
 			else if (!ft_strncmp(line, ">>", 3) || !ft_strncmp(line, "<<", 3))
@@ -81,8 +90,7 @@ void	parsing(char *line, t_token *token)
 				next_index = 0;
 			}
 		}
-		j = i;
-		if (index == CMD || index == ARG)
+		if (index == CMD || index == ARG || index == FILE)
 			while(ft_isalpha(line[j]))
 				j++;
 		else if (index == PIPE || index == 4)
@@ -90,7 +98,7 @@ void	parsing(char *line, t_token *token)
 		else if (index == 5)
 			j += 2;
 		lstadd_back(&token, lstnew(ft_substr(line, i, j - i), index)); // Code de Celine //
-		i = j;		
+		i = j;
 	}
 	while (token)
 	{
@@ -100,6 +108,10 @@ void	parsing(char *line, t_token *token)
 			ft_printf("ARG	");
 		else if (token->index == PIPE)
 			ft_printf("PIPE	");
+		else if (token->index == FILE)
+			ft_printf("FILE	");
+		else
+			ft_printf("%d	", token->index);
 		ft_printf("/////	%s\n", token->str);
 		token = token->next;	
 	}
@@ -108,6 +120,7 @@ void	parsing(char *line, t_token *token)
 int	main(int argc, char **argv)
 {
 	t_token *token = NULL;
-	parsing(argv[argc - 1], token);
+	if (argc == 2)
+		parsing(argv[argc - 1], token);
 	return (0);
 }

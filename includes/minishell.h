@@ -6,7 +6,7 @@
 /*   By: nferrad <nferrad@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/01 14:34:52 by clouaint          #+#    #+#             */
-/*   Updated: 2024/10/08 18:59:09 by nferrad          ###   ########.fr       */
+/*   Updated: 2024/10/09 04:30:54 by nferrad          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,6 +20,7 @@
 # define CMD	1
 # define ARG	2
 # define PIPE	3
+# define FILE	6
 
 typedef struct s_token
 {

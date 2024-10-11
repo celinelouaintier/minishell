@@ -33,6 +33,12 @@ typedef struct s_token
 	struct s_token	*next;
 }					t_token;
 
+typedef struct s_env
+{
+	char	*PWD;
+}					t_env;
+
 void	parsing(char *line, t_token **token);
+void	cd(t_token *token, t_env *envp);
 
 #endif

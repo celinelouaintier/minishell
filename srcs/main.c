@@ -120,9 +120,15 @@ int main(int argc, char **argv, char *env[])
 {
 	char	*line;
 	t_token	*token;
+	t_env	*envp;
+	// char	*pwd;
 
 	(void)argv;
 	token = NULL;
+	envp = malloc(sizeof(t_env));
+	envp->PWD = malloc(INT_MAX);
+	getcwd(envp->PWD, INT_MAX);
+	ft_printf("%s\n", envp->PWD);
 	if (argc > 1)
 		return (-1);
 	while (1)
@@ -137,10 +143,9 @@ int main(int argc, char **argv, char *env[])
 			return (0);
 		}
 		if (token && !ft_strncmp(token->str, "cd", 3))
-			chdir(token->next->str);
+			cd(token, envp);
 		else
 			process(token, env);
 		free_tokens(&token);
 	}
-	return 0;
 }

@@ -137,7 +137,7 @@ int main(int argc, char **argv, char *env[])
 			return (0);
 		}
 		if (token && !ft_strncmp(token->str, "cd", 3))
-			chdir(token->next->str); // ne fonctionne que si seulement des caracteres
+			chdir(token->next->str);
 		else
 			process(token, env);
 		free_tokens(&token);

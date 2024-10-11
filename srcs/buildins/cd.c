@@ -17,6 +17,6 @@ void	cd(t_token *token, t_env *envp)
 	// if (!path)
 		// chdir($HOME);
 	chdir(token->next->str);
-	getcwd(envp->PWD, INT_MAX);
+	getcwd(envp->PWD, PATH_MAX);
 	ft_printf("%s\n", envp->PWD);
 }

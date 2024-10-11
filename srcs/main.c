@@ -126,9 +126,8 @@ int main(int argc, char **argv, char *env[])
 	(void)argv;
 	token = NULL;
 	envp = malloc(sizeof(t_env));
-	envp->PWD = malloc(INT_MAX);
-	getcwd(envp->PWD, INT_MAX);
-	ft_printf("%s\n", envp->PWD);
+	envp->PWD = malloc(PATH_MAX);
+	getcwd(envp->PWD, PATH_MAX);
 	if (argc > 1)
 		return (-1);
 	while (1)

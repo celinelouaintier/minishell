@@ -62,12 +62,13 @@ void	process(t_token *cmd, char *env[])
 	t_token	*tmp;
 	int		nb_arg;
 	int		i;
+	char	*path;
 
 	tmp = cmd;
 	nb_arg = 0;
 	while (tmp)
 	{
-		if (tmp->index == ARG)
+		if (tmp->index == ARG || tmp->index == CMD)
 			nb_arg++;
 		tmp = tmp->next;
 	}
@@ -76,17 +77,23 @@ void	process(t_token *cmd, char *env[])
 		return ;
 	i = 0;
 	tmp = cmd;
-	while (i < nb_arg + 1)
+	while (tmp)
 	{
 		args[i] = ft_strdup(tmp->str);
 		i++;
 		tmp = tmp->next;
 	}
-	args[i] = NULL;
 	pid = fork();
 	if (!pid)
 	{
-		if (execve(get_command_path(cmd->str), args, env) == -1 && ft_strncmp(cmd->str, "", 2))
+		args[i] = NULL;
+		path = get_command_path(cmd->str);
+		if (!path)
+		{
+			perror("Error");
+			exit(0);
+		}
+		if (execve(path, args, env) == -1 && ft_strncmp(cmd->str, "", 2))
 		{
 			perror("Error");
 			exit(0);
@@ -94,6 +101,19 @@ void	process(t_token *cmd, char *env[])
 	}
 	else
 		wait(NULL);
+}
+
+void free_tokens(t_token **token)
+{
+    t_token *tmp;
+
+    while (*token)
+    {
+        tmp = *token;
+        *token = (*token)->next;
+        free(tmp->str);
+        free(tmp);
+    }
 }
 
 int main(int argc, char **argv, char *env[])
@@ -109,15 +129,18 @@ int main(int argc, char **argv, char *env[])
 	{
 		line = readline("Minishell> ");
 		add_history(line);
+		free_tokens(&token);
 		parsing(line, &token);
-		// if (!ft_strncmp(, "cd", 3))
-			// chdir(cmd[1]);
-		// else
-		// {
-		process(token, env);
-		if (!ft_strncmp(token->str, "exit", 5))
+		if (token && !ft_strncmp(token->str, "exit", 5))
+		{
+			free_tokens(&token);
 			return (0);
-		// }
+		}
+		if (token && !ft_strncmp(token->str, "cd", 3))
+			chdir(token->next->str); // ne fonctionne que si seulement des caracteres
+		else
+			process(token, env);
+		free_tokens(&token);
 	}
 	return 0;
 }

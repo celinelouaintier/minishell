@@ -6,7 +6,7 @@
 /*   By: nferrad <nferrad@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/01 14:34:52 by clouaint          #+#    #+#             */
-/*   Updated: 2024/10/09 17:26:16 by nferrad          ###   ########.fr       */
+/*   Updated: 2024/10/12 18:29:27 by nferrad          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,7 +24,6 @@
 # define APPEND		5
 # define INPUT		6
 # define TRUNC		7
-# define FILE		8
 
 typedef struct s_token
 {

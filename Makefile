@@ -24,8 +24,15 @@ ${PROG}:	${OBJS}
 					@echo "\033[33m----Compiling lib----"
 					@make -s -C $(LIBPATH)
 					@echo "\n"
-					$(CC) -lreadline $(CFLAGS) ${OBJS} $(LIBPATH)/$(LIBFT) -o ${PROG}
+					$(CC) $(CFLAGS) ${OBJS} $(LIBPATH)/$(LIBFT) -o ${PROG} -lreadline
 					@echo "\033[32m Minishell Compiled! ᕦ(\033[31m♥\033[32m_\033[31m♥\033[32m)ᕤ\n"
+
+debug:		${OBJS}
+					@echo "\033[33m----Compiling lib----"
+					@make -s -C $(LIBPATH)
+					@echo "\n"
+					$(CC) -g $(CFLAGS) ${OBJS} $(LIBPATH)/$(LIBFT) -o ${PROG} -lreadline
+					@echo "\033[32m Minishell Debug Ready! ᕦ(\033[31m♥\033[32m_\033[31m♥\033[32m)ᕤ\n"
 
 clean:
 					make -s clean -C ./lib

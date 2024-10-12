@@ -6,7 +6,7 @@
 /*   By: nferrad <nferrad@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/08 15:41:56 by nferrad           #+#    #+#             */
-/*   Updated: 2024/10/09 17:26:10 by nferrad          ###   ########.fr       */
+/*   Updated: 2024/10/12 20:03:44 by nferrad          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,6 +43,13 @@ void	lstadd_back(t_token **lst, t_token *new)
 		*lst = new;
 }
 
+int	check(char c)
+{
+	if (c == '|' || c == '>' || c == '<' || c == ' ' || c == '\t')
+		return (0);
+	return (1);
+}
+
 // TODO :	Corriger les >> & <<
 //			Séparer > >> << < en 4 conditions distincts
 //			Revoir Heredoc (demander a la vielle)
@@ -67,52 +74,61 @@ void	parsing(char *line, t_token **token)
 			index = CMD;
 			next_index = 0;
 		}
-		else if (next_index == FILE)
-		{
-			index = FILE;
-			next_index = 0;
-		}
 		else if (!next_index)
 		{
-			next_index = FILE;
 			if (line[i] == '|')
 			{
 				index = PIPE;
 				next_index = CMD;
 			}
-			else if (line[i] == '<' || line[i] == '>')
-				index = 4;
-			else if (!ft_strncmp(line, ">>", 3) || !ft_strncmp(line, "<<", 3))
-				index = 5;
+			else if (line[i] == '>' && line[i + 1] == '>')
+				index = APPEND;
+			else if (line[i] == '<' && line[i + 1] == '<')
+				index = HEREDOX;
+			else if (line[i] == '>')
+				index = TRUNC;
+			else if (line[i] == '<')
+				index = INPUT;
 			else
-			{
 				index = ARG;
-				next_index = 0;
-			}
 		}
-		if (index == CMD || index == ARG || index == FILE)
-			while(ft_isalpha(line[j]))
+		if (index == CMD || index == ARG)
+			while(line[j] && check(line[j]))
 				j++;
-		else if (index == PIPE || index == 4)
+		else if (index == PIPE || index == TRUNC || index == INPUT)
 			j++;
-		else if (index == 5)
+		else if (index == HEREDOX || index == APPEND)
 			j += 2;
 		lstadd_back(token, lstnew(ft_substr(line, i, j - i), index)); // Code de Celine //
 		i = j;
 	}
-	// while (token)
+	// while ((*token))
 	// {
-	// 	if (token->index == CMD)
+	// 	if ((*token)->index == CMD)
 	// 		ft_printf("CMD	");
-	// 	else if (token->index == ARG)
+	// 	else if ((*token)->index == ARG)
 	// 		ft_printf("ARG	");
-	// 	else if (token->index == PIPE)
+	// 	else if ((*token)->index == PIPE)
 	// 		ft_printf("PIPE	");
-	// 	else if (token->index == FILE)
-	// 		ft_printf("FILE	");
+	// 	else if ((*token)->index == HEREDOX)
+	// 		ft_printf("HEREDOX	");
+	// 	else if ((*token)->index == APPEND)
+	// 		ft_printf("APPEND	");
+	// 	else if ((*token)->index == INPUT)
+	// 		ft_printf("INPUT	");
+	// 	else if ((*token)->index == TRUNC)
+	// 		ft_printf("TRUNC	");
 	// 	else
-	// 		ft_printf("%d	", token->index);
-	// 	ft_printf("/////	%s\n", token->str);
-	// 	token = token->next;	
+	// 		ft_printf("%d	", (*token)->index);
+	// 	ft_printf("/////	%s\n", (*token)->str);
+	// 	(*token) =(*token)->next;	
 	// }
 }
+
+// int	main(int argc, char **argv)
+// {
+// 	t_token *token;
+// 	token = NULL;
+// 	parsing(argv[argc - 1], &token);
+// 	return (0);
+// }

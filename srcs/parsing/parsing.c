@@ -6,7 +6,7 @@
 /*   By: nferrad <nferrad@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/08 15:41:56 by nferrad           #+#    #+#             */
-/*   Updated: 2024/10/12 20:03:44 by nferrad          ###   ########.fr       */
+/*   Updated: 2024/10/14 03:21:31 by nferrad          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -64,10 +64,10 @@ void	parsing(char *line, t_token **token)
 
 	i = 0;
 	next_index = CMD;
+	while (line[i] == ' ')
+		i++;
 	while (line[i])
 	{
-		while (line[i] == ' ')
-			i++;
 		j = i;
 		if (next_index == CMD)
 		{
@@ -101,6 +101,8 @@ void	parsing(char *line, t_token **token)
 			j += 2;
 		lstadd_back(token, lstnew(ft_substr(line, i, j - i), index)); // Code de Celine //
 		i = j;
+		while (line[i] == ' ')
+			i++;
 	}
 	// while ((*token))
 	// {

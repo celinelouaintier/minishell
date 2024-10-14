@@ -63,9 +63,9 @@ int main(int argc, char **argv, char *env[])
 			free_tokens(&token);
 			return (0);
 		}
-		if (token && !ft_strncmp(token->str, "cd", 3))
+		else if (token && !ft_strncmp(token->str, "cd", 3))
 			cd(token, envp);
-		if (token && !ft_strncmp(token->str, "echo", 5))
+		else if (token && !ft_strncmp(token->str, "echo", 5))
 			echo(token);
 		else
 			process(token, env);

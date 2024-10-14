@@ -40,6 +40,7 @@ typedef struct s_env
 void	parsing(char *line, t_token **token);
 void	cd(t_token *token, t_env *envp);
 void	lstadd_back(t_token **lst, t_token *new);
+void	echo(t_token *token);
 t_token	*lstnew(char *content, int index);
 
 #endif

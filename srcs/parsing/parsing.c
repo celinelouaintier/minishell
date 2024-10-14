@@ -6,41 +6,63 @@
 /*   By: nferrad <nferrad@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/08 15:41:56 by nferrad           #+#    #+#             */
-/*   Updated: 2024/10/14 03:21:31 by nferrad          ###   ########.fr       */
+/*   Updated: 2024/10/14 03:46:30 by nferrad          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-t_token	*lstnew(char *content, int index)
-{
-	t_token	*element;
+// void	print_token(t_token *token)
+// {
+// 	while (token)
+// 	{
+// 		if (token->index == CMD)
+// 			ft_printf("CMD	");
+// 		else if (token->index == ARG)
+// 			ft_printf("ARG	");
+// 		else if (token->index == PIPE)
+// 			ft_printf("PIPE	");
+// 		else if (token->index == HEREDOX)
+// 			ft_printf("HEREDOX	");
+// 		else if (token->index == APPEND)
+// 			ft_printf("APPEND	");
+// 		else if (token->index == INPUT)
+// 			ft_printf("INPUT	");
+// 		else if (token->index == TRUNC)
+// 			ft_printf("TRUNC	");
+// 		else
+// 			ft_printf("%d	", token->index);
+// 		ft_printf("/////	%s\n", token->str);
+// 		token = token->next;	
+// 	}
+// }
 
-	element = malloc(sizeof(t_token));
-	if (!element)
-		return (NULL);
-	element->index = index;
-	element->str = content;
-	element->next = NULL;
-	return (element);
-}
-
-t_token	*lstlast(t_token *lst)
+int	set_index(int index, int *next_index, char c, char d)
 {
-	if (lst)
-		while (lst->next)
-			lst = lst->next;
-	return (lst);
-}
-
-void	lstadd_back(t_token **lst, t_token *new)
-{
-	if (!lst || !new)
-		return ;
-	if (*lst)
-		lstlast(*lst)->next = new;
-	else
-		*lst = new;
+	if (*next_index == CMD)
+	{
+		index = CMD;
+		*next_index = 0;
+	}
+	else if (!*next_index)
+	{
+		if (c == '|')
+		{
+			index = PIPE;
+			*next_index = CMD;
+		}
+		else if (c == '>' && d == '>')
+			index = APPEND;
+		else if (c == '<' && d == '<')
+			index = HEREDOX;
+		else if (c == '>')
+			index = TRUNC;
+		else if (c == '<')
+			index = INPUT;
+		else
+			index = ARG;
+	}
+	return (index);
 }
 
 int	check(char c)
@@ -50,10 +72,7 @@ int	check(char c)
 	return (1);
 }
 
-// TODO :	Corriger les >> & <<
-//			Séparer > >> << < en 4 conditions distincts
-//			Revoir Heredoc (demander a la vielle)
-//			Flag ?
+// TODO :	Revoir Heredoc (demander a la vielle)
 
 void	parsing(char *line, t_token **token)
 {
@@ -69,62 +88,19 @@ void	parsing(char *line, t_token **token)
 	while (line[i])
 	{
 		j = i;
-		if (next_index == CMD)
-		{
-			index = CMD;
-			next_index = 0;
-		}
-		else if (!next_index)
-		{
-			if (line[i] == '|')
-			{
-				index = PIPE;
-				next_index = CMD;
-			}
-			else if (line[i] == '>' && line[i + 1] == '>')
-				index = APPEND;
-			else if (line[i] == '<' && line[i + 1] == '<')
-				index = HEREDOX;
-			else if (line[i] == '>')
-				index = TRUNC;
-			else if (line[i] == '<')
-				index = INPUT;
-			else
-				index = ARG;
-		}
+		index = set_index(index, &next_index, line[i], line[i + 1]);
 		if (index == CMD || index == ARG)
-			while(line[j] && check(line[j]))
+			while (line[j] && check(line[j]))
 				j++;
 		else if (index == PIPE || index == TRUNC || index == INPUT)
 			j++;
 		else if (index == HEREDOX || index == APPEND)
 			j += 2;
-		lstadd_back(token, lstnew(ft_substr(line, i, j - i), index)); // Code de Celine //
+		lstadd_back(token, lstnew(ft_substr(line, i, j - i), index));
 		i = j;
 		while (line[i] == ' ')
 			i++;
 	}
-	// while ((*token))
-	// {
-	// 	if ((*token)->index == CMD)
-	// 		ft_printf("CMD	");
-	// 	else if ((*token)->index == ARG)
-	// 		ft_printf("ARG	");
-	// 	else if ((*token)->index == PIPE)
-	// 		ft_printf("PIPE	");
-	// 	else if ((*token)->index == HEREDOX)
-	// 		ft_printf("HEREDOX	");
-	// 	else if ((*token)->index == APPEND)
-	// 		ft_printf("APPEND	");
-	// 	else if ((*token)->index == INPUT)
-	// 		ft_printf("INPUT	");
-	// 	else if ((*token)->index == TRUNC)
-	// 		ft_printf("TRUNC	");
-	// 	else
-	// 		ft_printf("%d	", (*token)->index);
-	// 	ft_printf("/////	%s\n", (*token)->str);
-	// 	(*token) =(*token)->next;	
-	// }
 }
 
 // int	main(int argc, char **argv)

@@ -14,10 +14,19 @@
 
 void	cd(t_token *token, t_env *envp)
 {
+	char	*path;
+
+	path = NULL;
 	if (token->next != NULL && token->next->index == ARG)
-		chdir(token->next->str);
+		path = token->next->str;
 	else
-		chdir("/home/");
-	getcwd(envp->PWD, PATH_MAX);
+		path = "/home/";
+	if (chdir(path) == -1)
+	{
+		perror("cd");
+		return ;
+	}
+	if (getcwd(envp->PWD, PATH_MAX) ==  NULL)
+		perror("getcwd");
 	ft_printf("%s\n", envp->PWD);
 }

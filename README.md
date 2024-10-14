@@ -1,7 +1,6 @@
 # minishell
 
-- cd ne fcontionne pas correctement : il fonctionne que si le path ne contient pas de caractere special
-	-> cd includes = ok
-	-> cd includes/ ou cd .. != ok
+- Dans le parsing, il faudrait arriver a remettre automatiquement le prompt a la ligne.
+Lorsque l'on cat un doc ou qu'on fait echo -n, le prompt apparait apres sur la meme ligne.
 
-- Les arguments apres les commandes ne fonctionnent pas : ls -la etc
+- Il y a un message d'erreur quand on utilise cd alors que ca fonctionne.

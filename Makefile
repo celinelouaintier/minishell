@@ -10,7 +10,7 @@ SRCS_DIR	= srcs/
 
 PROG		= minishell
 
-SRCS		= main.c parsing/parsing.c parsing/set_token.c buildins/cd.c buildins/echo.c
+SRCS		= main.c parsing/parsing.c parsing/set_token.c buildins/cd.c buildins/echo.c clear.c exec/utils.c
 SRC 		= ${addprefix ${SRCS_DIR}, ${SRCS}}
 OBJS 		= ${SRC:.c=.o}
 

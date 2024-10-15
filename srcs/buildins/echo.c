@@ -24,7 +24,7 @@ void	echo(t_token *token)
 		skip_line = 1;
 		tmp = tmp->next;
 	}
-	while (tmp)
+	while (tmp != NULL && tmp->index == ARG)
 	{
 		ft_putstr_fd(tmp->str, STDOUT_FILENO);
 		tmp = tmp->next;

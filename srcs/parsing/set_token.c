@@ -22,6 +22,7 @@ t_token	*lstnew(char *content, int index)
 	element->index = index;
 	element->str = content;
 	element->next = NULL;
+	element->prev = NULL;
 	return (element);
 }
 
@@ -38,7 +39,10 @@ void	lstadd_back(t_token **lst, t_token *new)
 	if (!lst || !new)
 		return ;
 	if (*lst)
+	{
 		lstlast(*lst)->next = new;
+		new->prev = lstlast(*lst);
+	}
 	else
 		*lst = new;
 }

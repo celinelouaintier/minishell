@@ -30,6 +30,8 @@ typedef struct s_token
 	char			*str;
 	int				index;
 	struct s_token	*next;
+	struct s_token	*prev;
+	
 }					t_token;
 
 typedef struct s_env
@@ -46,5 +48,6 @@ char	**init_args(t_token *token);
 char	*get_command_path(char *command);
 void 	free_tokens(t_token **token);
 void	ft_free(char **array);
+void	process_pipes(t_token *token, char *env[]);
 
 #endif

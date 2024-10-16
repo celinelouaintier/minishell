@@ -43,7 +43,6 @@ int main(int argc, char **argv, char *env[])
 	char	*line;
 	t_token	*token;
 	t_env	*envp;
-	// char	*pwd;
 
 	(void)argv;
 	token = NULL;
@@ -58,23 +57,19 @@ int main(int argc, char **argv, char *env[])
 		add_history(line);
 		free_tokens(&token);
 		parsing(line, &token);
-		while (token)
+		if (token && !ft_strncmp(token->str, "exit", 5) && token->index == CMD)
 		{
-			if (token && !ft_strncmp(token->str, "exit", 5) && token->index == CMD)
-			{
-				free_tokens(&token);
-				return (0);
-			}
-			else if (token && !ft_strncmp(token->str, "cd", 3) && token->index == CMD)
-				cd(token, envp);
-			else if (token && !ft_strncmp(token->str, "echo", 5) && token->index == CMD)
-				echo(token);
-			else if (token && token->index == PIPE)
-				process_pipes(token, env);
-			else if (token->index == CMD)
-				process(token, env);
-			token = token->next;
+			free_tokens(&token);
+			return (0);
 		}
+		else if (token && !ft_strncmp(token->str, "cd", 3) && token->index == CMD)
+		 	cd(token, envp);
+		else if (token && !ft_strncmp(token->str, "echo", 5) && token->index == CMD)
+		 	echo(token);
+		// 	else if (token->index == CMD)
+		// 		process(token, env);
+		else
+			process_pipes(token, env);
 		free_tokens(&token);
 	}
 }

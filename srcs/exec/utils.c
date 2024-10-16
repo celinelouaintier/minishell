@@ -17,27 +17,27 @@ char	**init_args(t_token *token)
 	t_token	*tmp;
 	char	**args;
 	int		i;
+	int		j;
 
 	tmp = token;
 	i = 0;
-	while (tmp)
+	while (tmp && (tmp->index == ARG || tmp->index == CMD))
 	{
-		if (tmp->index == ARG || tmp->index == CMD)
-			i++;
+		i++;
 		tmp = tmp->next;
 	}
 	args = malloc(sizeof(char *) * (i + 1));
 	if (!args)
 		return (NULL);
-	i = 0;
+	j = 0;
 	tmp = token;
-	while (tmp)
+	while (j < i)
 	{
-		args[i] = ft_strdup(tmp->str);
-		i++;
+		args[j] = ft_strdup(tmp->str);
+		j++;
 		tmp = tmp->next;
 	}
-	args[i] = NULL;
+	args[j] = NULL;
 	return (args);
 }
 

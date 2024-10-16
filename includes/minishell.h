@@ -44,6 +44,7 @@ void	cd(t_token *token, t_env *envp);
 void	lstadd_back(t_token **lst, t_token *new);
 void	echo(t_token *token);
 t_token	*lstnew(char *content, int index);
+t_token	*lstlast(t_token *lst);
 char	**init_args(t_token *token);
 char	*get_command_path(char *command);
 void 	free_tokens(t_token **token);

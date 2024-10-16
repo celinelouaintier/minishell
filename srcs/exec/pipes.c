@@ -58,7 +58,7 @@ void	process_pipes(t_token *token, char *env[])
 		{
 			if (!is_first_cmd)
 			{
-				close(prev_pipe_fd[1]);
+				// close(prev_pipe_fd[1]);
 				dup2(prev_pipe_fd[0], STDIN_FILENO); //lecture depuis le pipe precedent
 				close(prev_pipe_fd[0]);
 			}
@@ -90,4 +90,5 @@ void	process_pipes(t_token *token, char *env[])
 	}
 	wait(NULL);
 }
+
 

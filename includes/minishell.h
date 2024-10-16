@@ -50,5 +50,6 @@ char	*get_command_path(char *command);
 void 	free_tokens(t_token **token);
 void	ft_free(char **array);
 void	process_pipes(t_token *token, char *env[]);
+void	exec_builtin(t_token *token, t_env *envp);
 
 #endif

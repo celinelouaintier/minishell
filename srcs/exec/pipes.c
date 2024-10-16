@@ -12,24 +12,28 @@
 
 #include "minishell.h"
 
-void	exec(t_token *token, char *env[])
+void	exec(char **args, char *env[])
 {
 	char	*path;
-	char	**args;
 
-	args = init_args(token);
-	path = get_command_path(token->str);
+	path = get_command_path(args[0]);
 	if (!path)
 	{
 		perror("Command not found");
+		ft_free(args);
 		exit(EXIT_FAILURE);
 	}
+	for (int i = 0; args[i] != NULL; i++)
+    {
+        ft_printf("arg[%d]: %s\n", i, args[i]);
+    }
     if (execve(path, args, env) == -1) {
         perror("Error");
         free(path);
         ft_free(args);
-        exit(1);
+        exit(EXIT_FAILURE);
     }
+	free(path);
 }
 
 void	process_pipes(t_token *token, char *env[])
@@ -39,10 +43,13 @@ void	process_pipes(t_token *token, char *env[])
 	pid_t	pid;
 	int		has_pipe;
 	int		is_first_cmd = 1;
+	char	**args;
 
 	while (token)
 	{
-		has_pipe = (token->next && token->next->index == PIPE);
+		has_pipe = 0;
+		if (token->next && token->next->index == PIPE)
+			has_pipe = 1;
 		if (has_pipe && pipe(pipe_fd) == -1)
 		{
 			perror("pipe");
@@ -58,9 +65,12 @@ void	process_pipes(t_token *token, char *env[])
 		{
 			if (!is_first_cmd)
 			{
-				// close(prev_pipe_fd[1]);
-				dup2(prev_pipe_fd[0], STDIN_FILENO); //lecture depuis le pipe precedent
-				close(prev_pipe_fd[0]);
+				if (prev_pipe_fd[0] != -1)
+				{
+					// close(prev_pipe_fd[1]);
+					dup2(prev_pipe_fd[0], STDIN_FILENO); //lecture depuis le pipe precedent
+					close(prev_pipe_fd[0]);
+				}
 			}
 			if (has_pipe)
 			{
@@ -68,7 +78,8 @@ void	process_pipes(t_token *token, char *env[])
 				dup2(pipe_fd[1], STDOUT_FILENO); // rediriger vers le pipe
 				close(pipe_fd[1]);
 			}
-			exec(token, env);
+			args = init_args(token);
+			exec(args, env);
 		}
 		else
 		{
@@ -80,7 +91,6 @@ void	process_pipes(t_token *token, char *env[])
 		if (has_pipe)
 		{
 			prev_pipe_fd[0] = pipe_fd[0];
-			prev_pipe_fd[1] = pipe_fd[1];
 		}
 		while (token && token->index != PIPE)
 			token = token->next;
@@ -88,7 +98,7 @@ void	process_pipes(t_token *token, char *env[])
 			token = token->next;
 		is_first_cmd = 0;
 	}
-	wait(NULL);
+	while(wait(NULL) > 0);
 }
 
 

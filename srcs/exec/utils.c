@@ -21,7 +21,7 @@ char	**init_args(t_token *token)
 
 	tmp = token;
 	i = 0;
-	while (tmp && (tmp->index == ARG || tmp->index == CMD))
+	while (tmp && (tmp->index != PIPE))
 	{
 		i++;
 		tmp = tmp->next;
@@ -31,13 +31,13 @@ char	**init_args(t_token *token)
 		return (NULL);
 	j = 0;
 	tmp = token;
-	while (j < i)
+	while (tmp && j < i)
 	{
 		args[j] = ft_strdup(tmp->str);
-		j++;
 		tmp = tmp->next;
+		j++;
 	}
-	args[j] = NULL;
+	args[i] = NULL;
 	return (args);
 }
 

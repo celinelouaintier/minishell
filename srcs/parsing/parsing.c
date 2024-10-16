@@ -78,7 +78,7 @@ void	parsing(char *line, t_token **token)
 {
 	int		i;
 	int		j;
-	int		index;
+	int		index = 0;
 	int		next_index;
 
 	i = 0;

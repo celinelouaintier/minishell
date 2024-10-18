@@ -69,3 +69,20 @@ char	*get_command_path(char *command)
 	ft_free(paths);
 	return (NULL);
 }
+
+int count_pipes(t_token *token)
+{
+	int count;
+	t_token *tmp;
+
+	count = 0;
+	tmp = token;
+	while (tmp)
+	{
+		if (tmp->index == PIPE)
+			count++;
+		tmp = tmp->next;
+	}
+	
+	return count;
+}

@@ -36,26 +36,46 @@ void	exec(char **args, char *env[])
 	free(path);
 }
 
-void	process_pipes(t_token *token, char *env[])
+int	**create_pipes(int	pipes_num)
 {
-	int		pipe_fd[2];
-	int		prev_pipe_fd[2] = {-1, -1};
-	pid_t	pid;
-	int		has_pipe;
-	int		is_first_cmd = 1;
-	char	**args;
+	int	i;
+	int	pipes_num;
+	int	**pipe_fd;
 
-
-	while (token)
+	pipe_fd = malloc(sizeof(int *) * pipes_num);
+	if (!pipe_fd)
 	{
-		has_pipe = 0;
-		if (token->next && token->next->index == PIPE)
-			has_pipe = 1;
-		if (has_pipe && pipe(pipe_fd) == -1)
+		perror("malloc");
+		exit(EXIT_FAILURE);
+	}
+	i = 0;
+	while (i < pipes_num)
+	{
+		pipe_fd[i] = malloc(sizeof(int) * 2);
+		if (!pipe_fd[i])
+		{
+			perror("malloc");
+			exit(EXIT_FAILURE);
+		}
+		if (pipe(pipe_fd[i] == -1))
 		{
 			perror("pipe");
 			exit(EXIT_FAILURE);
 		}
+		i++;
+	}
+	return (pipe_fd);
+}
+
+void	fork_pipes(t_token *token, int **pipe_fd, int pipes_num, char *env[])
+{
+	pid_t	pid;
+	char	**args;
+	int		i;
+
+	i = 0;
+	while (token)
+	{
 		pid = fork();
 		if (pid < 0)
 		{
@@ -64,43 +84,40 @@ void	process_pipes(t_token *token, char *env[])
 		}
 		if (!pid)
 		{
-			if (!is_first_cmd)
-			{
-				if (prev_pipe_fd[0] != -1)
-				{
-					// close(prev_pipe_fd[1]);
-					dup2(prev_pipe_fd[0], STDIN_FILENO); //lecture depuis le pipe precedent
-					close(prev_pipe_fd[0]);
-				}
-			}
-			if (has_pipe)
-			{
-				close(pipe_fd[0]);
-				dup2(pipe_fd[1], STDOUT_FILENO); // rediriger vers le pipe
-				close(pipe_fd[1]);
-			}
+			if (i > 0)
+				dup2(pipe_fd[i - 1][0], STDIN_FILENO);
+			if (i < pipes_num)
+				dup2(pipe_fd[i][1], STDOUT_FILENO);
+			// fermer les fd
 			args = init_args(token);
 			exec(args, env);
-			exit(EXIT_SUCCESS);
-		}
-		else
-		{
-			if (has_pipe)
-				close(pipe_fd[1]);
-			if (prev_pipe_fd[0] != -1)
-				close(prev_pipe_fd[0]);
-		}
-		if (has_pipe)
-		{
-			prev_pipe_fd[0] = pipe_fd[0];
 		}
 		while (token && token->index != PIPE)
 			token = token->next;
 		if (token && token->index == PIPE)
 			token = token->next;
-		is_first_cmd = 0;
+		i++;
 	}
-	while(wait(NULL) > 0);
+}
+
+void	process_pipes(t_token *token, char *env[])
+{
+	int	pipes_num;
+	int	**pipe_fd;
+	int	i;
+
+	pipes_num = count_pipes(token);
+	pipe_fd = create_pipes(pipes_num);
+	fork_pipes(token, pipe_fd, pipes_num, env);
+	while (i < pipes_num)
+	{
+		close(pipe_fd[i][0]);
+		close(pipe_fd[i][1]);
+		free(pipe_fd[i]);
+		i++;
+	}
+	free(pipe_fd);
+	wait(NULL); // pas sure de ca du tout
 }
 
 

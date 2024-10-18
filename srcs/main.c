@@ -6,7 +6,7 @@
 /*   By: nferrad <nferrad@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/07 16:26:03 by clouaint          #+#    #+#             */
-/*   Updated: 2024/10/18 02:29:38 by nferrad          ###   ########.fr       */
+/*   Updated: 2024/10/18 02:49:28 by nferrad          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,7 +37,8 @@ void	process(t_token *cmd, char *env[])
 	else
 		wait(NULL);
 }
-void signal_handler(int signum)
+
+void	signal_handler(int signum)
 {
 	if (signum == SIGINT)
 	{
@@ -48,7 +49,7 @@ void signal_handler(int signum)
 	}
 }
 
-int main(int argc, char **argv, char *env[])
+int	main(int argc, char **argv, char *env[])
 {
 	char	*line;
 	t_token	*token;

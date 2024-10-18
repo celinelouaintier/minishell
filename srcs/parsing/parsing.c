@@ -6,36 +6,36 @@
 /*   By: nferrad <nferrad@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/08 15:41:56 by nferrad           #+#    #+#             */
-/*   Updated: 2024/10/14 03:46:30 by nferrad          ###   ########.fr       */
+/*   Updated: 2024/10/18 02:48:31 by nferrad          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-void	print_token(t_token *token)
-{
-	while (token)
-	{
-		if (token->index == CMD)
-			ft_printf("CMD	");
-		else if (token->index == ARG)
-			ft_printf("ARG	");
-		else if (token->index == PIPE)
-			ft_printf("PIPE	");
-		else if (token->index == HEREDOX)
-			ft_printf("HEREDOX	");
-		else if (token->index == APPEND)
-			ft_printf("APPEND	");
-		else if (token->index == INPUT)
-			ft_printf("INPUT	");
-		else if (token->index == TRUNC)
-			ft_printf("TRUNC	");
-		else
-			ft_printf("%d	", token->index);
-		ft_printf("/////	%s\n", token->str);
-		token = token->next;	
-	}
-}
+// void	print_token(t_token *token)
+// {
+// 	while (token)
+// 	{
+// 		if (token->index == CMD)
+// 			ft_printf("CMD	");
+// 		else if (token->index == ARG)
+// 			ft_printf("ARG	");
+// 		else if (token->index == PIPE)
+// 			ft_printf("PIPE	");
+// 		else if (token->index == HEREDOX)
+// 			ft_printf("HEREDOX	");
+// 		else if (token->index == APPEND)
+// 			ft_printf("APPEND	");
+// 		else if (token->index == INPUT)
+// 			ft_printf("INPUT	");
+// 		else if (token->index == TRUNC)
+// 			ft_printf("TRUNC	");
+// 		else
+// 			ft_printf("%d	", token->index);
+// 		ft_printf("/////	%s\n", token->str);
+// 		token = token->next;	
+// 	}
+// }
 
 int	set_index(int index, int *next_index, char c, char d)
 {
@@ -78,7 +78,7 @@ void	parsing(char *line, t_token **token)
 {
 	int		i;
 	int		j;
-	int		index = 0;
+	int		index;
 	int		next_index;
 
 	i = 0;
@@ -101,7 +101,6 @@ void	parsing(char *line, t_token **token)
 		while (line[i] == ' ')
 			i++;
 	}
-	// print_token(*token);
 }
 
 // int	main(int argc, char **argv)

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   echo.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: clouaint <clouaint@student.42.fr>          #+#  +:+       +#+        */
+/*   By: nferrad <nferrad@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2024-10-14 12:54:43 by clouaint          #+#    #+#             */
-/*   Updated: 2024-10-14 12:54:43 by clouaint         ###   ########.fr       */
+/*   Created: 2024/10/14 12:54:43 by clouaint          #+#    #+#             */
+/*   Updated: 2024/10/18 02:51:27 by nferrad          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,7 +14,7 @@
 
 void	echo(t_token *token)
 {
-	int	skip_line;
+	int		skip_line;
 	t_token	*tmp;
 
 	tmp = token->next;

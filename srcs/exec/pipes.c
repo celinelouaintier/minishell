@@ -45,10 +45,11 @@ void	process_pipes(t_token *token, char *env[])
 	int		is_first_cmd = 1;
 	char	**args;
 
+
 	while (token)
 	{
 		has_pipe = 0;
-		if (token->index == PIPE)
+		if (token->next && token->next->index == PIPE)
 			has_pipe = 1;
 		if (has_pipe && pipe(pipe_fd) == -1)
 		{
@@ -80,6 +81,7 @@ void	process_pipes(t_token *token, char *env[])
 			}
 			args = init_args(token);
 			exec(args, env);
+			exit(EXIT_SUCCESS);
 		}
 		else
 		{

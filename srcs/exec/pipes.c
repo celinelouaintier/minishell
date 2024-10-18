@@ -48,7 +48,7 @@ void	process_pipes(t_token *token, char *env[])
 	while (token)
 	{
 		has_pipe = 0;
-		if (token->next && token->next->index == PIPE)
+		if (token->index == PIPE)
 			has_pipe = 1;
 		if (has_pipe && pipe(pipe_fd) == -1)
 		{

@@ -28,5 +28,4 @@ void	cd(t_token *token, t_env *envp)
 	}
 	if (getcwd(envp->PWD, PATH_MAX) == NULL)
 		perror("getcwd");
-	ft_printf("%s\n", envp->PWD);
 }

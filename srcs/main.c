@@ -67,10 +67,11 @@ int	main(int argc, char **argv, char *env[])
 	{
 		line = readline("Minishell> ");
 		add_history(line);
-		free_tokens(&token);
 		parsing(line, &token);
-		exec_builtin(token, envp);
-		process_pipes(token, env);
+		if (is_builtin(token))
+			exec_builtin(token, envp);
+		else
+			process_pipes(token, env);
 		// if (token->index == CMD)
 		//  	process(token, env);
 		free_tokens(&token);

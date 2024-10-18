@@ -6,7 +6,7 @@
 /*   By: nferrad <nferrad@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/07 16:26:03 by clouaint          #+#    #+#             */
-/*   Updated: 2024/10/09 18:23:49 by nferrad          ###   ########.fr       */
+/*   Updated: 2024/10/18 02:29:38 by nferrad          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,6 +37,16 @@ void	process(t_token *cmd, char *env[])
 	else
 		wait(NULL);
 }
+void signal_handler(int signum)
+{
+	if (signum == SIGINT)
+	{
+		rl_replace_line("", 0);
+		rl_on_new_line();
+		rl_redisplay();
+		ft_printf("\nMinishell> ");
+	}
+}
 
 int main(int argc, char **argv, char *env[])
 {
@@ -49,6 +59,7 @@ int main(int argc, char **argv, char *env[])
 	envp = malloc(sizeof(t_env));
 	envp->PWD = malloc(PATH_MAX);
 	getcwd(envp->PWD, PATH_MAX);
+	signal(SIGINT, signal_handler);
 	if (argc > 1)
 		return (-1);
 	while (1)
@@ -58,9 +69,9 @@ int main(int argc, char **argv, char *env[])
 		free_tokens(&token);
 		parsing(line, &token);
 		exec_builtin(token, envp);
+		process_pipes(token, env);
 		// if (token->index == CMD)
 		//  	process(token, env);
-		process_pipes(token, env);
 		free_tokens(&token);
 	}
 }

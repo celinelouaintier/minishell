@@ -23,10 +23,10 @@ void	exec(char **args, char *env[])
 		ft_free(args);
 		exit(EXIT_FAILURE);
 	}
-	for (int i = 0; args[i] != NULL; i++)
-    {
-        ft_printf("arg[%d]: %s\n", i, args[i]);
-    }
+	// for (int i = 0; args[i] != NULL; i++)
+    // {
+    //     ft_printf("arg[%d]: %s\n", i, args[i]);
+    // }
     if (execve(path, args, env) == -1) {
         perror("Error");
         free(path);
@@ -39,7 +39,6 @@ void	exec(char **args, char *env[])
 int	**create_pipes(int	pipes_num)
 {
 	int	i;
-	int	pipes_num;
 	int	**pipe_fd;
 
 	pipe_fd = malloc(sizeof(int *) * pipes_num);
@@ -57,7 +56,7 @@ int	**create_pipes(int	pipes_num)
 			perror("malloc");
 			exit(EXIT_FAILURE);
 		}
-		if (pipe(pipe_fd[i] == -1))
+		if (pipe(pipe_fd[i]) == -1)
 		{
 			perror("pipe");
 			exit(EXIT_FAILURE);
@@ -65,6 +64,21 @@ int	**create_pipes(int	pipes_num)
 		i++;
 	}
 	return (pipe_fd);
+}
+
+void	close_pipes(int **pipes_fd, int pipes_num, int cmd)
+{
+	int	i;
+
+	i = 0;
+	while (i < pipes_num)
+	{
+		if (i != cmd -1)
+			close(pipes_fd[i][0]);
+		if (i != cmd)
+			close(pipes_fd[i][1]);
+		i++;
+	}
 }
 
 void	fork_pipes(t_token *token, int **pipe_fd, int pipes_num, char *env[])
@@ -88,7 +102,7 @@ void	fork_pipes(t_token *token, int **pipe_fd, int pipes_num, char *env[])
 				dup2(pipe_fd[i - 1][0], STDIN_FILENO);
 			if (i < pipes_num)
 				dup2(pipe_fd[i][1], STDOUT_FILENO);
-			// fermer les fd
+			close_pipes(pipe_fd, pipes_num, i);
 			args = init_args(token);
 			exec(args, env);
 		}
@@ -108,6 +122,7 @@ void	process_pipes(t_token *token, char *env[])
 
 	pipes_num = count_pipes(token);
 	pipe_fd = create_pipes(pipes_num);
+	i = 0;
 	fork_pipes(token, pipe_fd, pipes_num, env);
 	while (i < pipes_num)
 	{

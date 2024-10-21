@@ -132,7 +132,7 @@ void	process_pipes(t_token *token, char *env[])
 		i++;
 	}
 	free(pipe_fd);
-	wait(NULL); // pas sure de ca du tout
+	while (wait(NULL) > 0); // pas sure de ca du tout
 }
 
 

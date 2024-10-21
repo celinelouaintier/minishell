@@ -40,7 +40,12 @@ void	process(t_token *cmd, char *env[])
 
 void	signal_handler(int signum)
 {
-	if (signum == SIGINT)
+	if (signum == SIGSEGV)
+	{
+		ft_printf("Ferme Ta Gueule Celine !\n");
+		exit(EXIT_FAILURE);
+	}
+	else if (signum == SIGINT)
 	{
 		rl_replace_line("", 0);
 		rl_on_new_line();
@@ -60,7 +65,8 @@ int	main(int argc, char **argv, char *env[])
 	envp = malloc(sizeof(t_env));
 	envp->PWD = malloc(PATH_MAX);
 	getcwd(envp->PWD, PATH_MAX);
-	signal(SIGINT, signal_handler);
+	// signal(SIGINT, signal_handler);
+	signal(SIGSEGV, signal_handler);
 	if (argc > 1)
 		return (-1);
 	while (1)

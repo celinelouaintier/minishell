@@ -163,8 +163,6 @@ void	parsing(char *line, t_token **token)
 		while (line[i] == ' ' || line[i] == '\t')
 			i++;
 	}
-	print_token(*token);
-
 }
 
 // int	main(int argc, char **argv)

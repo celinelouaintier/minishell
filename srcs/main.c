@@ -75,7 +75,7 @@ int	main(int argc, char **argv, char *env[])
 		add_history(line);
 		parsing(line, &token);
 		if (is_builtin(token))
-			exec_builtin(token, envp);
+			exec_builtin(token, envp, env);
 		else
 			process_pipes(token, env);
 		// if (token->index == CMD)

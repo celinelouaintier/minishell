@@ -6,7 +6,7 @@
 /*   By: nferrad <nferrad@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/07 16:26:03 by clouaint          #+#    #+#             */
-/*   Updated: 2024/10/22 18:02:50 by nferrad          ###   ########.fr       */
+/*   Updated: 2024/10/22 18:19:34 by nferrad          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -73,17 +73,21 @@ int	main(int argc, char **argv, char *env[])
 	while (1)
 	{
 		line = readline("Minishell> ");
-		if (line)
+		if (line && line[0] != '\0')
 		{
-			add_history(line);
 			parsing(line, &token);
-			if (is_builtin(token))
-				exec_builtin(token, envp, env);
-			else
-				process_pipes(token, env);
-			free_tokens(&token);
+			if (token)
+			{
+				add_history(line);
+				if (is_builtin(token))
+					exec_builtin(token, envp, env);
+				else
+					process_pipes(token, env);
+				free_tokens(&token);
+			}
 		}
-		else
+		else if (!line)
 			ft_exit(token);
+		free(line);
 	}
 }

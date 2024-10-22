@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   pipes.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: clouaint <clouaint@student.42.fr>          #+#  +:+       +#+        */
+/*   By: clouaint <clouaint@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2024-10-14 15:38:45 by clouaint          #+#    #+#             */
-/*   Updated: 2024-10-14 15:38:45 by clouaint         ###   ########.fr       */
+/*   Created: 2024/10/14 15:38:45 by clouaint          #+#    #+#             */
+/*   Updated: 2024/10/22 14:02:58 by clouaint         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,10 +23,6 @@ void	exec(char **args, char *env[])
 		ft_free(args);
 		exit(EXIT_FAILURE);
 	}
-	// for (int i = 0; args[i] != NULL; i++)
-    // {
-    //     ft_printf("arg[%d]: %s\n", i, args[i]);
-    // }
     if (execve(path, args, env) == -1) {
         perror("Error");
         free(path);
@@ -43,10 +39,7 @@ int	**create_pipes(int	pipes_num)
 
 	pipe_fd = malloc(sizeof(int *) * pipes_num);
 	if (!pipe_fd)
-	{
-		perror("malloc");
 		exit(EXIT_FAILURE);
-	}
 	i = 0;
 	while (i < pipes_num)
 	{
@@ -92,10 +85,7 @@ void	fork_pipes(t_token *token, int **pipe_fd, int pipes_num, char *env[])
 	{
 		pid = fork();
 		if (pid < 0)
-		{
-			perror("fork");
 			exit(EXIT_FAILURE);
-		}
 		if (!pid)
 		{
 			if (i > 0)
@@ -108,8 +98,7 @@ void	fork_pipes(t_token *token, int **pipe_fd, int pipes_num, char *env[])
 		}
 		while (token && token->index != PIPE)
 			token = token->next;
-		if (token && token->index == PIPE)
-			token = token->next;
+		token = token ? token->next : token;
 		i++;
 	}
 }
@@ -132,7 +121,7 @@ void	process_pipes(t_token *token, char *env[])
 		i++;
 	}
 	free(pipe_fd);
-	while (wait(NULL) > 0); // pas sure de ca du tout
+	while (wait(NULL) > 0);
 }
 
 

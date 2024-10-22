@@ -6,7 +6,7 @@
 /*   By: nferrad <nferrad@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/07 16:26:03 by clouaint          #+#    #+#             */
-/*   Updated: 2024/10/18 02:49:28 by nferrad          ###   ########.fr       */
+/*   Updated: 2024/10/22 18:02:50 by nferrad          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -56,30 +56,34 @@ void	signal_handler(int signum)
 
 int	main(int argc, char **argv, char *env[])
 {
-	char	*line;
-	t_token	*token;
-	t_env	*envp;
+	char				*line;
+	t_token				*token;
+	t_env				*envp;
 
 	(void)argv;
 	token = NULL;
 	envp = malloc(sizeof(t_env));
 	envp->PWD = malloc(PATH_MAX);
 	getcwd(envp->PWD, PATH_MAX);
-	// signal(SIGINT, signal_handler);
+	signal(SIGINT, signal_handler);
 	signal(SIGSEGV, signal_handler);
+	signal(SIGQUIT, SIG_IGN);
 	if (argc > 1)
 		return (-1);
 	while (1)
 	{
 		line = readline("Minishell> ");
-		add_history(line);
-		parsing(line, &token);
-		if (is_builtin(token))
-			exec_builtin(token, envp, env);
+		if (line)
+		{
+			add_history(line);
+			parsing(line, &token);
+			if (is_builtin(token))
+				exec_builtin(token, envp, env);
+			else
+				process_pipes(token, env);
+			free_tokens(&token);
+		}
 		else
-			process_pipes(token, env);
-		// if (token->index == CMD)
-		//  	process(token, env);
-		free_tokens(&token);
+			ft_exit(token);
 	}
 }

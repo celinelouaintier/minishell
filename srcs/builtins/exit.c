@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   exit.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: clouaint <clouaint@student.42.fr>          +#+  +:+       +#+        */
+/*   By: nferrad <nferrad@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/18 12:52:11 by clouaint          #+#    #+#             */
-/*   Updated: 2024/10/22 14:13:58 by clouaint         ###   ########.fr       */
+/*   Updated: 2024/10/22 18:01:50 by nferrad          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,7 +18,7 @@ void	ft_exit(t_token *token)
 	char	*str;
 	int		exit_code;
 
-	if (token->next)
+	if (token && token->next)
 	{
 		i = 0;
 		str = token->next->str;

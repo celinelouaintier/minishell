@@ -6,7 +6,7 @@
 /*   By: nferrad <nferrad@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/08 15:41:56 by nferrad           #+#    #+#             */
-/*   Updated: 2024/10/18 02:48:31 by nferrad          ###   ########.fr       */
+/*   Updated: 2024/10/23 18:45:01 by nferrad          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -111,8 +111,10 @@ void	parsing(char *line, t_token **token)
 	int	j;
 	int	index;
 	int	next;
+	int	quote;
 
 	i = 0;
+	quote = 0;
 	next = CMD;
 	while (line[i] == ' ' || line[i] == '\t')
 		i++;
@@ -150,8 +152,18 @@ void	parsing(char *line, t_token **token)
 			index = CMD;
 		}
 		else 
+		{
 			index = ARG;
-		if (index == CMD || index == ARG)
+			if (line[i] == '\'' || line[i] == '\"')
+			{
+				j++;
+				while (line[i] != line[j] && line[j])
+					j++;
+				i++;
+				quote = 1;
+			}
+		}
+		if (index == CMD || (index == ARG && !quote))
 			while (line[j] && check(line[j]))
 				j++;
 		else if (index == PIPE || index == TRUNC || index == INPUT)
@@ -160,9 +172,12 @@ void	parsing(char *line, t_token **token)
 			j += 2;
 		lstadd_back(token, lstnew(ft_substr(line, i, j - i), index));
 		i = j;
+		if (quote)
+			i++;
 		while (line[i] == ' ' || line[i] == '\t')
 			i++;
 	}
+	print_token(*token);
 }
 
 // int	main(int argc, char **argv)

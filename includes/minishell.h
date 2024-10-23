@@ -6,7 +6,7 @@
 /*   By: nferrad <nferrad@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/01 14:34:52 by clouaint          #+#    #+#             */
-/*   Updated: 2024/10/14 03:47:45 by nferrad          ###   ########.fr       */
+/*   Updated: 2024/10/23 19:57:11 by nferrad          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,7 +44,7 @@ typedef struct s_exec
 
 typedef struct s_env
 {
-	char	*PWD;
+	char	*pwd;
 }					t_env;
 
 void	parsing(char *line, t_token **token);

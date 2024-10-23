@@ -6,7 +6,7 @@
 /*   By: nferrad <nferrad@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/07 16:26:03 by clouaint          #+#    #+#             */
-/*   Updated: 2024/10/22 18:19:34 by nferrad          ###   ########.fr       */
+/*   Updated: 2024/10/23 21:20:34 by nferrad          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,11 +21,17 @@ void	signal_handler(int signum)
 	}
 	else if (signum == SIGINT)
 	{
+		ft_printf("\n");
 		rl_replace_line("", 0);
 		rl_on_new_line();
 		rl_redisplay();
-		ft_printf("\nMinishell> ");
 	}
+}
+void set_sig()
+{
+	signal(SIGQUIT, SIG_IGN);
+	signal(SIGINT, signal_handler);
+	signal(SIGSEGV, signal_handler);
 }
 
 int	has_pipe(t_token *token)
@@ -49,15 +55,13 @@ int	main(int argc, char **argv, char *env[])
 	(void)argv;
 	token = NULL;
 	envp = malloc(sizeof(t_env));
-	envp->PWD = malloc(PATH_MAX);
-	getcwd(envp->PWD, PATH_MAX);
-	signal(SIGINT, signal_handler);
-	signal(SIGSEGV, signal_handler);
-	signal(SIGQUIT, SIG_IGN);
+	envp->pwd = malloc(PATH_MAX);
+	getcwd(envp->pwd, PATH_MAX);
 	if (argc > 1)
 		return (-1);
 	while (1)
 	{
+		set_sig();
 		line = readline("Minishell> ");
 		if (line && line[0] != '\0')
 		{

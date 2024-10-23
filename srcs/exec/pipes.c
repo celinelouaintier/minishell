@@ -23,16 +23,17 @@ void	exec(char **args, char *env[])
 		ft_free(args);
 		exit(EXIT_FAILURE);
 	}
-    if (execve(path, args, env) == -1) {
-        perror("Error");
-        free(path);
-        ft_free(args);
-        exit(EXIT_FAILURE);
-    }
+	if (execve(path, args, env) == -1)
+	{
+		perror("Error");
+		free(path);
+		ft_free(args);
+		exit(EXIT_FAILURE);
+	}
 	free(path);
 }
 
-int	**create_pipes(int	pipes_num)
+int	**create_pipes(int pipes_num)
 {
 	int	i;
 	int	**pipe_fd;
@@ -44,7 +45,7 @@ int	**create_pipes(int	pipes_num)
 	while (i < pipes_num)
 	{
 		pipe_fd[i] = malloc(sizeof(int) * 2);
-		if (!pipe_fd[i])
+		if (!pipe_fd[i]) 
 		{
 			perror("malloc");
 			exit(EXIT_FAILURE);
@@ -74,10 +75,9 @@ void	close_pipes(int **pipes_fd, int pipes_num, int cmd)
 	}
 }
 
-void	fork_pipes(t_token *token, int **pipe_fd, int pipes_num, char *env[])
+void	fork_pipes(t_token *token, t_exec *exec, char *env[])
 {
 	pid_t	pid;
-	char	**args;
 	int		i;
 
 	i = 0;
@@ -88,40 +88,33 @@ void	fork_pipes(t_token *token, int **pipe_fd, int pipes_num, char *env[])
 			exit(EXIT_FAILURE);
 		if (!pid)
 		{
-			if (i > 0)
-				dup2(pipe_fd[i - 1][0], STDIN_FILENO);
-			if (i < pipes_num)
-				dup2(pipe_fd[i][1], STDOUT_FILENO);
-			close_pipes(pipe_fd, pipes_num, i);
-			args = init_args(token);
-			exec(args, env);
+			child_process(token, exec, i, env);
 		}
 		while (token && token->index != PIPE)
 			token = token->next;
-		token = token ? token->next : token;
+		if (token && token->index == PIPE)
+			token = token->next;
 		i++;
 	}
 }
 
 void	process_pipes(t_token *token, char *env[])
 {
-	int	pipes_num;
-	int	**pipe_fd;
-	int	i;
+	int		i;
+	t_exec	exec;
 
-	pipes_num = count_pipes(token);
-	pipe_fd = create_pipes(pipes_num);
+	exec.pipe_num = count_pipes(token);
+	exec.pipe_fd = create_pipes(exec.pipe_num);
 	i = 0;
-	fork_pipes(token, pipe_fd, pipes_num, env);
-	while (i < pipes_num)
+	fork_pipes(token, &exec, env);
+	while (i < exec.pipe_num)
 	{
-		close(pipe_fd[i][0]);
-		close(pipe_fd[i][1]);
-		free(pipe_fd[i]);
+		close(exec.pipe_fd[i][0]);
+		close(exec.pipe_fd[i][1]);
+		free(exec.pipe_fd[i]);
 		i++;
 	}
-	free(pipe_fd);
-	while (wait(NULL) > 0);
+	free(exec.pipe_fd);
+	while (wait(NULL) > 0)
+		;
 }
-
-

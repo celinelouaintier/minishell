@@ -86,3 +86,16 @@ int count_pipes(t_token *token)
 	
 	return count;
 }
+
+void	child_process(t_token *token, t_exec *execp, int i, char *env[])
+{
+	char	**args;
+
+	if (i > 0)
+		dup2(execp->pipe_fd[i - 1][0], STDIN_FILENO);
+	if (i < execp->pipe_num)
+		dup2(execp->pipe_fd[i][1], STDOUT_FILENO);
+	close_pipes(execp->pipe_fd, execp->pipe_num, i);
+	args = init_args(token);
+	exec(args, env);
+}

@@ -34,6 +34,14 @@ typedef struct s_token
 	
 }					t_token;
 
+typedef struct s_exec
+{
+	int		**pipe_fd;
+	int		pipe_num;
+	char	**env;
+}				t_exec;
+
+
 typedef struct s_env
 {
 	char	*PWD;
@@ -58,4 +66,7 @@ void    ft_env(char **envp);
 void	handle_redirections(t_token *token, int *saved_stdout);
 void	exec(char **args, char *env[]);
 void	restore_stdout(int *saved_stdout);
+void	child_process(t_token *token, t_exec *execp, int i, char *env[]);
+void	close_pipes(int **pipes_fd, int pipes_num, int cmd);
+
 #endif

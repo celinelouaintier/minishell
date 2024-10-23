@@ -59,6 +59,7 @@ int	main(int argc, char **argv, char *env[])
 	char				*line;
 	t_token				*token;
 	t_env				*envp;
+	int					saved_stdout = -1;
 
 	(void)argv;
 	token = NULL;
@@ -79,10 +80,12 @@ int	main(int argc, char **argv, char *env[])
 			if (token)
 			{
 				add_history(line);
+				handle_redirections(token, &saved_stdout);
 				if (is_builtin(token))
 					exec_builtin(token, envp, env);
 				else
 					process_pipes(token, env);
+				restore_stdout(&saved_stdout);
 				free_tokens(&token);
 			}
 		}

@@ -55,5 +55,7 @@ int		is_builtin(t_token *token);
 void	ft_exit(t_token *token);
 int 	count_pipes(t_token *token);
 void    ft_env(char **envp);
-
+void	handle_redirections(t_token *token, int *saved_stdout);
+void	exec(char **args, char *env[]);
+void	restore_stdout(int *saved_stdout);
 #endif

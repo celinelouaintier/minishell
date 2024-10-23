@@ -12,32 +12,6 @@
 
 #include "minishell.h"
 
-void	process(t_token *cmd, char *env[])
-{
-	pid_t	pid;
-	char	*path;
-	char	**args;
-
-	pid = fork();
-	if (!pid)
-	{
-		args = init_args(cmd);
-		path = get_command_path(cmd->str);
-		if (!path)
-		{
-			perror("Error");
-			exit(EXIT_FAILURE);
-		}
-		if (execve(path, args, env) == -1 && ft_strncmp(cmd->str, "", 2))
-		{
-			perror("Error");
-			exit(EXIT_FAILURE);
-		}
-	}
-	else
-		wait(NULL);
-}
-
 void	signal_handler(int signum)
 {
 	if (signum == SIGSEGV)
@@ -52,6 +26,17 @@ void	signal_handler(int signum)
 		rl_redisplay();
 		ft_printf("\nMinishell> ");
 	}
+}
+
+int	has_pipe(t_token *token)
+{
+	while (token)
+	{
+		if (token->index == PIPE)
+			return (1);
+		token = token->next;
+	}
+	return (0);
 }
 
 int	main(int argc, char **argv, char *env[])
@@ -82,7 +67,12 @@ int	main(int argc, char **argv, char *env[])
 				add_history(line);
 				handle_redirections(token, &saved_stdout);
 				if (is_builtin(token))
-					exec_builtin(token, envp, env);
+				{
+					if (has_pipe(token))
+						process_pipes(token, env);
+					else
+						exec_builtin(token, envp, env);
+				}
 				else
 					process_pipes(token, env);
 				restore_stdout(&saved_stdout);

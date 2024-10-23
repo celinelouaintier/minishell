@@ -45,7 +45,7 @@ int	**create_pipes(int pipes_num)
 	while (i < pipes_num)
 	{
 		pipe_fd[i] = malloc(sizeof(int) * 2);
-		if (!pipe_fd[i]) 
+		if (!pipe_fd[i])
 		{
 			perror("malloc");
 			exit(EXIT_FAILURE);

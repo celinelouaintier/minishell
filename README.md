@@ -10,7 +10,7 @@ ls: cannot access '>': No such file or directory => prblm parsing je pense
 
 - pipes fonctionnent pas avec les builtins
 
-- ft_exit() doit exit dans tous les cas et renvoyer le nombre correspondant a la facon d'exit
+- ft_exit() doit renvoyer le nombre correspondant a la facon d'exit (checker comportement)
 
 - changer PWD et OLDPWD dans l'env quand on cd
 

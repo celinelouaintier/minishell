@@ -70,10 +70,10 @@ char	*get_command_path(char *command)
 	return (NULL);
 }
 
-int count_pipes(t_token *token)
+int	count_pipes(t_token *token)
 {
-	int count;
-	t_token *tmp;
+	int		count;
+	t_token	*tmp;
 
 	count = 0;
 	tmp = token;
@@ -83,8 +83,7 @@ int count_pipes(t_token *token)
 			count++;
 		tmp = tmp->next;
 	}
-	
-	return count;
+	return (count);
 }
 
 void	child_process(t_token *token, t_exec *execp, int i, char *env[])

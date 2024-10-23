@@ -26,14 +26,17 @@ void	ft_exit(t_token *token)
 			i++;
 		while (str[i] && ft_isdigit(str[i]))
 			i++;
-		if (str[i])
-			return (void)ft_printf("exit: %s: numeric argument required\n", token->next->str);
-		if (token->next->next)
-			return (void)ft_printf("exit: too many arguments\n");
-		exit_code = ft_atoi(str);
 		ft_printf("exit\n");
+		if (str[i])
+			ft_printf("exit: %s: numeric argument required\n", token->next->str);
+		if (token->next->next)
+			ft_printf("exit: too many arguments\n");
+		exit_code = ft_atoi(str);
 		exit(exit_code);
 	}
-	ft_printf("exit\n");
-	exit(EXIT_SUCCESS);
+	else
+	{
+		ft_printf("exit\n");
+		exit(EXIT_SUCCESS);
+	}
 }

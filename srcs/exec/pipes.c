@@ -67,7 +67,7 @@ void	close_pipes(int **pipes_fd, int pipes_num, int cmd)
 	i = 0;
 	while (i < pipes_num)
 	{
-		if (i != cmd -1)
+		if (i != cmd - 1)
 			close(pipes_fd[i][0]);
 		if (i != cmd)
 			close(pipes_fd[i][1]);
@@ -83,7 +83,7 @@ void	cmd_sig_handler(int signum)
 		ft_printf("Quit (core dumped)\n");
 }
 
-void	fork_pipes(t_token *token, t_exec *exec, char *env[])
+void	fork_pipes(t_token *token, t_exec *exec, t_env *envp)
 {
 	pid_t	pid;
 	int		i;
@@ -97,9 +97,11 @@ void	fork_pipes(t_token *token, t_exec *exec, char *env[])
 		if (pid < 0)
 			exit(EXIT_FAILURE);
 		if (!pid)
-		{
-			child_process(token, exec, i, env);
-		}
+			child_process(token, exec, i, envp);
+		if (i > 0)
+			close(exec->pipe_fd[i - 1][0]);
+		if (i < exec->pipe_num)
+			close(exec->pipe_fd[i][1]);
 		while (token && token->index != PIPE)
 			token = token->next;
 		if (token && token->index == PIPE)
@@ -108,15 +110,17 @@ void	fork_pipes(t_token *token, t_exec *exec, char *env[])
 	}
 }
 
-void	process_pipes(t_token *token, char *env[])
+void	process_pipes(t_token *token, char *env[], t_env *envp)
 {
 	int		i;
 	t_exec	exec;
+	pid_t	pid;
 
 	exec.pipe_num = count_pipes(token);
 	exec.pipe_fd = create_pipes(exec.pipe_num);
+	exec.env = env;
 	i = 0;
-	fork_pipes(token, &exec, env);
+	fork_pipes(token, &exec, envp);
 	while (i < exec.pipe_num)
 	{
 		close(exec.pipe_fd[i][0]);
@@ -125,6 +129,6 @@ void	process_pipes(t_token *token, char *env[])
 		i++;
 	}
 	free(exec.pipe_fd);
-	while (wait(NULL) > 0)
+	while ((pid = wait(NULL)) > 0)
 		;
 }

@@ -39,6 +39,7 @@ typedef struct s_exec
 	int		**pipe_fd;
 	int		pipe_num;
 	char	**env;
+	int		saved_stdout;
 }				t_exec;
 
 
@@ -50,15 +51,15 @@ typedef struct s_env
 void	parsing(char *line, t_token **token);
 void	cd(t_token *token, t_env *envp);
 void	lstadd_back(t_token **lst, t_token *new);
-void	echo(t_token *token);
+void	echo(t_token *token, int fd);
 t_token	*lstnew(char *content, int index);
 t_token	*lstlast(t_token *lst);
 char	**init_args(t_token *token);
 char	*get_command_path(char *command);
 void 	free_tokens(t_token **token);
 void	ft_free(char **array);
-void	process_pipes(t_token *token, char *env[]);
-void	exec_builtin(t_token *token, t_env *envp, char **env);
+void	process_pipes(t_token *token, char *env[], t_env *envp);
+void	exec_builtin(t_token *token, t_env *envp, char **env, int fd);
 int		is_builtin(t_token *token);
 void	ft_exit(t_token *token);
 int 	count_pipes(t_token *token);
@@ -66,7 +67,8 @@ void    ft_env(char **envp);
 void	handle_redirections(t_token *token, int *saved_stdout);
 void	exec(char **args, char *env[]);
 void	restore_stdout(int *saved_stdout);
-void	child_process(t_token *token, t_exec *execp, int i, char *env[]);
+void	child_process(t_token *token, t_exec *execp, int i, t_env *envp);
 void	close_pipes(int **pipes_fd, int pipes_num, int cmd);
+void	process(t_token *token, char *env[]);
 
 #endif

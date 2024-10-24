@@ -12,7 +12,7 @@
 
 #include "minishell.h"
 
-void	ft_exit(t_token *token)
+void	ft_exit(t_token *token, int pid)
 {
 	int		i;
 	char	*str;
@@ -32,6 +32,8 @@ void	ft_exit(t_token *token)
 		if (token->next->next)
 			ft_printf("exit: too many arguments\n");
 		exit_code = ft_atoi(str);
+		if (pid > 0)
+			kill(pid, SIGKILL);
 		exit(exit_code);
 	}
 	else

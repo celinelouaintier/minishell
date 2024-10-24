@@ -12,7 +12,7 @@
 
 #include "minishell.h"
 
-void	echo(t_token *token)
+void	echo(t_token *token, int fd)
 {
 	int		skip_line;
 	t_token	*tmp;
@@ -26,11 +26,11 @@ void	echo(t_token *token)
 	}
 	while (tmp != NULL && tmp->index == ARG)
 	{
-		ft_putstr_fd(tmp->str, STDOUT_FILENO);
+		ft_putstr_fd(tmp->str, fd);
 		tmp = tmp->next;
 		if (tmp != NULL)
-			ft_putstr_fd(" ", STDOUT_FILENO);
+			ft_putstr_fd(" ", fd);
 	}
 	if (!skip_line)
-		ft_putstr_fd("\n", STDOUT_FILENO);
+		ft_putstr_fd("\n", fd);
 }

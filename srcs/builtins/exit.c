@@ -28,9 +28,15 @@ void	ft_exit(t_token *token)
 			i++;
 		ft_printf("exit\n");
 		if (str[i])
+		{
 			ft_printf("exit: %s: numeric argument required\n", token->next->str);
+			exit(2);
+		}
 		if (token->next->next)
+		{
 			ft_printf("exit: too many arguments\n");
+			return ;
+		}
 		exit_code = ft_atoi(str);
 		exit(exit_code);
 	}

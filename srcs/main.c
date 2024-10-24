@@ -68,6 +68,8 @@ int	main(int argc, char **argv, char *env[])
 			parsing(line, &token);
 			if (token)
 			{
+				if (token && !ft_strncmp(token->str, "exit", 5) && token->index == CMD)
+					ft_exit(token);
 				add_history(line);
 				handle_redirections(token, &saved_stdout);
 				process_pipes(token, env, envp);

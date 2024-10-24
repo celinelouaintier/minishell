@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   pipes.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: clouaint <clouaint@student.42.fr>          +#+  +:+       +#+        */
+/*   By: nferrad <nferrad@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/14 15:38:45 by clouaint          #+#    #+#             */
-/*   Updated: 2024/10/22 14:02:58 by clouaint         ###   ########.fr       */
+/*   Updated: 2024/10/24 13:54:15 by nferrad          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -75,6 +75,14 @@ void	close_pipes(int **pipes_fd, int pipes_num, int cmd)
 	}
 }
 
+void	cmd_sig_handler(int signum)
+{
+	if (signum == SIGINT)
+		ft_printf("\n");
+	else if (signum == SIGQUIT)
+		ft_printf("Quit (core dumped)\n");
+}
+
 void	fork_pipes(t_token *token, t_exec *exec, char *env[])
 {
 	pid_t	pid;
@@ -83,6 +91,8 @@ void	fork_pipes(t_token *token, t_exec *exec, char *env[])
 	i = 0;
 	while (token)
 	{
+		signal(SIGQUIT, cmd_sig_handler);
+		signal(SIGINT, cmd_sig_handler);
 		pid = fork();
 		if (pid < 0)
 			exit(EXIT_FAILURE);

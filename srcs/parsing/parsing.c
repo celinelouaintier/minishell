@@ -6,7 +6,7 @@
 /*   By: nferrad <nferrad@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/08 15:41:56 by nferrad           #+#    #+#             */
-/*   Updated: 2024/10/23 18:45:01 by nferrad          ###   ########.fr       */
+/*   Updated: 2024/10/24 14:03:26 by nferrad          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -114,13 +114,13 @@ void	parsing(char *line, t_token **token)
 	int	quote;
 
 	i = 0;
-	quote = 0;
 	next = CMD;
 	while (line[i] == ' ' || line[i] == '\t')
 		i++;
 	while (line[i])
 	{
 		j = i;
+		quote = 0;
 		if (line[i] == '<' && line[i + 1] == '<')
 		{
 			next = ARG;

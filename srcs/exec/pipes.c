@@ -6,7 +6,7 @@
 /*   By: clouaint <clouaint@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/14 15:38:45 by clouaint          #+#    #+#             */
-/*   Updated: 2024/10/25 16:04:06 by clouaint         ###   ########.fr       */
+/*   Updated: 2024/10/25 19:03:40 by clouaint         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -83,7 +83,7 @@ void	cmd_sig_handler(int signum)
 		ft_printf("Quit (core dumped)\n");
 }
 
-void	fork_pipes(t_token *token, t_exec *exec, t_env *envp)
+void	fork_pipes(t_token *token, t_exec *exec, t_env **envp)
 {
 	pid_t	pid;
 	int		i;
@@ -110,7 +110,7 @@ void	fork_pipes(t_token *token, t_exec *exec, t_env *envp)
 	}
 }
 
-void	process_pipes(t_token *token, char *env[], t_env *envp)
+void	process_pipes(t_token *token, char *env[], t_env **envp)
 {
 	int		i;
 	t_exec	exec;

@@ -6,7 +6,7 @@
 /*   By: clouaint <clouaint@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/07 16:26:03 by clouaint          #+#    #+#             */
-/*   Updated: 2024/10/25 16:42:12 by clouaint         ###   ########.fr       */
+/*   Updated: 2024/10/25 19:06:39 by clouaint         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -75,7 +75,7 @@ int	main(int argc, char **argv, char *env[])
 					ft_exit(token);
 				add_history(line);
 				handle_redirections(token, &saved_stdout);
-				process_pipes(token, env, envp);
+				process_pipes(token, env, &envp);
 				restore_stdout(&saved_stdout);
 				free_tokens(&token);
 			}

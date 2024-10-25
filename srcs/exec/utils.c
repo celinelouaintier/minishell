@@ -6,7 +6,7 @@
 /*   By: clouaint <clouaint@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/14 16:18:57 by clouaint          #+#    #+#             */
-/*   Updated: 2024/10/25 16:04:36 by clouaint         ###   ########.fr       */
+/*   Updated: 2024/10/25 19:03:17 by clouaint         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -86,7 +86,7 @@ int	count_pipes(t_token *token)
 	return (count);
 }
 
-void	child_process(t_token *token, t_exec *execp, int i, t_env *envp)
+void	child_process(t_token *token, t_exec *execp, int i, t_env **envp)
 {
 	char	**args;
  

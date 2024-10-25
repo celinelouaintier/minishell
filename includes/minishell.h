@@ -6,7 +6,7 @@
 /*   By: clouaint <clouaint@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/01 14:34:52 by clouaint          #+#    #+#             */
-/*   Updated: 2024/10/25 16:07:31 by clouaint         ###   ########.fr       */
+/*   Updated: 2024/10/25 18:29:22 by clouaint         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -73,5 +73,7 @@ void	child_process(t_token *token, t_exec *execp, int i, t_env *envp);
 void	close_pipes(int **pipes_fd, int pipes_num, int cmd);
 t_env	*init_env(char **env);
 void	print_env(t_env *env);
+void	ft_export(t_token *token, t_env **envp);
+t_env	*add_env_var(char *env_var);
 
 #endif

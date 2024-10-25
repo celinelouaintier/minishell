@@ -18,3 +18,5 @@ ls: cannot access '>': No such file or directory => prblm parsing je pense
 - Redirections fonctionnent qu'avec builtins ? (cree le fichier mais n'arrive pas a ecrire dedans)
 
 - cd fcontionne plus
+
+- executer les commandes avec chemin relatif

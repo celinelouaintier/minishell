@@ -6,17 +6,16 @@
 /*   By: clouaint <clouaint@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/11 12:49:18 by clouaint          #+#    #+#             */
-/*   Updated: 2024/10/25 15:09:45 by clouaint         ###   ########.fr       */
+/*   Updated: 2024/10/25 16:54:44 by clouaint         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-void	cd(t_token *token, t_env **envp)
+void	cd(t_token *token)
 {
 	char	*path;
 
-	(void)envp;
 	path = NULL;
 	if (token->next != NULL && token->next->index == ARG)
 		path = token->next->str;

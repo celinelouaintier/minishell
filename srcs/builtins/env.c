@@ -6,7 +6,7 @@
 /*   By: clouaint <clouaint@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/14 12:51:49 by clouaint          #+#    #+#             */
-/*   Updated: 2024/10/25 16:12:20 by clouaint         ###   ########.fr       */
+/*   Updated: 2024/10/25 18:37:33 by clouaint         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,13 +14,16 @@
 
 void	print_env(t_env *env)
 {
-	while (env)
+	t_env	*tmp;
+
+	tmp = env;
+	while (tmp)
 	{
-		if (env->value)
-			ft_printf("%s=%s\n", env->name, env->value);
+		if (tmp->value)
+			ft_printf("%s=%s\n", tmp->name, tmp->value);
 		else
-			ft_printf("%s\n", env->name);
-		env = env->next;
+			ft_printf("%s\n", tmp->name);
+		tmp = tmp->next;
 	}
 }
 
@@ -34,7 +37,7 @@ t_env	*add_env_var(char *env_var)
 	if (!new)
 		exit(EXIT_FAILURE);
 	equal_sign = ft_strchr(env_var, '=');
-	if (!equal_sign)
+	if (equal_sign)
 	{
 		name_len = equal_sign - env_var;
 		new->name = ft_substr(env_var, 0, name_len);

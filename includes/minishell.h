@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: nferrad <nferrad@student.42.fr>            +#+  +:+       +#+        */
+/*   By: clouaint <clouaint@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/01 14:34:52 by clouaint          #+#    #+#             */
-/*   Updated: 2024/10/23 19:57:11 by nferrad          ###   ########.fr       */
+/*   Updated: 2024/10/25 16:07:31 by clouaint         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,11 +45,13 @@ typedef struct s_exec
 
 typedef struct s_env
 {
-	char	*pwd;
+	char			*name;
+	char			*value;
+	struct s_env	*next;
 }					t_env;
 
 void	parsing(char *line, t_token **token);
-void	cd(t_token *token, t_env *envp);
+void	cd(t_token *token);
 void	lstadd_back(t_token **lst, t_token *new);
 void	echo(t_token *token, int fd);
 t_token	*lstnew(char *content, int index);
@@ -59,16 +61,17 @@ char	*get_command_path(char *command);
 void 	free_tokens(t_token **token);
 void	ft_free(char **array);
 void	process_pipes(t_token *token, char *env[], t_env *envp);
-void	exec_builtin(t_token *token, t_env *envp, char **env, int fd);
+void	exec_builtin(t_token *token, t_env *env, int fd);
 int		is_builtin(t_token *token);
 void	ft_exit(t_token *token);
 int 	count_pipes(t_token *token);
-void    ft_env(char **envp);
+// void    ft_env(char **envp);
 void	handle_redirections(t_token *token, int *saved_stdout);
 void	exec(char **args, char *env[]);
 void	restore_stdout(int *saved_stdout);
 void	child_process(t_token *token, t_exec *execp, int i, t_env *envp);
 void	close_pipes(int **pipes_fd, int pipes_num, int cmd);
-void	process(t_token *token, char *env[]);
+t_env	*init_env(char **env);
+void	print_env(t_env *env);
 
 #endif

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: nferrad <nferrad@student.42.fr>            +#+  +:+       +#+        */
+/*   By: clouaint <clouaint@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/07 16:26:03 by clouaint          #+#    #+#             */
-/*   Updated: 2024/10/23 21:20:34 by nferrad          ###   ########.fr       */
+/*   Updated: 2024/10/25 16:42:12 by clouaint         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -54,11 +54,14 @@ int	main(int argc, char **argv, char *env[])
 
 	(void)argv;
 	token = NULL;
-	envp = malloc(sizeof(t_env));
-	envp->pwd = malloc(PATH_MAX);
-	getcwd(envp->pwd, PATH_MAX);
 	if (argc > 1)
 		return (-1);
+	envp = init_env(env);
+	if (!envp)
+	{
+		ft_printf("Error: Cannot open the shell without env.\n");
+		return (-1);
+	}
 	while (1)
 	{
 		set_sig();
@@ -81,4 +84,5 @@ int	main(int argc, char **argv, char *env[])
 			ft_exit(token);
 		free(line);
 	}
+	// free_env(envp); // to be implemented
 }

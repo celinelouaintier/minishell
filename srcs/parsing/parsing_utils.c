@@ -1,36 +1,30 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   echo.c                                             :+:      :+:    :+:   */
+/*   parsing_utils.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: nferrad <nferrad@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2024/10/14 12:54:43 by clouaint          #+#    #+#             */
-/*   Updated: 2024/10/25 21:22:36 by nferrad          ###   ########.fr       */
+/*   Created: 2024/10/26 05:46:17 by nferrad           #+#    #+#             */
+/*   Updated: 2024/10/26 05:55:57 by nferrad          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-void	echo(t_token *token, int fd)
+void	add_command(char *line, int *i, t_token **token)
 {
-	int		skip_line;
-	t_token	*tmp;
+	int	j;
 
-	tmp = token->next;
-	skip_line = 0;
-	if (tmp != NULL &&!ft_strncmp(tmp->str, "-n", 3) && tmp->index == ARG)
-	{
-		skip_line = 1;
-		tmp = tmp->next;
-	}
-	while (tmp != NULL && tmp->index == ARG)
-	{
-		ft_putstr_fd(tmp->str, fd);
-		tmp = tmp->next;
-		if (tmp != NULL && tmp->index == ARG)
-			ft_putstr_fd(" ", fd);
-	}
-	if (!skip_line)
-		ft_putstr_fd("\n", fd);
+	j = *i;
+	while (line[*i] && end_check(line[*i]))
+		(*i)++;
+	lstadd_back(token, lstnew(ft_substr(line, j, *i - j), CMD));
+}
+
+int	end_check(char c)
+{
+	if (c == '|' || c == '>' || c == '<' || c == ' ' || c == '\t')
+		return (0);
+	return (1);
 }

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: clouaint <clouaint@student.42.fr>          +#+  +:+       +#+        */
+/*   By: nferrad <nferrad@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/01 14:34:52 by clouaint          #+#    #+#             */
-/*   Updated: 2024/10/25 19:05:41 by clouaint         ###   ########.fr       */
+/*   Updated: 2024/10/26 05:47:24 by nferrad          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -50,7 +50,7 @@ typedef struct s_env
 	struct s_env	*next;
 }					t_env;
 
-void	parsing(char *line, t_token **token);
+void	parsing(char *line, t_token **token, char *env[]);
 void	ft_cd(t_token *token, t_env **envp);
 void	lstadd_back(t_token **lst, t_token *new);
 void	echo(t_token *token, int fd);
@@ -75,5 +75,7 @@ t_env	*init_env(char **env);
 void	print_env(t_env *env);
 void	ft_export(t_token *token, t_env **envp);
 t_env	*add_env_var(char *env_var);
+void	add_command(char *line, int *i, t_token **token);
+int		end_check(char c);
 
 #endif

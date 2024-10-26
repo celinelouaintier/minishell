@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   utils.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: clouaint <clouaint@student.42.fr>          +#+  +:+       +#+        */
+/*   By: nferrad <nferrad@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/14 16:18:57 by clouaint          #+#    #+#             */
-/*   Updated: 2024/10/25 19:03:17 by clouaint         ###   ########.fr       */
+/*   Updated: 2024/10/26 03:32:12 by nferrad          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -102,6 +102,5 @@ void	child_process(t_token *token, t_exec *execp, int i, t_env **envp)
 	{
 		exec_builtin(token, envp, STDOUT_FILENO);
 		exit(EXIT_SUCCESS);
-
 	}
 }

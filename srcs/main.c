@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: clouaint <clouaint@student.42.fr>          +#+  +:+       +#+        */
+/*   By: nferrad <nferrad@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/07 16:26:03 by clouaint          #+#    #+#             */
-/*   Updated: 2024/10/25 19:06:39 by clouaint         ###   ########.fr       */
+/*   Updated: 2024/10/26 03:17:39 by nferrad          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -68,7 +68,7 @@ int	main(int argc, char **argv, char *env[])
 		line = readline("Minishell> ");
 		if (line && line[0] != '\0')
 		{
-			parsing(line, &token);
+			parsing(line, &token, env);
 			if (token)
 			{
 				if (token && !ft_strncmp(token->str, "exit", 5) && token->index == CMD)

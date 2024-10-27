@@ -6,7 +6,7 @@
 /*   By: nferrad <nferrad@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/01 14:34:52 by clouaint          #+#    #+#             */
-/*   Updated: 2024/10/26 05:47:24 by nferrad          ###   ########.fr       */
+/*   Updated: 2024/10/27 02:15:33 by nferrad          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,6 +17,13 @@
 # include <readline/readline.h>
 # include <readline/history.h>
 
+/*		Errors			*/
+
+# define ERR_ENV	"\033[0;31m\x1b[1mError :\033[0m \
+Cannot open the shell without env.\n"
+
+/*		Token index		*/
+
 # define CMD		1
 # define ARG		2
 # define PIPE		3
@@ -25,13 +32,14 @@
 # define INPUT		6
 # define TRUNC		7
 
+/*		Structures		*/
+
 typedef struct s_token
 {
 	char			*str;
 	int				index;
 	struct s_token	*next;
 	struct s_token	*prev;
-	
 }					t_token;
 
 typedef struct s_exec
@@ -42,7 +50,6 @@ typedef struct s_exec
 	int		saved_stdout;
 }				t_exec;
 
-
 typedef struct s_env
 {
 	char			*name;
@@ -50,32 +57,48 @@ typedef struct s_env
 	struct s_env	*next;
 }					t_env;
 
+/*		Parsing			*/
+
 void	parsing(char *line, t_token **token, char *env[]);
-void	ft_cd(t_token *token, t_env **envp);
+void	add_command(char *line, int *i, t_token **token);
+int		end_check(char c);
+
+/*		Token			*/
+
 void	lstadd_back(t_token **lst, t_token *new);
-void	echo(t_token *token, int fd);
 t_token	*lstnew(char *content, int index);
 t_token	*lstlast(t_token *lst);
-char	**init_args(t_token *token);
-char	*get_command_path(char *command);
-void 	free_tokens(t_token **token);
-void	ft_free(char **array);
+void	free_tokens(t_token **token);
+
+/*		Execution		*/
+
 void	process_pipes(t_token *token, char *env[], t_env **envp);
 void	exec_builtin(t_token *token, t_env **env, int fd);
 int		is_builtin(t_token *token);
-void	ft_exit(t_token *token);
-int 	count_pipes(t_token *token);
-// void    ft_env(char **envp);
 void	handle_redirections(t_token *token, int *saved_stdout);
 void	exec(char **args, char *env[]);
-void	restore_stdout(int *saved_stdout);
 void	child_process(t_token *token, t_exec *execp, int i, t_env **envp);
 void	close_pipes(int **pipes_fd, int pipes_num, int cmd);
-t_env	*init_env(char **env);
-void	print_env(t_env *env);
+void	restore_stdout(int *saved_stdout);
+
+/*		Builtins		*/
+
+void	ft_cd(t_token *token, t_env **envp);
+void	echo(t_token *token, int fd);
+void	ft_exit(t_token *token);
 void	ft_export(t_token *token, t_env **envp);
+void	print_env(t_env *env);
+
+/* 		Environment		*/
+
+t_env	*init_env(char **env);
 t_env	*add_env_var(char *env_var);
-void	add_command(char *line, int *i, t_token **token);
-int		end_check(char c);
+
+/*		Utils			*/
+
+char	**init_args(t_token *token);
+char	*get_command_path(char *command);
+void	ft_free(char **array);
+int		count_pipes(t_token *token);
 
 #endif

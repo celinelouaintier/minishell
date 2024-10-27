@@ -6,7 +6,7 @@
 /*   By: nferrad <nferrad@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/07 16:26:03 by clouaint          #+#    #+#             */
-/*   Updated: 2024/10/26 03:17:39 by nferrad          ###   ########.fr       */
+/*   Updated: 2024/10/27 01:45:56 by nferrad          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,7 +27,8 @@ void	signal_handler(int signum)
 		rl_redisplay();
 	}
 }
-void set_sig()
+
+void	set_sig(void)
 {
 	signal(SIGQUIT, SIG_IGN);
 	signal(SIGINT, signal_handler);
@@ -59,13 +60,13 @@ int	main(int argc, char **argv, char *env[])
 	envp = init_env(env);
 	if (!envp)
 	{
-		ft_printf("Error: Cannot open the shell without env.\n");
+		ft_printf(ERR_ENV);
 		return (-1);
 	}
 	while (1)
 	{
 		set_sig();
-		line = readline("Minishell> ");
+		line = readline("\033[1;34m\x1b[1mMinishell>\033[0m ");
 		if (line && line[0] != '\0')
 		{
 			parsing(line, &token, env);

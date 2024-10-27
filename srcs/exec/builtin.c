@@ -6,7 +6,7 @@
 /*   By: nferrad <nferrad@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/16 16:12:37 by clouaint          #+#    #+#             */
-/*   Updated: 2024/10/25 21:10:22 by nferrad          ###   ########.fr       */
+/*   Updated: 2024/10/27 04:18:37 by nferrad          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,7 +14,7 @@
 
 void	exec_builtin(t_token *token, t_env **env, int fd)
 {
-	// (void)env;
+	// (void)fd;
 	if (token && !ft_strncmp(token->str, "cd", 3) && token->index == CMD)
 		ft_cd(token, env);
 	else if (token && !ft_strncmp(token->str, "echo", 5) && token->index == CMD)

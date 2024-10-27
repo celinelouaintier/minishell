@@ -6,7 +6,7 @@
 /*   By: nferrad <nferrad@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/14 16:18:57 by clouaint          #+#    #+#             */
-/*   Updated: 2024/10/26 03:32:12 by nferrad          ###   ########.fr       */
+/*   Updated: 2024/10/27 04:12:09 by nferrad          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,7 +21,7 @@ char	**init_args(t_token *token)
 
 	tmp = token;
 	i = 0;
-	while (tmp && (tmp->index != PIPE))
+	while (tmp && (tmp->index == CMD || tmp->index == ARG))
 	{
 		i++;
 		tmp = tmp->next;

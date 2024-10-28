@@ -98,10 +98,39 @@ void	child_process(t_token *token, t_exec *execp, int i, t_env **envp)
 	close_pipes(execp->pipe_fd, execp->pipe_num, i);
 	args = init_args(token);
 	if (!is_builtin(token))
-		exec(args, execp->env);
+		exec(args, envp);
 	else
 	{
 		exec_builtin(token, envp, STDOUT_FILENO);
 		exit(EXIT_SUCCESS);
 	}
+}
+
+char	**lst_to_array(t_env **env)
+{
+	t_env	*tmp;
+	char	**array;
+	int		i;
+
+	tmp = *env;
+	i = 0;
+	while (tmp)
+	{
+		i++;
+		tmp = tmp->next;
+	}
+	array = malloc(sizeof(char *) * (i + 1));
+	if (!array)
+		return (NULL);
+	i = 0;
+	tmp = *env;
+	while (tmp)
+	{
+		array[i] = ft_strjoin(tmp->name, "=");
+		array[i] = ft_strjoin(array[i], tmp->value);
+		tmp = tmp->next;
+		i++;
+	}
+	array[i] = NULL;
+	return (array);
 }

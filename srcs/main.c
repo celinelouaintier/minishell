@@ -78,7 +78,7 @@ int	main(int argc, char **argv, char *env[])
 					exec_builtin(token, &envp, STDOUT_FILENO);
 				else
 				{
-					process_pipes(token, env, &envp);
+					process_pipes(token, &envp);
 					restore_stdout(&saved_stdout);
 				}
 				free_tokens(&token);

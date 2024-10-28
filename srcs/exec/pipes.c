@@ -12,9 +12,10 @@
 
 #include "minishell.h"
 
-void	exec(char **args, char *env[])
+void	exec(char **args, t_env **env)
 {
 	char	*path;
+	char	**envp;
 
 	path = get_command_path(args[0]);
 	if (!path)
@@ -23,7 +24,8 @@ void	exec(char **args, char *env[])
 		ft_free(args);
 		exit(EXIT_FAILURE);
 	}
-	if (execve(path, args, env) == -1)
+	envp = lst_to_array(env);
+	if (execve(path, args, envp) == -1)
 	{
 		perror("Error");
 		free(path);
@@ -110,7 +112,7 @@ void	fork_pipes(t_token *token, t_exec *exec, t_env **envp)
 	}
 }
 
-void	process_pipes(t_token *token, char *env[], t_env **envp)
+void	process_pipes(t_token *token, t_env **envp)
 {
 	int		i;
 	t_exec	exec;
@@ -118,7 +120,6 @@ void	process_pipes(t_token *token, char *env[], t_env **envp)
 
 	exec.pipe_num = count_pipes(token);
 	exec.pipe_fd = create_pipes(exec.pipe_num);
-	exec.env = env;
 	i = 0;
 	fork_pipes(token, &exec, envp);
 	while (i < exec.pipe_num)

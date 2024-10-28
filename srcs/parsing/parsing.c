@@ -6,7 +6,7 @@
 /*   By: nferrad <nferrad@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/08 15:41:56 by nferrad           #+#    #+#             */
-/*   Updated: 2024/10/28 16:43:56 by nferrad          ###   ########.fr       */
+/*   Updated: 2024/10/28 16:50:21 by nferrad          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -107,7 +107,7 @@ void	set_index(char *line, int *i, char *env[], t_token **token)
 		is_cmd = 1;
 		lstadd_back(token, lstnew(ft_substr(line, *i, 1), PIPE));
 	}
-	else if (*token && lstlast(*token)->index == CMD)
+	else if (*token && (lstlast(*token)->index == CMD || lstlast(*token)->index == TRUNC || lstlast(*token)->index == INPUT || lstlast(*token)->index == APPEND || lstlast(*token)->index == HEREDOX))
 		lstadd_back(token, lstnew(strarg(line, i, env), ARG));
 	else
 	{

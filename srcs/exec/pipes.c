@@ -17,7 +17,10 @@ void	exec(char **args, t_env **env)
 	char	*path;
 	char	**envp;
 
-	path = get_command_path(args[0]);
+	if (access(args[0], X_OK) != 0)
+		path = get_command_path(args[0]);
+	else
+		path = args[0];
 	if (!path)
 	{
 		perror("Command not found");

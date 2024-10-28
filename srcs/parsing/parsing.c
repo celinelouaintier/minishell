@@ -6,7 +6,7 @@
 /*   By: nferrad <nferrad@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/08 15:41:56 by nferrad           #+#    #+#             */
-/*   Updated: 2024/10/28 16:50:21 by nferrad          ###   ########.fr       */
+/*   Updated: 2024/10/28 22:58:05 by nferrad          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,7 +33,7 @@ void	print_token(t_token *token)
 		else
 			ft_printf("%d	", token->index);
 		ft_printf("/////	%s\n", token->str);
-		token = token->next;	
+		token = token->next;
 	}
 }
 
@@ -92,8 +92,6 @@ char	*strarg(char *line, int *i, char *env[])
 
 void	set_index(char *line, int *i, char *env[], t_token **token)
 {
-	static int	is_cmd = 1;
-
 	if (line[*i] == '<' && line[*i + 1] == '<')
 		lstadd_back(token, lstnew(ft_substr(line, *i, 2), HEREDOX));
 	else if (line[*i] == '>' && line[*i + 1] == '>')
@@ -103,17 +101,11 @@ void	set_index(char *line, int *i, char *env[], t_token **token)
 	else if (line[*i] == '<')
 		lstadd_back(token, lstnew(ft_substr(line, *i, 1), INPUT));
 	else if (line[*i] == '|')
-	{
-		is_cmd = 1;
 		lstadd_back(token, lstnew(ft_substr(line, *i, 1), PIPE));
-	}
-	else if (*token && (lstlast(*token)->index == CMD || lstlast(*token)->index == TRUNC || lstlast(*token)->index == INPUT || lstlast(*token)->index == APPEND || lstlast(*token)->index == HEREDOX))
-		lstadd_back(token, lstnew(strarg(line, i, env), ARG));
-	else
-	{
+	else if (!*token || lstlast(*token)->index == PIPE)
 		add_command(line, i, token);
-		is_cmd = 0;
-	}
+	else
+		lstadd_back(token, lstnew(strarg(line, i, env), ARG));
 }
 
 void	parsing(char *line, t_token **token, char *env[])
@@ -126,10 +118,12 @@ void	parsing(char *line, t_token **token, char *env[])
 	while (line[i])
 	{
 		set_index(line, &i, env, token);
-		if ((line[i] == '<' && line[i + 1] == '<')
-			|| (line[i] == '>' && line[i + 1] == '>'))
+		if (lstlast(*token)->index == HEREDOX
+			|| lstlast(*token)->index == APPEND)
 			i += 2;
-		else if (line[i] == '>' || line[i] == '<' || line[i] == '|')
+		else if (lstlast(*token)->index == PIPE
+			|| lstlast(*token)->index == TRUNC
+			|| lstlast(*token)->index == INPUT)
 			i++;
 		while (line[i] == ' ' || line[i] == '\t')
 			i++;

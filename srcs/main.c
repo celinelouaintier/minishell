@@ -73,15 +73,15 @@ int	main(int argc, char **argv, char *env[])
 			if (token)
 			{
 				add_history(line);
-				handle_redirections(token, &saved_stdout);
 				if (is_builtin(token) && !has_pipe(token))
-					exec_builtin(token, &envp, STDOUT_FILENO);
-				else
 				{
-					process_pipes(token, &envp);
-					restore_stdout(&saved_stdout);
+					handle_redirections(token, &saved_stdout);
+					exec_builtin(token, &envp, STDOUT_FILENO);
 				}
+				else
+					process_pipes(token, &envp);
 				free_tokens(&token);
+				restore_stdout(&saved_stdout);
 			}
 		}
 		else if (!line)

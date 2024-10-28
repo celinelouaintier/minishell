@@ -134,7 +134,7 @@ void	parsing(char *line, t_token **token, char *env[])
 		while (line[i] == ' ' || line[i] == '\t')
 			i++;
 	}
-	print_token(*token);
+	// print_token(*token);
 }
 
 /*

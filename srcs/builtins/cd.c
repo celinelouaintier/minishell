@@ -40,7 +40,7 @@ void	ft_cd(t_token *token, t_env **envp)
 
 	if (!token->next || token->next->index != ARG)
 	{
-		ft_printf("cd: missing argument\n");
+		chdir(getenv("HOME"));
 		return ;
 	}
 	if (chdir(token->next->str) != 0)

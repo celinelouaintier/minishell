@@ -93,6 +93,7 @@ void	print_env(t_env *env);
 
 t_env	*init_env(char **env);
 t_env	*add_env_var(char *env_var);
+t_env	*sync_env(t_env *child_env);
 
 /*		Utils			*/
 

@@ -12,30 +12,30 @@
 
 #include "minishell.h"
 
-// void	print_token(t_token *token)
-// {
-// 	while (token)
-// 	{
-// 		if (token->index == CMD)
-// 			ft_printf("CMD	");
-// 		else if (token->index == ARG)
-// 			ft_printf("ARG	");
-// 		else if (token->index == PIPE)
-// 			ft_printf("PIPE	");
-// 		else if (token->index == HEREDOX)
-// 			ft_printf("HEREDOX	");
-// 		else if (token->index == APPEND)
-// 			ft_printf("APPEND	");
-// 		else if (token->index == INPUT)
-// 			ft_printf("INPUT	");
-// 		else if (token->index == TRUNC)
-// 			ft_printf("TRUNC	");
-// 		else
-// 			ft_printf("%d	", token->index);
-// 		ft_printf("/////	%s\n", token->str);
-// 		token = token->next;	
-// 	}
-// }
+void	print_token(t_token *token)
+{
+	while (token)
+	{
+		if (token->index == CMD)
+			ft_printf("CMD	");
+		else if (token->index == ARG)
+			ft_printf("ARG	");
+		else if (token->index == PIPE)
+			ft_printf("PIPE	");
+		else if (token->index == HEREDOX)
+			ft_printf("HEREDOX	");
+		else if (token->index == APPEND)
+			ft_printf("APPEND	");
+		else if (token->index == INPUT)
+			ft_printf("INPUT	");
+		else if (token->index == TRUNC)
+			ft_printf("TRUNC	");
+		else
+			ft_printf("%d	", token->index);
+		ft_printf("/////	%s\n", token->str);
+		token = token->next;	
+	}
+}
 
 char	*set_arg(char *arg, char *line, int *i, char *env[])
 {
@@ -134,6 +134,7 @@ void	parsing(char *line, t_token **token, char *env[])
 		while (line[i] == ' ' || line[i] == '\t')
 			i++;
 	}
+	// print_token(*token);
 }
 
 /*

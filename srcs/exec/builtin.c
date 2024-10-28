@@ -25,7 +25,11 @@ void	exec_builtin(t_token *token, t_env **env, int fd)
 		ft_export(token, env);
 	else if (token && !ft_strncmp(token->str, "env", 4) && token->index == CMD)
 		print_env(*env);
+	else if (token && !ft_strncmp(token->str, "exit", 5) && token->index == CMD)
+		ft_exit(token);
 }
+
+
 
 int	is_builtin(t_token *token)
 {

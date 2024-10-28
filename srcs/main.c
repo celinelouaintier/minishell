@@ -72,12 +72,15 @@ int	main(int argc, char **argv, char *env[])
 			parsing(line, &token, env);
 			if (token)
 			{
-				if (token && !ft_strncmp(token->str, "exit", 5) && token->index == CMD)
-					ft_exit(token);
 				add_history(line);
 				handle_redirections(token, &saved_stdout);
-				process_pipes(token, env, &envp);
-				restore_stdout(&saved_stdout);
+				if (is_builtin(token) && !has_pipe(token))
+					exec_builtin(token, &envp, STDOUT_FILENO);
+				else
+				{
+					process_pipes(token, env, &envp);
+					restore_stdout(&saved_stdout);
+				}
 				free_tokens(&token);
 			}
 		}

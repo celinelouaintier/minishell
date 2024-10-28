@@ -90,6 +90,7 @@ void	child_process(t_token *token, t_exec *execp, int i, t_env **envp)
 {
 	char	**args;
  
+	(void)envp;
 	if (i > 0)
 		dup2(execp->pipe_fd[i - 1][0], STDIN_FILENO);
 	if (i < execp->pipe_num)

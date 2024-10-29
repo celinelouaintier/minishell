@@ -36,6 +36,18 @@ void	ft_update_var(t_token *token, t_env **envp)
 	}
 }
 
+void	print_export(t_env *envp)
+{
+	t_env	*tmp;
+
+	tmp = envp;
+	while (tmp)
+	{
+		ft_printf("export %s=\"%s\"\n", tmp->name, tmp->value);
+		tmp = tmp->next;
+	}
+}
+
 void	ft_export(t_token *token, t_env **envp)
 {
 	t_env	*new;
@@ -53,5 +65,5 @@ void	ft_export(t_token *token, t_env **envp)
 		*envp = new;
 	}
 	else
-		ft_printf("mettre env dans l'ordre\n");
+		print_export(*envp);
 }

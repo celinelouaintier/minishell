@@ -103,4 +103,6 @@ void	ft_free(char **array);
 int		count_pipes(t_token *token);
 char	**lst_to_array(t_env **env);
 
+void	here_doc(char *limiter);
+
 #endif

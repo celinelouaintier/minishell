@@ -78,12 +78,15 @@ void	restore_stdout(int *saved_stdout)
 
 void	handle_redirections(t_token *token, int *saved_stdout)
 {
+	(void)exec;
 	while (token)
 	{
 		if (token->index == TRUNC)
 			redirect_trunc(token, saved_stdout);
 		else if (token->index == APPEND)
 			redirect_append(token, saved_stdout);
+		else if (token->index == HEREDOX)
+			here_doc(token->next->str);
 		token = token->next;
 	}
 }

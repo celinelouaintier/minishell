@@ -12,3 +12,9 @@
 - Gere le cd $HOME/cercle_3 (personne n'y pensera)
 
 - Maj de OLDPWD / SHLVL
+
+- Permission denied et segfault quand line commence par une redirection
+
+- Faire vraiment le heredoc
+
+- Export + unset

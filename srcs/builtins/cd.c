@@ -54,7 +54,6 @@ void	ft_cd(t_token *token, t_env **envp)
 			{
 				free(pwd->value);
 				pwd->value = getcwd(NULL, 0);
-				ft_printf("%s\n", pwd->value);
 				break ;
 			}
 			pwd = pwd->next;

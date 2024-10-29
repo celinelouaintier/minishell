@@ -66,7 +66,7 @@ int	main(int argc, char **argv, char *env[])
 	while (1)
 	{
 		set_sig();
-		line = readline("\033[1;34m\x1b[1mMinishell>\033[0m ");
+		line = readline("Minishell> ");
 		if (line && line[0] != '\0')
 		{
 			parsing(line, &token, env);

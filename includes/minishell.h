@@ -6,7 +6,7 @@
 /*   By: nferrad <nferrad@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/01 14:34:52 by clouaint          #+#    #+#             */
-/*   Updated: 2024/10/27 02:15:33 by nferrad          ###   ########.fr       */
+/*   Updated: 2024/10/30 19:53:42 by nferrad          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,6 +21,12 @@
 
 # define ERR_ENV	"\033[0;31m\x1b[1mError :\033[0m \
 Cannot open the shell without env.\n"
+# define ERR_NL	"\033[0;31m\x1b[1mError :\033[0m \
+Syntax error near unexpected token `newline'.\n"
+# define ERR_STX	"\033[0;31m\x1b[1mError :\033[0m \
+Syntax error near unexpected token `%s'.\n"
+# define ERR_QUOTE	"\033[0;31m\x1b[1mError :\033[0m \
+Unclosed quote, expected (%c) in your argument.\n"
 
 /*		Token index		*/
 
@@ -62,6 +68,7 @@ typedef struct s_env
 void	parsing(char *line, t_token **token, char *env[]);
 void	add_command(char *line, int *i, t_token **token);
 int		end_check(char c);
+int		check_quote(char *line, int i, char quote);
 
 /*		Token			*/
 

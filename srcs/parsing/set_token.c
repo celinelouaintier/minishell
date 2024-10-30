@@ -6,7 +6,7 @@
 /*   By: nferrad <nferrad@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/14 03:46:52 by nferrad           #+#    #+#             */
-/*   Updated: 2024/10/26 04:34:38 by nferrad          ###   ########.fr       */
+/*   Updated: 2024/10/30 19:54:29 by nferrad          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,6 +16,8 @@ t_token	*lstnew(char *content, int index)
 {
 	t_token	*element;
 
+	if (!content)
+		return (NULL);
 	element = malloc(sizeof(t_token));
 	if (!element || content[0] == '\0')
 		return (NULL);

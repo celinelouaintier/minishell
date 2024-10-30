@@ -6,7 +6,7 @@
 /*   By: nferrad <nferrad@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/08 15:41:56 by nferrad           #+#    #+#             */
-/*   Updated: 2024/10/28 22:58:05 by nferrad          ###   ########.fr       */
+/*   Updated: 2024/10/30 20:04:29 by nferrad          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,18 +47,23 @@ char	*set_arg(char *arg, char *line, int *i, char *env[])
 	while (line[j] && end_check(line[j]) && line[j] != '\'' && line[j] != '\"')
 		j++;
 	j -= *i;
-	env_var = ft_substr(line, *i + 1, j - 1);
-	k = 0;
-	while (env[k])
+	if (j > 1)
 	{
-		if (!ft_strncmp(env[k], env_var, j - 1))
+		env_var = ft_strjoin(ft_substr(line, *i + 1, j - 1), "=");
+		k = 0;
+		while (env[k])
 		{
-			arg = ft_strjoin(arg, ft_substr(env[k], j, ft_strlen(env[k]) - j));
-			break ;
+			if (!ft_strncmp(env[k], env_var, j))
+			{
+				arg = ft_strjoin(arg, ft_substr(env[k], j, ft_strlen(env[k]) - j));
+				break ;
+			}
+			k++;
 		}
-		k++;
+		(*i) += j - 1;
 	}
-	(*i) += j - 1;
+	else
+		arg = ft_strdup("$");
 	return (arg);
 }
 
@@ -73,6 +78,8 @@ char	*strarg(char *line, int *i, char *env[])
 	{
 		quote = line[*i];
 		(*i)++;
+		if (!check_quote(line, *i, quote))
+			return (NULL);
 	}
 	while (line[*i] && (end_check(line[*i]) || quote != 0))
 	{
@@ -90,8 +97,10 @@ char	*strarg(char *line, int *i, char *env[])
 	return (arg);
 }
 
-void	set_index(char *line, int *i, char *env[], t_token **token)
+int	set_index(char *line, int *i, char *env[], t_token **token)
 {
+	char *arg;
+
 	if (line[*i] == '<' && line[*i + 1] == '<')
 		lstadd_back(token, lstnew(ft_substr(line, *i, 2), HEREDOX));
 	else if (line[*i] == '>' && line[*i + 1] == '>')
@@ -105,7 +114,13 @@ void	set_index(char *line, int *i, char *env[], t_token **token)
 	else if (!*token || lstlast(*token)->index == PIPE)
 		add_command(line, i, token);
 	else
-		lstadd_back(token, lstnew(strarg(line, i, env), ARG));
+	{
+		arg = strarg(line, i, env);
+		if (!arg)
+			return (0);
+		lstadd_back(token, lstnew(arg, ARG));
+	}
+	return (1);
 }
 
 void	parsing(char *line, t_token **token, char *env[])
@@ -117,7 +132,12 @@ void	parsing(char *line, t_token **token, char *env[])
 		i++;
 	while (line[i])
 	{
-		set_index(line, &i, env, token);
+		if (!set_index(line, &i, env, token))
+		{
+			add_history(line);
+			free_tokens(token);
+			return ;
+		}
 		if (lstlast(*token)->index == HEREDOX
 			|| lstlast(*token)->index == APPEND)
 			i += 2;
@@ -128,7 +148,6 @@ void	parsing(char *line, t_token **token, char *env[])
 		while (line[i] == ' ' || line[i] == '\t')
 			i++;
 	}
-	// print_token(*token);
 }
 
 /*

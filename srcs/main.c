@@ -6,7 +6,7 @@
 /*   By: nferrad <nferrad@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/07 16:26:03 by clouaint          #+#    #+#             */
-/*   Updated: 2024/10/27 01:45:56 by nferrad          ###   ########.fr       */
+/*   Updated: 2024/10/30 19:27:12 by nferrad          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -56,6 +56,37 @@ t_exec	init_exec(t_token *token)
 	return (exec);
 }
 
+int	check_syntax(t_token *token)
+{
+	t_token	*tmp;
+
+	tmp = token;
+	while (tmp)
+	{
+		if (tmp->index == TRUNC || tmp->index == APPEND || tmp->index == INPUT
+			|| tmp->index == HEREDOX || tmp->index == PIPE)
+		{
+			if (tmp->index == PIPE && !tmp->prev)
+			{
+				ft_printf(ERR_STX, tmp->str);
+				return (0);
+			}
+			else if (!tmp->next || tmp->next->index == INPUT
+					|| tmp->next->index == APPEND || tmp->next->index == TRUNC
+					|| tmp->next->index == PIPE || tmp->next->index == HEREDOX)
+			{
+				if (tmp->next)
+					ft_printf(ERR_STX, tmp->next->str);
+				else
+					ft_printf(ERR_NL);
+				return (0);
+			}
+		}
+		tmp = tmp->next;
+	}
+	return (1);
+}
+
 int	main(int argc, char **argv, char *env[])
 {
 	char				*line;
@@ -84,12 +115,15 @@ int	main(int argc, char **argv, char *env[])
 			if (token)
 			{
 				add_history(line);
-				if (is_builtin(token) && !has_pipe(token))
-					exec_builtin(token, &envp, STDOUT_FILENO, &exec);
-				else
-					process_pipes(token, &envp);
+				if (check_syntax(token))
+				{
+					if (is_builtin(token) && !has_pipe(token))
+						exec_builtin(token, &envp, STDOUT_FILENO, &exec);
+					else
+						process_pipes(token, &envp);
+					restore_stdout(&exec.saved_stdout);
+				}
 				free_tokens(&token);
-				restore_stdout(&exec.saved_stdout);
 			}
 		}
 		else if (!line)

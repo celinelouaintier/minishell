@@ -5,11 +5,9 @@
 - Faire HEREDOX et INPUT
 
 - gerer les cas d'erreur NEM
->> Promis je commence demain
+>> Si tu trouves d'autres cas d'erreur pas encore gere dit moi
 
 - gerer les leaks
-
-- Gere le cd $HOME/cercle_3 (personne n'y pensera)
 
 - Maj de OLDPWD / SHLVL
 
@@ -19,8 +17,14 @@
 
 - Export + unset
 
-- echo hola > > bonjour fonctionne (cree un fichier '>') alors que devrait renvoyer "syntax error near unexpected token '>'"
+- double free + Permission denied quand y'a uniquement un dossier (ex : "includes/")
+
+- double free + Exec format error quand on ecrit juste Makefile
+
+- echo -n -n
 
 - > bonjour echo hola devrait renvoyer hola
 
+Garde la peche :
 - e'c'"h"o hola > test devrait apparemment fonctionner aussi
+- Gere le cd $HOME/cercle_3 (personne n'y pensera)

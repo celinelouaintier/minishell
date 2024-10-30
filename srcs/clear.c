@@ -6,7 +6,7 @@
 /*   By: nferrad <nferrad@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/14 16:21:02 by clouaint          #+#    #+#             */
-/*   Updated: 2024/10/18 02:50:13 by nferrad          ###   ########.fr       */
+/*   Updated: 2024/10/30 19:26:08 by nferrad          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,12 +16,15 @@ void	free_tokens(t_token **token)
 {
 	t_token	*tmp;
 
-	while (*token)
+	if (token)
 	{
-		tmp = *token;
-		*token = (*token)->next;
-		free(tmp->str);
-		free(tmp);
+		while (*token)
+		{
+			tmp = *token;
+			*token = (*token)->next;
+			free(tmp->str);
+			free(tmp);
+		}
 	}
 }
 

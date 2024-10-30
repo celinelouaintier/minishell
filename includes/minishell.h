@@ -73,13 +73,15 @@ void	free_tokens(t_token **token);
 /*		Execution		*/
 
 void	process_pipes(t_token *token, t_env **envp);
-void	exec_builtin(t_token *token, t_env **env, int fd);
+void	exec_builtin(t_token *token, t_env **env, int fd, t_exec *exec);
 int		is_builtin(t_token *token);
-void	handle_redirections(t_token *token, int *saved_stdout);
+void	handle_redirections(t_token *token, t_exec *exec);
 void	exec(char **args, t_env **envp);
 void	child_process(t_token *token, t_exec *execp, int i, t_env **envp);
 void	close_pipes(int **pipes_fd, int pipes_num, int cmd);
 void	restore_stdout(int *saved_stdout);
+int		**create_pipes(int pipes_num);
+t_exec	init_exec(t_token *token);
 
 /*		Builtins		*/
 

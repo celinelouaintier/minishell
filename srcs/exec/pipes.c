@@ -125,9 +125,7 @@ void	process_pipes(t_token *token, t_env **envp)
 	t_exec	exec;
 	pid_t	pid;
 
-	exec.pipe_num = count_pipes(token);
-	exec.pipe_fd = create_pipes(exec.pipe_num);
-	exec.saved_stdout = -1;
+	exec = init_exec(token);
 	i = 0;
 	fork_pipes(token, &exec, envp);
 	while (i < exec.pipe_num)

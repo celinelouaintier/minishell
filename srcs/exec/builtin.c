@@ -12,9 +12,9 @@
 
 #include "minishell.h"
 
-void	exec_builtin(t_token *token, t_env **env, int fd)
+void	exec_builtin(t_token *token, t_env **env, int fd, t_exec *exec)
 {
-	// (void)fd;
+	handle_redirections(token, exec);
 	if (token && !ft_strncmp(token->str, "cd", 3) && token->index == CMD)
 		ft_cd(token, env);
 	else if (token && !ft_strncmp(token->str, "echo", 5) && token->index == CMD)
@@ -28,8 +28,6 @@ void	exec_builtin(t_token *token, t_env **env, int fd)
 	else if (token && !ft_strncmp(token->str, "exit", 5) && token->index == CMD)
 		ft_exit(token);
 }
-
-
 
 int	is_builtin(t_token *token)
 {

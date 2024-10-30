@@ -46,18 +46,29 @@ int	has_pipe(t_token *token)
 	return (0);
 }
 
+t_exec	init_exec(t_token *token)
+{
+	t_exec	exec;
+
+	exec.pipe_num = count_pipes(token);
+	exec.pipe_fd = create_pipes(exec.pipe_num);
+	exec.saved_stdout = -1;
+	return (exec);
+}
+
 int	main(int argc, char **argv, char *env[])
 {
 	char				*line;
 	t_token				*token;
 	t_env				*envp;
-	int					saved_stdout = -1;
+	t_exec				exec;
 
 	(void)argv;
 	token = NULL;
 	if (argc > 1)
 		return (-1);
 	envp = init_env(env);
+	exec = init_exec(token);
 	if (!envp)
 	{
 		ft_printf(ERR_ENV);
@@ -74,14 +85,11 @@ int	main(int argc, char **argv, char *env[])
 			{
 				add_history(line);
 				if (is_builtin(token) && !has_pipe(token))
-				{
-					handle_redirections(token, &saved_stdout);
-					exec_builtin(token, &envp, STDOUT_FILENO);
-				}
+					exec_builtin(token, &envp, STDOUT_FILENO, &exec);
 				else
 					process_pipes(token, &envp);
 				free_tokens(&token);
-				restore_stdout(&saved_stdout);
+				restore_stdout(&exec.saved_stdout);
 			}
 		}
 		else if (!line)

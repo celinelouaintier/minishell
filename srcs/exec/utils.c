@@ -94,14 +94,14 @@ void	child_process(t_token *token, t_exec *execp, int i, t_env **envp)
 		dup2(execp->pipe_fd[i - 1][0], STDIN_FILENO);
 	if (i < execp->pipe_num)
 		dup2(execp->pipe_fd[i][1], STDOUT_FILENO);
-	handle_redirections(token, &execp->saved_stdout);
+	handle_redirections(token, execp);
 	close_pipes(execp->pipe_fd, execp->pipe_num, i);
 	args = init_args(token);
 	if (!is_builtin(token))
 		exec(args, envp);
 	else
 	{
-		exec_builtin(token, envp, STDOUT_FILENO);
+		exec_builtin(token, envp, STDOUT_FILENO, execp);
 		exit(EXIT_SUCCESS);
 	}
 }

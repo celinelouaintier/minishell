@@ -101,15 +101,14 @@ void	restore_stdout(int *saved_stdout)
 	}
 }
 
-void	handle_redirections(t_token *token, int *saved_stdout)
+void	handle_redirections(t_token *token, t_exec *exec)
 {
-	(void)exec;
 	while (token)
 	{
 		if (token->index == TRUNC)
-			redirect_trunc(token, saved_stdout);
+			redirect_trunc(token, &exec->saved_stdout);
 		else if (token->index == APPEND)
-			redirect_append(token, saved_stdout);
+			redirect_append(token, &exec->saved_stdout);
 		else if (token->index == INPUT)
 			redirect_input(token);
 		else if (token->index == HEREDOX)

@@ -18,3 +18,9 @@
 - Faire vraiment le heredoc
 
 - Export + unset
+
+- echo hola > > bonjour fonctionne (cree un fichier '>') alors que devrait renvoyer "syntax error near unexpected token '>'"
+
+- > bonjour echo hola devrait renvoyer hola
+
+- e'c'"h"o hola > test devrait apparemment fonctionner aussi

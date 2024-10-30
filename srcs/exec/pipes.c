@@ -17,6 +17,10 @@ void	exec(char **args, t_env **env)
 	char	*path;
 	char	**envp;
 
+    if (!args[0] || args[0][0] == '\0') {
+        ft_free(args);
+        exit(EXIT_FAILURE);
+    }
 	if (access(args[0], X_OK) != 0)
 		path = get_command_path(args[0]);
 	else

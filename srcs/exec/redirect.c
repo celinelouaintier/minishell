@@ -66,6 +66,31 @@ void	redirect_append(t_token	*token, int *saved_stdout)
 	close(fd);
 }
 
+void	redirect_input(t_token *token)
+{
+	int	fd;
+
+	token = token->next;
+	if (!token || !token->str)
+	{
+		perror("expected file after '<'");
+		exit(EXIT_FAILURE);
+	}
+	fd = open(token->str, O_RDONLY);
+	if (fd == -1)
+	{
+		perror("open");
+		exit(EXIT_FAILURE);
+	}
+	if (dup2(fd, STDIN_FILENO) == -1)
+	{
+		perror("dup2");
+		close(fd);
+		exit(EXIT_FAILURE);
+	}
+	close(fd);
+}
+
 void	restore_stdout(int *saved_stdout)
 {
 	if (*saved_stdout != -1)
@@ -85,6 +110,8 @@ void	handle_redirections(t_token *token, int *saved_stdout)
 			redirect_trunc(token, saved_stdout);
 		else if (token->index == APPEND)
 			redirect_append(token, saved_stdout);
+		else if (token->index == INPUT)
+			redirect_input(token);
 		else if (token->index == HEREDOX)
 			here_doc(token->next->str);
 		token = token->next;

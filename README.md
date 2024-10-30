@@ -27,4 +27,3 @@
 
 Garde la peche :
 - e'c'"h"o hola > test devrait apparemment fonctionner aussi
-- Gere le cd $HOME/cercle_3 (personne n'y pensera)

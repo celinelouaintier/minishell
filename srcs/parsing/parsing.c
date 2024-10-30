@@ -6,7 +6,7 @@
 /*   By: nferrad <nferrad@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/08 15:41:56 by nferrad           #+#    #+#             */
-/*   Updated: 2024/10/30 21:51:36 by nferrad          ###   ########.fr       */
+/*   Updated: 2024/10/30 23:08:29 by nferrad          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,9 +37,8 @@ void	print_token(t_token *token)
 	}
 }
 
-char	*set_arg(char *arg, char *line, int *i, char *env[])
+char	*set_arg(char *arg, char *line, int *i, t_env *env)
 {
-	int		k;
 	int		j;
 	char	*env_var;
 
@@ -49,16 +48,15 @@ char	*set_arg(char *arg, char *line, int *i, char *env[])
 	j -= *i;
 	if (j > 1)
 	{
-		env_var = ft_strjoin(ft_substr(line, *i + 1, j - 1), "=");
-		k = 0;
-		while (env[k])
+		env_var = ft_substr(line, *i + 1, j - 1);
+		while (env)
 		{
-			if (!ft_strncmp(env[k], env_var, j))
+			if (!ft_strncmp(env->name, env_var, j - 1))
 			{
-				arg = ft_strjoin(arg, ft_substr(env[k], j, ft_strlen(env[k]) - j));
+				arg = ft_strjoin(arg, env->value);
 				break ;
 			}
-			k++;
+			env = env->next;
 		}
 		(*i) += j - 1;
 	}
@@ -67,7 +65,7 @@ char	*set_arg(char *arg, char *line, int *i, char *env[])
 	return (arg);
 }
 
-char	*strarg(char *line, int *i, char *env[])
+char	*strarg(char *line, int *i, t_env *env)
 {
 	char	quote;
 	char	*arg;
@@ -97,7 +95,7 @@ char	*strarg(char *line, int *i, char *env[])
 	return (arg);
 }
 
-int	set_index(char *line, int *i, char *env[], t_token **token)
+int	set_index(char *line, int *i, t_env *env, t_token **token)
 {
 	char *arg;
 
@@ -123,7 +121,7 @@ int	set_index(char *line, int *i, char *env[], t_token **token)
 	return (1);
 }
 
-void	parsing(char *line, t_token **token, char *env[])
+void	parsing(char *line, t_token **token, t_env *env)
 {
 	int	i;
 

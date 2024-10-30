@@ -6,7 +6,7 @@
 /*   By: nferrad <nferrad@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/01 14:34:52 by clouaint          #+#    #+#             */
-/*   Updated: 2024/10/30 19:53:42 by nferrad          ###   ########.fr       */
+/*   Updated: 2024/10/30 23:08:56 by nferrad          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -65,7 +65,7 @@ typedef struct s_env
 
 /*		Parsing			*/
 
-void	parsing(char *line, t_token **token, char *env[]);
+void	parsing(char *line, t_token **token, t_env *env);
 void	add_command(char *line, int *i, t_token **token);
 int		end_check(char c);
 int		check_quote(char *line, int i, char quote);

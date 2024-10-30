@@ -6,7 +6,7 @@
 /*   By: nferrad <nferrad@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/07 16:26:03 by clouaint          #+#    #+#             */
-/*   Updated: 2024/10/30 19:27:12 by nferrad          ###   ########.fr       */
+/*   Updated: 2024/10/30 20:51:42 by nferrad          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -108,7 +108,7 @@ int	main(int argc, char **argv, char *env[])
 	while (1)
 	{
 		set_sig();
-		line = readline("Minishell> ");
+		line = readline("\001\033[0;34m\x1b[1m\002Minishell> \001\033[0m\002");
 		if (line && line[0] != '\0')
 		{
 			parsing(line, &token, env);

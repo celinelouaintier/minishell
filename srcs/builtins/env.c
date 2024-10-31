@@ -6,7 +6,7 @@
 /*   By: clouaint <clouaint@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/14 12:51:49 by clouaint          #+#    #+#             */
-/*   Updated: 2024/10/31 09:50:29 by clouaint         ###   ########.fr       */
+/*   Updated: 2024/10/31 12:41:20 by clouaint         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -89,4 +89,32 @@ t_env	*init_env(char **env)
 		i++;
 	}
 	return (head);
+}
+
+void	ft_unset(t_token *token, t_env **env)
+{
+	t_env	*tmp;
+	t_env	*prev;
+	char	*name;
+
+	tmp = *env;
+	name = token->next->str;
+	prev = NULL;
+	while (tmp)
+	{
+		if (!ft_strncmp(tmp->name, name, ft_strlen(name) + 1))
+		{
+			if (prev)
+				prev->next = tmp->next;
+			else
+				*env = tmp->next;
+			free(tmp->name);
+			free(tmp->value);
+			free(tmp);
+			return ;
+		}
+		prev = tmp;
+		tmp = tmp->next;
+	}
+	ft_printf("minishell: unset: `%s': not a valid identifier\n", name);
 }

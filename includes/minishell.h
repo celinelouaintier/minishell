@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: nferrad <nferrad@student.42.fr>            +#+  +:+       +#+        */
+/*   By: clouaint <clouaint@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/01 14:34:52 by clouaint          #+#    #+#             */
-/*   Updated: 2024/10/30 23:08:56 by nferrad          ###   ########.fr       */
+/*   Updated: 2024/10/31 12:40:58 by clouaint         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -97,6 +97,7 @@ void	echo(t_token *token, int fd);
 void	ft_exit(t_token *token);
 void	ft_export(t_token *token, t_env **envp);
 void	print_env(t_env *env);
+void	ft_unset(t_token *token, t_env **env);
 
 /* 		Environment		*/
 

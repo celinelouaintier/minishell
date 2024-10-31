@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   builtin.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: nferrad <nferrad@student.42.fr>            +#+  +:+       +#+        */
+/*   By: clouaint <clouaint@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/16 16:12:37 by clouaint          #+#    #+#             */
-/*   Updated: 2024/10/27 04:18:37 by nferrad          ###   ########.fr       */
+/*   Updated: 2024/10/31 12:42:26 by clouaint         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,6 +25,8 @@ void	exec_builtin(t_token *token, t_env **env, int fd, t_exec *exec)
 		ft_export(token, env);
 	else if (token && !ft_strncmp(token->str, "env", 4) && token->index == CMD)
 		print_env(*env);
+	else if (token && !ft_strncmp(token->str, "unset", 6) && token->index == CMD)
+		ft_unset(token, env);
 	else if (token && !ft_strncmp(token->str, "exit", 5) && token->index == CMD)
 		ft_exit(token);
 }
@@ -34,7 +36,7 @@ int	is_builtin(t_token *token)
 	if (token->index == CMD && (!ft_strncmp(token->str, "pwd", 4) ||
 		!ft_strncmp(token->str, "cd", 3) || !ft_strncmp(token->str, "echo", 5) ||
 		!ft_strncmp(token->str, "exit", 5) || !ft_strncmp(token->str, "env", 4) ||
-		!ft_strncmp(token->str, "export", 7)))
+		!ft_strncmp(token->str, "export", 7) || !ft_strncmp(token->str, "unset", 6)))
 		return (1);
 	else
 		return (0);

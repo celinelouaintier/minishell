@@ -9,11 +9,6 @@
 
 - Maj SHLVL
 
-- Faire vraiment le heredoc
--> Fais des trucs pas clairs
-
-- Unset 
-
 - EXPORT
 -> ecrit dans env quand "export var" et pas dans export alors que ca devrait etre le contraire 
 

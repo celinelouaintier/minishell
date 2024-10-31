@@ -6,7 +6,7 @@
 /*   By: nferrad <nferrad@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/14 12:54:43 by clouaint          #+#    #+#             */
-/*   Updated: 2024/10/25 21:22:36 by nferrad          ###   ########.fr       */
+/*   Updated: 2024/11/01 00:47:35 by nferrad          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,7 +19,7 @@ void	echo(t_token *token, int fd)
 
 	tmp = token->next;
 	skip_line = 0;
-	if (tmp != NULL &&!ft_strncmp(tmp->str, "-n", 3) && tmp->index == ARG)
+	while (tmp != NULL &&!ft_strncmp(tmp->str, "-n", 3) && tmp->index == ARG)
 	{
 		skip_line = 1;
 		tmp = tmp->next;

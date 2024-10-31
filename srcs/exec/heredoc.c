@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   heredoc.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: clouaint <clouaint@student.42.fr>          #+#  +:+       +#+        */
+/*   By: clouaint <clouaint@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2024-10-29 14:04:17 by clouaint          #+#    #+#             */
-/*   Updated: 2024-10-29 14:04:17 by clouaint         ###   ########.fr       */
+/*   Created: 2024/10/29 14:04:17 by clouaint          #+#    #+#             */
+/*   Updated: 2024/10/31 09:34:11 by clouaint         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,12 +48,11 @@ void	here_doc(char *limiter)
 	}
 	close(fd);
 	fd = open_here_doc();
-	if (fd == -1)
+	if (fd > 0)
 	{
-		perror("open");
-		exit(EXIT_FAILURE);
+		dup2(fd, STDIN_FILENO);
+		close(fd);
+		unlink(".here_doc.tmp");
 	}
-	dup2(fd, STDIN_FILENO);
-	close(fd);
 }
 

@@ -6,7 +6,7 @@
 /*   By: clouaint <clouaint@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/14 12:51:49 by clouaint          #+#    #+#             */
-/*   Updated: 2024/10/25 18:37:33 by clouaint         ###   ########.fr       */
+/*   Updated: 2024/10/31 09:50:29 by clouaint         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,29 +25,6 @@ void	print_env(t_env *env)
 			ft_printf("%s\n", tmp->name);
 		tmp = tmp->next;
 	}
-}
-
-
-void	update_parent_env(t_env **env, char *name, char *value)
-{
-	t_env	*tmp;
-	t_env	*new;
-
-	tmp = *env;
-	while (tmp)
-	{
-		if (!ft_strncmp(tmp->name, name, ft_strlen(name)) && tmp->name[ft_strlen(name)] == '\0')
-		{
-			free(tmp->value);
-			tmp->value = ft_strdup(value);
-			return ;
-		}
-		tmp = tmp->next;
-	}
-	new = add_env_var(name);
-	new->value = ft_strdup(value);
-	new->next = *env;
-	*env = new;
 }
 
 t_env	*add_env_var(char *env_var)
@@ -84,21 +61,6 @@ t_env	*add_env_var(char *env_var)
 	}
 	new->next = NULL;
 	return (new);
-}
-
-t_env	*sync_env(t_env *child_env)
-{
-	t_env	*new_env;
-	t_env	*tmp;
-
-	new_env = NULL;
-	tmp = child_env;
-	while (tmp)
-	{
-		update_parent_env(&new_env, tmp->name, tmp->value);
-		tmp = tmp->next;
-	}
-	return (new_env);
 }
 
 t_env	*init_env(char **env)

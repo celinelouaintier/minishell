@@ -6,11 +6,32 @@
 /*   By: clouaint <clouaint@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/25 18:17:35 by clouaint          #+#    #+#             */
-/*   Updated: 2024/10/31 11:01:21 by clouaint         ###   ########.fr       */
+/*   Updated: 2024/11/01 00:30:49 by clouaint         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
+
+t_env	*copy_env_list(t_env *env) 
+{
+    t_env *new_list;
+    t_env *new_node;
+    t_env *tmp = env;
+
+	new_list = NULL;
+    while (tmp) {
+        new_node = malloc(sizeof(t_env));
+        if (!new_node)
+            exit(EXIT_FAILURE);
+        new_node->name = ft_strdup(tmp->name);
+        new_node->value = tmp->value ? strdup(tmp->value) : NULL;
+        new_node->next = new_list;
+        new_list = new_node;
+        tmp = tmp->next;
+    }
+    return new_list;
+}
+
 
 int	ft_update_var(t_token *token, t_env **envp)
 {
@@ -67,20 +88,28 @@ void	sort_env(t_env **env)
 	*env = sorted;
 }
 
-void	print_export(t_env *envp)
-{
-	t_env	*tmp;
+void print_export(t_env *envp) {
+    t_env *copy;
+    t_env *tmp;
 
-	tmp = envp;
-	sort_env(&tmp);
-	while (tmp)
-	{
-		if(tmp->value[0] != '"' || tmp->value[ft_strlen(tmp->value) - 1] != '"')
-			ft_printf("export %s=\"%s\"\n", tmp->name, tmp->value);
-		else
-			ft_printf("export %s=%s\n", tmp->name, tmp->value);
-		tmp = tmp->next;
-	}
+	copy = copy_env_list(envp);
+    sort_env(&copy);
+	tmp = copy;
+    while (tmp) {
+        if (tmp->value)
+            ft_printf("export %s=\"%s\"\n", tmp->name, tmp->value);
+        else
+            ft_printf("export %s\n", tmp->name);
+        tmp = tmp->next;
+    }
+    tmp = copy;
+    while (tmp) {
+        free(tmp->name);
+        if (tmp->value)
+            free(tmp->value);
+        free(tmp);
+        tmp = tmp->next;
+    }
 }
 
 int	check_name(char *name)

@@ -6,7 +6,7 @@
 /*   By: clouaint <clouaint@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/01 14:34:52 by clouaint          #+#    #+#             */
-/*   Updated: 2024/10/31 12:40:58 by clouaint         ###   ########.fr       */
+/*   Updated: 2024/10/31 13:21:13 by clouaint         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -82,11 +82,9 @@ void	free_tokens(t_token **token);
 void	process_pipes(t_token *token, t_env **envp);
 void	exec_builtin(t_token *token, t_env **env, int fd, t_exec *exec);
 int		is_builtin(t_token *token);
-void	handle_redirections(t_token *token, t_exec *exec);
 void	exec(char **args, t_env **envp);
 void	child_process(t_token *token, t_exec *execp, int i, t_env **envp);
 void	close_pipes(int **pipes_fd, int pipes_num, int cmd);
-void	restore_stdout(int *saved_stdout);
 int		**create_pipes(int pipes_num);
 t_exec	init_exec(t_token *token);
 
@@ -103,7 +101,6 @@ void	ft_unset(t_token *token, t_env **env);
 
 t_env	*init_env(char **env);
 t_env	*add_env_var(char *env_var);
-t_env	*sync_env(t_env *child_env);
 
 /*		Utils			*/
 
@@ -113,6 +110,10 @@ void	ft_free(char **array);
 int		count_pipes(t_token *token);
 char	**lst_to_array(t_env **env);
 
+/*		Redirections	*/
+
 void	here_doc(char *limiter);
+void	handle_redirections(t_token *token, t_exec *exec);
+void	restore_stdout(int *saved_stdout);
 
 #endif

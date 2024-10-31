@@ -6,7 +6,7 @@
 /*   By: clouaint <clouaint@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/14 12:51:49 by clouaint          #+#    #+#             */
-/*   Updated: 2024/10/31 12:41:20 by clouaint         ###   ########.fr       */
+/*   Updated: 2024/11/01 00:58:39 by clouaint         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,7 +21,7 @@ void	print_env(t_env *env)
 	{
 		if (tmp->value)
 			ft_printf("%s=%s\n", tmp->name, tmp->value);
-		else
+		else if ((!ft_strncmp(tmp->name, "=", 2)))
 			ft_printf("%s\n", tmp->name);
 		tmp = tmp->next;
 	}

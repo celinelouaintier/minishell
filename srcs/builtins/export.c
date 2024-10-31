@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   export.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: clouaint <clouaint@student.42.fr>          +#+  +:+       +#+        */
+/*   By: nferrad <nferrad@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/25 18:17:35 by clouaint          #+#    #+#             */
-/*   Updated: 2024/11/01 00:30:49 by clouaint         ###   ########.fr       */
+/*   Updated: 2024/11/01 00:49:59 by nferrad          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,9 +38,17 @@ int	ft_update_var(t_token *token, t_env **envp)
 	char	*equal_sign;
 	char	*env_var;
 	t_env	*tmp;
+	int		quote;
 
 	env_var = token->next->str;
 	equal_sign = ft_strchr(env_var, '=');
+	quote = 0;
+	if (equal_sign[1] == '\'' || equal_sign[1] == '\"')
+	{
+		if (!check_quote(equal_sign, 2, equal_sign[1]))
+			exit(-1);
+		quote++;
+	}
 	if (equal_sign)
 	{
 		tmp = *envp;
@@ -49,7 +57,10 @@ int	ft_update_var(t_token *token, t_env **envp)
 			if (!ft_strncmp(tmp->name, env_var, equal_sign - env_var) && tmp->name[equal_sign - env_var] == '\0')
 			{
 				free(tmp->value);
-				tmp->value = strdup(equal_sign + 1);
+				if (quote)
+					tmp->value = ft_substr(equal_sign, 2, ft_strlen(equal_sign) - 3);
+				else
+					tmp->value = strdup(equal_sign + 1);
 				return (1);
 			}
 			tmp = tmp->next;

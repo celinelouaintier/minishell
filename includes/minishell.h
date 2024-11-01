@@ -6,7 +6,7 @@
 /*   By: clouaint <clouaint@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/01 14:34:52 by clouaint          #+#    #+#             */
-/*   Updated: 2024/10/31 13:21:13 by clouaint         ###   ########.fr       */
+/*   Updated: 2024/11/01 21:19:06 by clouaint         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -115,5 +115,11 @@ char	**lst_to_array(t_env **env);
 void	here_doc(char *limiter);
 void	handle_redirections(t_token *token, t_exec *exec);
 void	restore_stdout(int *saved_stdout);
+
+/*		Signals			*/
+
+void	signal_handler(int signum);
+void	set_sig(void);
+void	cmd_sig_handler(int signum);
 
 #endif

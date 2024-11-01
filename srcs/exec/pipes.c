@@ -6,7 +6,7 @@
 /*   By: clouaint <clouaint@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/14 15:38:45 by clouaint          #+#    #+#             */
-/*   Updated: 2024/10/25 19:03:40 by clouaint         ###   ########.fr       */
+/*   Updated: 2024/11/01 21:27:22 by clouaint         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,24 +17,23 @@ void	exec(char **args, t_env **env)
 	char	*path;
 	char	**envp;
 
-    if (!args[0] || args[0][0] == '\0') {
-        ft_free(args);
-        exit(EXIT_FAILURE);
-    }
+	if (!args[0] || args[0][0] == '\0')
+	{
+		ft_free(args);
+		exit(EXIT_FAILURE);
+	}
 	if (access(args[0], X_OK) != 0)
 		path = get_command_path(args[0]);
 	else
 		path = args[0];
 	if (!path)
 	{
-		perror("Command not found");
 		ft_free(args);
 		exit(EXIT_FAILURE);
 	}
 	envp = lst_to_array(env);
 	if (execve(path, args, envp) == -1)
 	{
-		perror("Error");
 		free(path);
 		ft_free(args);
 		exit(EXIT_FAILURE);
@@ -82,14 +81,6 @@ void	close_pipes(int **pipes_fd, int pipes_num, int cmd)
 			close(pipes_fd[i][1]);
 		i++;
 	}
-}
-
-void	cmd_sig_handler(int signum)
-{
-	if (signum == SIGINT)
-		ft_printf("\n");
-	else if (signum == SIGQUIT)
-		ft_printf("Quit (core dumped)\n");
 }
 
 void	fork_pipes(t_token *token, t_exec *exec, t_env **envp)

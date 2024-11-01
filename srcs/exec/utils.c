@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   utils.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: nferrad <nferrad@student.42.fr>            +#+  +:+       +#+        */
+/*   By: clouaint <clouaint@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/14 16:18:57 by clouaint          #+#    #+#             */
-/*   Updated: 2024/10/27 04:12:09 by nferrad          ###   ########.fr       */
+/*   Updated: 2024/11/01 21:28:25 by clouaint         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -89,7 +89,7 @@ int	count_pipes(t_token *token)
 void	child_process(t_token *token, t_exec *execp, int i, t_env **envp)
 {
 	char	**args;
- 
+
 	if (i > 0)
 		dup2(execp->pipe_fd[i - 1][0], STDIN_FILENO);
 	if (i < execp->pipe_num)

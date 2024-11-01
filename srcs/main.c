@@ -3,37 +3,14 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: nferrad <nferrad@student.42.fr>            +#+  +:+       +#+        */
+/*   By: clouaint <clouaint@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/07 16:26:03 by clouaint          #+#    #+#             */
-/*   Updated: 2024/10/30 23:07:52 by nferrad          ###   ########.fr       */
+/*   Updated: 2024/11/01 21:16:28 by clouaint         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
-
-void	signal_handler(int signum)
-{
-	if (signum == SIGSEGV)
-	{
-		ft_printf("Ferme Ta Gueule Celine !\n");
-		exit(EXIT_FAILURE);
-	}
-	else if (signum == SIGINT)
-	{
-		ft_printf("\n");
-		rl_replace_line("", 0);
-		rl_on_new_line();
-		rl_redisplay();
-	}
-}
-
-void	set_sig(void)
-{
-	signal(SIGQUIT, SIG_IGN);
-	signal(SIGINT, signal_handler);
-	signal(SIGSEGV, signal_handler);
-}
 
 int	has_pipe(t_token *token)
 {

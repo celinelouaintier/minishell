@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   env.c                                              :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: clouaint <clouaint@student.42.fr>          +#+  +:+       +#+        */
+/*   By: nferrad <nferrad@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/14 12:51:49 by clouaint          #+#    #+#             */
-/*   Updated: 2024/11/01 01:25:00 by clouaint         ###   ########.fr       */
+/*   Updated: 2024/11/01 23:16:54 by nferrad          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,11 +40,7 @@ t_env	*add_env_var(char *env_var)
 	equal_sign = ft_strchr(env_var, '=');
 	quote = 0;
 	if (equal_sign && (equal_sign[1] == '\'' || equal_sign[1] == '\"'))
-	{
-		if (!check_quote(equal_sign, 2, equal_sign[1]))
-			exit(-1);
 		quote++;
-	}
 	if (equal_sign)
 	{
 		name_len = equal_sign - env_var;

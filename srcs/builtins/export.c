@@ -6,7 +6,7 @@
 /*   By: nferrad <nferrad@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/25 18:17:35 by clouaint          #+#    #+#             */
-/*   Updated: 2024/11/01 00:49:59 by nferrad          ###   ########.fr       */
+/*   Updated: 2024/11/01 01:15:40 by nferrad          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,7 +32,6 @@ t_env	*copy_env_list(t_env *env)
     return new_list;
 }
 
-
 int	ft_update_var(t_token *token, t_env **envp)
 {
 	char	*equal_sign;
@@ -43,7 +42,7 @@ int	ft_update_var(t_token *token, t_env **envp)
 	env_var = token->next->str;
 	equal_sign = ft_strchr(env_var, '=');
 	quote = 0;
-	if (equal_sign[1] == '\'' || equal_sign[1] == '\"')
+	if (equal_sign && (equal_sign[1] == '\'' || equal_sign[1] == '\"'))
 	{
 		if (!check_quote(equal_sign, 2, equal_sign[1]))
 			exit(-1);

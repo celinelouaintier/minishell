@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   env.c                                              :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: clouaint <clouaint@student.42.fr>          +#+  +:+       +#+        */
+/*   By: nferrad <nferrad@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/14 12:51:49 by clouaint          #+#    #+#             */
-/*   Updated: 2024/10/31 12:41:20 by clouaint         ###   ########.fr       */
+/*   Updated: 2024/11/01 00:50:51 by nferrad          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,11 +32,19 @@ t_env	*add_env_var(char *env_var)
 	t_env	*new;
 	char	*equal_sign;
 	size_t	name_len;
+	int		quote;
 
 	new = malloc(sizeof(t_env));
 	if (!new)
 		exit(EXIT_FAILURE);
 	equal_sign = ft_strchr(env_var, '=');
+	quote = 0;
+	if (equal_sign[1] == '\'' || equal_sign[1] == '\"')
+	{
+		if (!check_quote(equal_sign, 2, equal_sign[1]))
+			exit(-1);
+		quote++;
+	}
 	if (equal_sign)
 	{
 		name_len = equal_sign - env_var;
@@ -46,7 +54,10 @@ t_env	*add_env_var(char *env_var)
 			free(new);
 			exit(EXIT_FAILURE);
 		}
-		new->value = strdup(equal_sign + 1);
+		if (quote)
+			new->value = ft_substr(equal_sign, 2, ft_strlen(equal_sign) - 3);
+		else
+			new->value = strdup(equal_sign + 1);
 		if (!new->value)
 		{
 			free(new->name);

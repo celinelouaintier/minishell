@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   env.c                                              :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: nferrad <nferrad@student.42.fr>            +#+  +:+       +#+        */
+/*   By: clouaint <clouaint@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/14 12:51:49 by clouaint          #+#    #+#             */
-/*   Updated: 2024/11/01 01:16:56 by nferrad          ###   ########.fr       */
+/*   Updated: 2024/11/01 01:25:00 by clouaint         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,7 +21,7 @@ void	print_env(t_env *env)
 	{
 		if (tmp->value)
 			ft_printf("%s=%s\n", tmp->name, tmp->value);
-		else
+		else if (!ft_strncmp(tmp->name, "=", 1))
 			ft_printf("%s\n", tmp->name);
 		tmp = tmp->next;
 	}

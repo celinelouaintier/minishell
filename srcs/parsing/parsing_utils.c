@@ -6,7 +6,7 @@
 /*   By: nferrad <nferrad@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/26 05:46:17 by nferrad           #+#    #+#             */
-/*   Updated: 2024/10/30 19:54:20 by nferrad          ###   ########.fr       */
+/*   Updated: 2024/11/01 23:23:53 by nferrad          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,7 +29,7 @@ int	end_check(char c)
 	return (1);
 }
 
-int check_quote(char *line, int i, char quote)
+int	check_quote(char *line, int i, char quote)
 {
 	while (line[i])
 	{

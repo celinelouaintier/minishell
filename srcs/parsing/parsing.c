@@ -6,7 +6,7 @@
 /*   By: nferrad <nferrad@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/08 15:41:56 by nferrad           #+#    #+#             */
-/*   Updated: 2024/10/30 23:08:29 by nferrad          ###   ########.fr       */
+/*   Updated: 2024/11/01 23:39:55 by nferrad          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -79,25 +79,22 @@ char	*strarg(char *line, int *i, t_env *env)
 		if (!check_quote(line, *i, quote))
 			return (NULL);
 	}
-	while (line[*i] && (end_check(line[*i]) || quote != 0))
+	while (line[*i] && ((end_check(line[*i]) || quote) && line[*i] != quote))
 	{
 		if (line[*i] == '$' && quote != '\'')
 			arg = set_arg(arg, line, i, env);
 		else
 			arg = ft_strjoin(arg, ft_substr(line, *i, 1));
 		(*i)++;
-		if (line[*i] == quote)
-		{
-			(*i)++;
-			break ;
-		}
 	}
+	if (line[*i] == quote)
+		(*i)++;
 	return (arg);
 }
 
 int	set_index(char *line, int *i, t_env *env, t_token **token)
 {
-	char *arg;
+	char	*arg;
 
 	if (line[*i] == '<' && line[*i + 1] == '<')
 		lstadd_back(token, lstnew(ft_substr(line, *i, 2), HEREDOX));
@@ -146,6 +143,7 @@ void	parsing(char *line, t_token **token, t_env *env)
 		while (line[i] == ' ' || line[i] == '\t')
 			i++;
 	}
+	print_token(*token);
 }
 
 /*

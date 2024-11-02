@@ -3,33 +3,38 @@
 /*                                                        :::      ::::::::   */
 /*   export.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: nferrad <nferrad@student.42.fr>            +#+  +:+       +#+        */
+/*   By: clouaint <clouaint@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/25 18:17:35 by clouaint          #+#    #+#             */
-/*   Updated: 2024/11/01 23:15:50 by nferrad          ###   ########.fr       */
+/*   Updated: 2024/11/02 12:31:33 by clouaint         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-t_env	*copy_env_list(t_env *env) 
+t_env	*copy_env_list(t_env *env)
 {
-    t_env *new_list;
-    t_env *new_node;
-    t_env *tmp = env;
+	t_env	*new_list;
+	t_env	*new_node;
+	t_env	*tmp;
 
+	tmp = env;
 	new_list = NULL;
-    while (tmp) {
-        new_node = malloc(sizeof(t_env));
-        if (!new_node)
-            exit(EXIT_FAILURE);
-        new_node->name = ft_strdup(tmp->name);
-        new_node->value = tmp->value ? strdup(tmp->value) : NULL;
-        new_node->next = new_list;
-        new_list = new_node;
-        tmp = tmp->next;
-    }
-    return new_list;
+	while (tmp)
+	{
+		new_node = malloc(sizeof(t_env));
+		if (!new_node)
+			exit(EXIT_FAILURE);
+		new_node->name = ft_strdup(tmp->name);
+		if (tmp->value)
+			new_node->value = strdup(tmp->value);
+		else
+			new_node->value = NULL;
+		new_node->next = new_list;
+		new_list = new_node;
+		tmp = tmp->next;
+	}
+	return (new_list);
 }
 
 int	ft_update_var(t_token *token, t_env **envp)
@@ -53,11 +58,13 @@ int	ft_update_var(t_token *token, t_env **envp)
 		tmp = *envp;
 		while (tmp)
 		{
-			if (!ft_strncmp(tmp->name, env_var, equal_sign - env_var) && tmp->name[equal_sign - env_var] == '\0')
+			if (!ft_strncmp(tmp->name, env_var, equal_sign - env_var)
+				&& tmp->name[equal_sign - env_var] == '\0')
 			{
 				free(tmp->value);
 				if (quote)
-					tmp->value = ft_substr(equal_sign, 2, ft_strlen(equal_sign) - 3);
+					tmp->value = ft_substr(equal_sign, 2,
+							ft_strlen(equal_sign) - 3);
 				else
 					tmp->value = strdup(equal_sign + 1);
 				return (1);
@@ -68,58 +75,31 @@ int	ft_update_var(t_token *token, t_env **envp)
 	return (0);
 }
 
-void	sort_env(t_env **env)
+void	print_export(t_env *envp)
 {
-	t_env	*current;
-	t_env	*sorted;
+	t_env	*copy;
 	t_env	*tmp;
-	t_env	*next;
-
-	sorted = NULL;
-	current = *env;
-	while (current)
-	{
-		next = current->next;
-		if (!sorted || ft_strncmp(current->name, sorted->name, ft_strlen(current->name) + 1) < 0)
-		{
-			current->next = sorted;
-			sorted = current;
-		}
-		else
-		{
-			tmp = sorted;
-			while (tmp->next && ft_strncmp(current->name, tmp->next->name, ft_strlen(current->name) + 1) > 0)
-				tmp = tmp->next;
-			current->next = tmp->next;
-			tmp->next = current;
-		}
-		current = next;
-	}
-	*env = sorted;
-}
-
-void print_export(t_env *envp) {
-    t_env *copy;
-    t_env *tmp;
 
 	copy = copy_env_list(envp);
-    sort_env(&copy);
+	sort_env(&copy);
 	tmp = copy;
-    while (tmp) {
-        if (tmp->value)
-            ft_printf("export %s=\"%s\"\n", tmp->name, tmp->value);
-        else
-            ft_printf("export %s\n", tmp->name);
-        tmp = tmp->next;
-    }
-    tmp = copy;
-    while (tmp) {
-        free(tmp->name);
-        if (tmp->value)
-            free(tmp->value);
-        free(tmp);
-        tmp = tmp->next;
-    }
+	while (tmp)
+	{
+		if (tmp->value)
+			ft_printf("export %s=\"%s\"\n", tmp->name, tmp->value);
+		else
+			ft_printf("export %s\n", tmp->name);
+		tmp = tmp->next;
+	}
+	tmp = copy;
+	while (tmp)
+	{
+		free(tmp->name);
+		if (tmp->value)
+			free(tmp->value);
+		free(tmp);
+		tmp = tmp->next;
+	}
 }
 
 int	check_name(char *name)
@@ -137,33 +117,4 @@ int	check_name(char *name)
 		i++;
 	}
 	return (1);
-}
-
-void	ft_export(t_token *token, t_env **envp)
-{
-	t_env	*new;
-	char	*env_var;
-
-	if (token->next && token->next->index == ARG)
-	{
-		env_var = token->next->str;
-		if (!check_name(env_var))
-		{
-			ft_printf("minishell: export: `%s': not a valid identifier\n", env_var);
-			return ;
-		}
-		if (!ft_update_var(token, envp))
-		{
-			new = add_env_var(env_var);
-			if (!new)
-			{
-				perror("export");
-				return ;
-			}
-			new->next = *envp;
-			*envp = new;
-		}
-	}
-	else
-		print_export(*envp);
 }

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   exit.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: nferrad <nferrad@student.42.fr>            +#+  +:+       +#+        */
+/*   By: clouaint <clouaint@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/18 12:52:11 by clouaint          #+#    #+#             */
-/*   Updated: 2024/10/22 18:01:50 by nferrad          ###   ########.fr       */
+/*   Updated: 2024/11/02 12:42:24 by clouaint         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,7 +29,8 @@ void	ft_exit(t_token *token)
 		ft_printf("exit\n");
 		if (str[i])
 		{
-			ft_printf("exit: %s: numeric argument required\n", token->next->str);
+			ft_printf("exit: %s: numeric argument required\n",
+				token->next->str);
 			exit(2);
 		}
 		if (token->next->next)

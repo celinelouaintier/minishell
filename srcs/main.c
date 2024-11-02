@@ -6,7 +6,7 @@
 /*   By: clouaint <clouaint@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/07 16:26:03 by clouaint          #+#    #+#             */
-/*   Updated: 2024/11/01 21:16:28 by clouaint         ###   ########.fr       */
+/*   Updated: 2024/11/02 12:43:26 by clouaint         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -49,8 +49,8 @@ int	check_syntax(t_token *token)
 				return (0);
 			}
 			else if (!tmp->next || tmp->next->index == INPUT
-					|| tmp->next->index == APPEND || tmp->next->index == TRUNC
-					|| tmp->next->index == PIPE || tmp->next->index == HEREDOX)
+				|| tmp->next->index == APPEND || tmp->next->index == TRUNC
+				|| tmp->next->index == PIPE || tmp->next->index == HEREDOX)
 			{
 				if (tmp->next)
 					ft_printf(ERR_STX, tmp->next->str);

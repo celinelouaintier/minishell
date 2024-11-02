@@ -6,7 +6,7 @@
 /*   By: clouaint <clouaint@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/01 14:34:52 by clouaint          #+#    #+#             */
-/*   Updated: 2024/11/01 21:19:06 by clouaint         ###   ########.fr       */
+/*   Updated: 2024/11/02 12:38:51 by clouaint         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -96,6 +96,10 @@ void	ft_exit(t_token *token);
 void	ft_export(t_token *token, t_env **envp);
 void	print_env(t_env *env);
 void	ft_unset(t_token *token, t_env **env);
+int		ft_update_var(t_token *token, t_env **envp);
+int		check_name(char *name);
+void	print_export(t_env *envp);
+void	sort_env(t_env **env);
 
 /* 		Environment		*/
 

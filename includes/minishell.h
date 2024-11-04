@@ -86,6 +86,7 @@ void	exec(char **args, t_env **envp);
 void	child_process(t_token *token, t_exec *execp, int i, t_env **envp);
 void	close_pipes(int **pipes_fd, int pipes_num, int cmd);
 int		**create_pipes(int pipes_num);
+int		has_pipe(t_token *token);
 t_exec	init_exec(t_token *token);
 
 /*		Builtins		*/

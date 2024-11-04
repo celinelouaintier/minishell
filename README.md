@@ -10,3 +10,5 @@
 
 Garde la peche :
 - e'c'"h"o hola > test devrait apparemment fonctionner aussi
+
+- revoir INPUT  : < includes/minishell.h cat

@@ -41,3 +41,14 @@ void	ft_free(char **array)
 	free(array);
 	array = NULL;
 }
+
+int	has_pipe(t_token *token)
+{
+	while (token)
+	{
+		if (token->index == PIPE)
+			return (1);
+		token = token->next;
+	}
+	return (0);
+}

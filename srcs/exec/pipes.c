@@ -34,7 +34,6 @@ void	exec(char **args, t_env **env)
 	envp = lst_to_array(env);
 	if (execve(path, args, envp) == -1)
 	{
-		free(path);
 		ft_free(args);
 		exit(EXIT_FAILURE);
 	}

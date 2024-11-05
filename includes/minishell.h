@@ -101,6 +101,8 @@ int		ft_update_var(t_token *token, t_env **envp);
 int		check_name(char *name);
 void	print_export(t_env *envp);
 void	sort_env(t_env **env);
+void	free_env_var(t_env *env_var);
+t_env	*init_env_var(t_env *new, char *env_var);
 
 /* 		Environment		*/
 

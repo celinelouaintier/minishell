@@ -42,6 +42,16 @@ void	ft_free(char **array)
 	array = NULL;
 }
 
+void	free_env_var(t_env *env_var)
+{
+	if (env_var)
+	{
+		free(env_var->name);
+		free(env_var->value);
+		free(env_var);
+	}
+}
+
 int	has_pipe(t_token *token)
 {
 	while (token)

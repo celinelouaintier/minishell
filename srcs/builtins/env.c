@@ -30,43 +30,11 @@ void	print_env(t_env *env)
 t_env	*add_env_var(char *env_var)
 {
 	t_env	*new;
-	char	*equal_sign;
-	size_t	name_len;
-	int		quote;
 
 	new = malloc(sizeof(t_env));
 	if (!new)
 		exit(EXIT_FAILURE);
-	equal_sign = ft_strchr(env_var, '=');
-	quote = 0;
-	if (equal_sign && (equal_sign[1] == '\'' || equal_sign[1] == '\"'))
-		quote++;
-	if (equal_sign)
-	{
-		name_len = equal_sign - env_var;
-		new->name = ft_substr(env_var, 0, name_len);
-		if (!new->name)
-		{
-			free(new);
-			exit(EXIT_FAILURE);
-		}
-		if (quote)
-			new->value = ft_substr(equal_sign, 2, ft_strlen(equal_sign) - 3);
-		else
-			new->value = strdup(equal_sign + 1);
-		if (!new->value)
-		{
-			free(new->name);
-			free(new);
-			exit(EXIT_FAILURE);
-		}
-	}
-	else
-	{
-		new->value = NULL;
-		new->name = strdup(env_var);
-	}
-	new->next = NULL;
+	new = init_env_var(new, env_var);
 	return (new);
 }
 

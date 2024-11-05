@@ -12,23 +12,24 @@
 
 #include "minishell.h"
 
-void	ft_cd(t_token *token, t_env **envp)
+void	change_dir(t_token *token)
 {
-	t_env	*pwd;
-	char	*current_pwd;
-
 	if (!token->next || token->next->index != ARG)
 	{
 		chdir(getenv("HOME"));
 		return ;
 	}
-	current_pwd = getcwd(NULL, 0);
 	if (chdir(token->next->str) != 0)
 	{
 		perror("cd");
-		free(current_pwd);
 		return ;
 	}
+}
+
+void	update_pwd(t_env **envp, char *old_pwd)
+{
+	t_env	*pwd;
+
 	pwd = *envp;
 	while (pwd)
 	{
@@ -46,9 +47,20 @@ void	ft_cd(t_token *token, t_env **envp)
 		if (!ft_strncmp(pwd->name, "OLDPWD", 7))
 		{
 			free(pwd->value);
-			pwd->value = current_pwd;
+			pwd->value = ft_strdup(old_pwd);
 			break ;
 		}
 		pwd = pwd->next;
 	}
+}
+
+void	ft_cd(t_token *token, t_env **envp)
+{
+	char	*current_pwd;
+
+	current_pwd = getcwd(NULL, 0);
+	change_dir(token);
+	if (current_pwd)
+		update_pwd(envp, current_pwd);
+	free(current_pwd);
 }

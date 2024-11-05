@@ -12,11 +12,31 @@
 
 #include "minishell.h"
 
+void	insert_sorted_env(t_env **sorted, t_env *new_node)
+{
+	t_env	*tmp;
+
+	if (!(*sorted) || ft_strncmp(new_node->name, (*sorted)->name,
+			ft_strlen(new_node->name) + 1) < 0)
+	{
+		new_node->next = *sorted;
+		*sorted = new_node;
+	}
+	else
+	{
+		tmp = *sorted;
+		while (tmp->next && ft_strncmp(new_node->name, tmp->next->name,
+				ft_strlen(new_node->name) + 1) > 0)
+			tmp = tmp->next;
+		new_node->next = tmp->next;
+		tmp->next = new_node;
+	}
+}
+
 void	sort_env(t_env **env)
 {
 	t_env	*current;
 	t_env	*sorted;
-	t_env	*tmp;
 	t_env	*next;
 
 	sorted = NULL;
@@ -24,21 +44,7 @@ void	sort_env(t_env **env)
 	while (current)
 	{
 		next = current->next;
-		if (!sorted || ft_strncmp(current->name, sorted->name,
-				ft_strlen(current->name) + 1) < 0)
-		{
-			current->next = sorted;
-			sorted = current;
-		}
-		else
-		{
-			tmp = sorted;
-			while (tmp->next && ft_strncmp(current->name, tmp->next->name,
-					ft_strlen(current->name) + 1) > 0)
-				tmp = tmp->next;
-			current->next = tmp->next;
-			tmp->next = current;
-		}
+		insert_sorted_env(&sorted, current);
 		current = next;
 	}
 	*env = sorted;
@@ -47,20 +53,18 @@ void	sort_env(t_env **env)
 void	ft_export(t_token *token, t_env **envp)
 {
 	t_env	*new;
-	char	*env_var;
 
 	if (token->next && token->next->index == ARG)
 	{
-		env_var = token->next->str;
-		if (!check_name(env_var))
+		if (!check_name(token->next->str))
 		{
 			ft_printf("minishell: export: `%s': not a valid identifier\n",
-				env_var);
+				token->next->str);
 			return ;
 		}
 		if (!ft_update_var(token, envp))
 		{
-			new = add_env_var(env_var);
+			new = add_env_var(token->next->str);
 			if (!new)
 			{
 				perror("export");

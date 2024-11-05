@@ -37,15 +37,24 @@ t_env	*copy_env_list(t_env *env)
 	return (new_list);
 }
 
+int	update_env_value(t_env *env_var_node, char *equal_sign, int quote)
+{
+	free(env_var_node->value);
+	if (quote)
+		env_var_node->value = ft_substr(equal_sign, 2,
+				ft_strlen(equal_sign) - 3);
+	else
+		env_var_node->value = strdup(equal_sign + 1);
+	return (1);
+}
+
 int	ft_update_var(t_token *token, t_env **envp)
 {
 	char	*equal_sign;
-	char	*env_var;
 	t_env	*tmp;
 	int		quote;
 
-	env_var = token->next->str;
-	equal_sign = ft_strchr(env_var, '=');
+	equal_sign = ft_strchr(token->next->str, '=');
 	quote = 0;
 	if (equal_sign && (equal_sign[1] == '\'' || equal_sign[1] == '\"'))
 	{
@@ -58,17 +67,10 @@ int	ft_update_var(t_token *token, t_env **envp)
 		tmp = *envp;
 		while (tmp)
 		{
-			if (!ft_strncmp(tmp->name, env_var, equal_sign - env_var)
-				&& tmp->name[equal_sign - env_var] == '\0')
-			{
-				free(tmp->value);
-				if (quote)
-					tmp->value = ft_substr(equal_sign, 2,
-							ft_strlen(equal_sign) - 3);
-				else
-					tmp->value = strdup(equal_sign + 1);
-				return (1);
-			}
+			if (!ft_strncmp(tmp->name, token->next->str,
+					equal_sign - token->next->str)
+				&& tmp->name[equal_sign - token->next->str] == '\0')
+				return (update_env_value(tmp, equal_sign, quote));
 			tmp = tmp->next;
 		}
 	}

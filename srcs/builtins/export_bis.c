@@ -73,3 +73,23 @@ void	ft_export(t_token *token, t_env **envp)
 	else
 		print_export(*envp);
 }
+
+void	update_shlvl(t_env *env)
+{
+	t_env	*tmp;
+	int		shlvl;
+
+	tmp = env;
+	while (tmp)
+	{
+		if (!ft_strncmp(tmp->name, "SHLVL", 6))
+		{
+			shlvl = ft_atoi(tmp->value);
+			free(tmp->value);
+			shlvl++;
+			tmp->value = ft_itoa(shlvl);
+			return ;
+		}
+		tmp = tmp->next;
+	}
+}

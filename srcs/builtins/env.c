@@ -95,6 +95,7 @@ t_env	*init_env(char **env)
 		}
 		i++;
 	}
+	update_shlvl(head);
 	return (head);
 }
 

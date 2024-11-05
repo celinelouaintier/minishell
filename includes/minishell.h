@@ -54,6 +54,7 @@ typedef struct s_exec
 	int		pipe_num;
 	char	**env;
 	int		saved_stdout;
+	int		exit_status;
 }				t_exec;
 
 typedef struct s_env

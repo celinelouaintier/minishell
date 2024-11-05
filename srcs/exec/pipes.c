@@ -112,6 +112,7 @@ void	fork_pipes(t_token *token, t_exec *exec, t_env **envp)
 void	process_pipes(t_token *token, t_env **envp)
 {
 	int		i;
+	int		status;
 	t_exec	exec;
 	pid_t	pid;
 
@@ -126,6 +127,11 @@ void	process_pipes(t_token *token, t_env **envp)
 		i++;
 	}
 	free(exec.pipe_fd);
-	while ((pid = wait(NULL)) > 0)
-		;
+	while (1)
+	{
+		pid = wait(&status);
+		if (pid == -1)
+			break ;
+		ft_printf("pid: %d, WEXITSTATUS: %d\n", pid, WEXITSTATUS(status));
+	}
 }

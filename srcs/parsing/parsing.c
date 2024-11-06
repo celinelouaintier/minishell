@@ -65,6 +65,7 @@ char	*set_arg(char *arg, char *line, int *i, t_env *env)
 	return (arg);
 }
 
+// need to free arg when strjoin
 char	*strarg(char *line, int *i, t_env *env)
 {
 	char	quote;

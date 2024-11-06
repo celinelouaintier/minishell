@@ -19,7 +19,7 @@ void	echo(t_token *token, int fd)
 
 	tmp = token->next;
 	skip_line = 0;
-	while (tmp != NULL &&!ft_strncmp(tmp->str, "-n", 3) && tmp->index == ARG)
+	while (tmp != NULL && !ft_strncmp(tmp->str, "-n", 3) && tmp->index == ARG)
 	{
 		skip_line = 1;
 		tmp = tmp->next;

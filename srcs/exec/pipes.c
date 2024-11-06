@@ -17,11 +17,6 @@ void	exec(char **args, t_env **env)
 	char	*path;
 	char	**envp;
 
-	if (!args[0] || args[0][0] == '\0')
-	{
-		ft_free(args);
-		exit(EXIT_FAILURE);
-	}
 	if (access(args[0], X_OK) != 0)
 		path = get_command_path(args[0]);
 	else
@@ -120,7 +115,6 @@ void	process_pipes(t_token *token, t_env **envp)
 
 	exec = init_exec(token);
 	i = 0;
-	pid = 0;
 	fork_pipes(token, &exec, envp);
 	while (i < exec.pipe_num)
 	{
@@ -130,11 +124,13 @@ void	process_pipes(t_token *token, t_env **envp)
 		i++;
 	}
 	free(exec.pipe_fd);
-	waitpid(pid, &status, 0);
-	if (WIFEXITED(status))
+	while (1)
 	{
-		exit_status = WEXITSTATUS(status);
-		ft_printf("exit status %d\n", exit_status);
+		pid = waitpid(-1, &status, 0);
+		if (pid == -1)
+			break ;
+		if (WIFEXITED(status))
+			exit_status = WEXITSTATUS(status);
 	}
-
+	ft_printf("exit status %d\n", exit_status);
 }

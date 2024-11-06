@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   export.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: clouaint <clouaint@student.42.fr>          +#+  +:+       +#+        */
+/*   By: nferrad <nferrad@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/25 18:17:35 by clouaint          #+#    #+#             */
-/*   Updated: 2024/11/02 12:31:33 by clouaint         ###   ########.fr       */
+/*   Updated: 2024/11/06 20:02:05 by nferrad          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -87,10 +87,13 @@ void	print_export(t_env *envp)
 	tmp = copy;
 	while (tmp)
 	{
-		if (tmp->value)
-			ft_printf("export %s=\"%s\"\n", tmp->name, tmp->value);
-		else
-			ft_printf("export %s\n", tmp->name);
+		if (ft_strncmp(tmp->name, "?", 2))
+		{
+			if (tmp->value)
+				ft_printf("export %s=\"%s\"\n", tmp->name, tmp->value);
+			else
+				ft_printf("export %s\n", tmp->name);
+		}
 		tmp = tmp->next;
 	}
 	tmp = copy;

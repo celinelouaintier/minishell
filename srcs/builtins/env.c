@@ -6,7 +6,7 @@
 /*   By: nferrad <nferrad@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/14 12:51:49 by clouaint          #+#    #+#             */
-/*   Updated: 2024/11/01 23:16:54 by nferrad          ###   ########.fr       */
+/*   Updated: 2024/11/06 20:00:34 by nferrad          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,10 +19,13 @@ void	print_env(t_env *env)
 	tmp = env;
 	while (tmp)
 	{
-		if (tmp->value)
-			ft_printf("%s=%s\n", tmp->name, tmp->value);
-		else if (!ft_strncmp(tmp->name, "=", 1))
-			ft_printf("%s\n", tmp->name);
+		if (ft_strncmp(tmp->name, "?", 2))
+		{
+			if (tmp->value)
+				ft_printf("%s=%s\n", tmp->name, tmp->value);
+			else if (!ft_strncmp(tmp->name, "=", 1))
+				ft_printf("%s\n", tmp->name);
+		}
 		tmp = tmp->next;
 	}
 }
@@ -35,6 +38,18 @@ t_env	*add_env_var(char *env_var)
 	if (!new)
 		exit(EXIT_FAILURE);
 	new = init_env_var(new, env_var);
+	return (new);
+}
+
+t_env	*set_exit_status(void)
+{
+	t_env	*new;
+
+	new = malloc(sizeof(t_env));
+	if (!new)
+		exit(EXIT_FAILURE);
+	new->name = ft_strdup("?");
+	new->value = ft_strdup("0");
 	return (new);
 }
 
@@ -63,6 +78,8 @@ t_env	*init_env(char **env)
 		}
 		i++;
 	}
+	new = set_exit_status();
+	tmp->next = new;
 	update_shlvl(head);
 	return (head);
 }

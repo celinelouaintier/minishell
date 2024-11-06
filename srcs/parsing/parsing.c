@@ -6,7 +6,7 @@
 /*   By: nferrad <nferrad@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/08 15:41:56 by nferrad           #+#    #+#             */
-/*   Updated: 2024/11/06 18:36:27 by nferrad          ###   ########.fr       */
+/*   Updated: 2024/11/06 19:56:18 by nferrad          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,7 +43,10 @@ char	*set_arg(char *arg, char *line, int *i, t_env *env)
 	char	*env_var;
 
 	j = *i + 1;
-	while (line[j] && (ft_isalnum(line[j]) || line[j] == '_'))
+	if (line[j] != '?')
+		while (line[j] && (ft_isalnum(line[j]) || line[j] == '_'))
+			j++;
+	else
 		j++;
 	j -= *i;
 	if (j > 1)

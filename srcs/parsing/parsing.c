@@ -6,7 +6,7 @@
 /*   By: nferrad <nferrad@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/08 15:41:56 by nferrad           #+#    #+#             */
-/*   Updated: 2024/11/01 23:39:55 by nferrad          ###   ########.fr       */
+/*   Updated: 2024/11/06 18:36:27 by nferrad          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -73,23 +73,28 @@ char	*strarg(char *line, int *i, t_env *env)
 
 	quote = 0;
 	arg = ft_strdup("");
-	if (line[*i] == '\'' || line[*i] == '\"')
+	while (line[*i])
 	{
-		quote = line[*i];
-		(*i)++;
-		if (!check_quote(line, *i, quote))
-			return (NULL);
-	}
-	while (line[*i] && ((end_check(line[*i]) || quote) && line[*i] != quote))
-	{
+		if (!quote && (line[*i] == '\'' || line[*i] == '\"'))
+		{
+			quote = line[*i];
+			(*i)++;
+			if (!check_quote(line, *i, quote))
+				return (NULL);
+		}
 		if (line[*i] == '$' && quote != '\'')
 			arg = set_arg(arg, line, i, env);
 		else
 			arg = ft_strjoin(arg, ft_substr(line, *i, 1));
 		(*i)++;
+		if (line[*i] == quote)
+		{
+			quote = 0;
+			(*i)++;
+		}
+		if (!quote && !end_check(line[*i]))
+			break ;
 	}
-	if (line[*i] == quote)
-		(*i)++;
 	return (arg);
 }
 
@@ -107,14 +112,14 @@ int	set_index(char *line, int *i, t_env *env, t_token **token)
 		lstadd_back(token, lstnew(ft_substr(line, *i, 1), INPUT));
 	else if (line[*i] == '|')
 		lstadd_back(token, lstnew(ft_substr(line, *i, 1), PIPE));
-	else if (!*token || lstlast(*token)->index == PIPE)
-		add_command(line, i, token);
 	else
 	{
 		arg = strarg(line, i, env);
 		if (!arg)
 			return (0);
 		lstadd_back(token, lstnew(arg, ARG));
+		arg = NULL;
+		free(arg);
 	}
 	return (1);
 }
@@ -147,78 +152,3 @@ void	parsing(char *line, t_token **token, t_env *env)
 	print_token(*token);
 }
 
-/*
-
->>>>>>>>>>>>>>>>>><<<<<<<<<<<<<<<<<<
-Decommente ici stv l'ancien parsing
->>>>>>>>>>>>>>>>>><<<<<<<<<<<<<<<<<<
-
-void	parsing(char *line, t_token **token, char *env[])
-{
-	int	i;
-	int	j;
-	int	index;
-	int	next;
-
-	i = 0;
-	next = CMD;
-	while (line[i] == ' ' || line[i] == '\t')
-		i++;
-	while (line[i])
-	{
-		j = i;
-		if (line[i] == '<' && line[i + 1] == '<')
-		{
-			next = ARG;
-			index = HEREDOX;
-		}
-		else if (line[i] == '>' && line[i + 1] == '>')
-		{
-			next = ARG;
-			index = APPEND;
-		}
-		else if (line[i] == '>')
-		{
-			next = ARG;
-			index = TRUNC;
-		}
-		else if (line[i] == '<')
-		{
-			next = ARG;
-			index = INPUT;
-		}
-		else if (line[i] == '|')
-		{
-			next = CMD;
-			index = PIPE;
-		}
-		else if (next == CMD)
-		{
-			next = ARG;
-			index = CMD;
-		}
-		else 
-		{
-			index = ARG;
-			lstadd_back(token, lstnew(strarg(line, &i, env), ARG));
-		}
-		if (index == CMD)
-			while (line[j] && check(line[j]))
-				j++;
-		else if (index == PIPE || index == TRUNC || index == INPUT)
-			j++;
-		else if (index == HEREDOX || index == APPEND)
-			j += 2;
-		if (index != ARG)
-		{
-			lstadd_back(token, lstnew(ft_substr(line, i, j - i), index));
-			i = j;
-		}
-		// if (quote)
-		// 	i++;
-		while (line[i] == ' ' || line[i] == '\t')
-			i++;
-	}
-	print_token(*token);
-}
-*/

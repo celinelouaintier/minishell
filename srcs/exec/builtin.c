@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   builtin.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: clouaint <clouaint@student.42.fr>          +#+  +:+       +#+        */
+/*   By: nferrad <nferrad@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/16 16:12:37 by clouaint          #+#    #+#             */
-/*   Updated: 2024/11/01 20:59:00 by clouaint         ###   ########.fr       */
+/*   Updated: 2024/11/06 18:10:14 by nferrad          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,7 +15,7 @@
 void	exec_builtin(t_token *token, t_env **env, int fd, t_exec *exec)
 {
 	handle_redirections(token, exec);
-	if (token && !ft_strncmp(token->str, "cd", 3) && token->index == CMD)
+	if (token && !ft_strncmp(token->str, "cd", 3))
 		ft_cd(token, env);
 	else if (token && !ft_strncmp(token->str, "echo", 5))
 		echo(token, fd);

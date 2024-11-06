@@ -28,6 +28,7 @@ void	exec(char **args, t_env **env)
 		path = args[0];
 	if (!path)
 	{
+		perror("command not found");
 		ft_free(args);
 		exit(EXIT_FAILURE);
 	}
@@ -115,9 +116,11 @@ void	process_pipes(t_token *token, t_env **envp)
 	int		status;
 	t_exec	exec;
 	pid_t	pid;
+	int		exit_status;
 
 	exec = init_exec(token);
 	i = 0;
+	pid = 0;
 	fork_pipes(token, &exec, envp);
 	while (i < exec.pipe_num)
 	{
@@ -127,11 +130,11 @@ void	process_pipes(t_token *token, t_env **envp)
 		i++;
 	}
 	free(exec.pipe_fd);
-	while (1)
+	waitpid(pid, &status, 0);
+	if (WIFEXITED(status))
 	{
-		pid = wait(&status);
-		if (pid == -1)
-			break ;
-		ft_printf("pid: %d, WEXITSTATUS: %d\n", pid, WEXITSTATUS(status));
+		exit_status = WEXITSTATUS(status);
+		ft_printf("exit status %d\n", exit_status);
 	}
+
 }

@@ -17,7 +17,7 @@ void	exec_builtin(t_token *token, t_env **env, int fd, t_exec *exec)
 	handle_redirections(token, exec);
 	if (token && !ft_strncmp(token->str, "cd", 3) && token->index == CMD)
 		ft_cd(token, env);
-	else if (token && !ft_strncmp(token->str, "echo", 5) && token->index == CMD)
+	else if (token && !ft_strncmp(token->str, "echo", 5))
 		echo(token, fd);
 	else if (token && !ft_strncmp(token->str, "pwd", 4) && token->index == CMD)
 		ft_printf("%s\n", getcwd(NULL, 0));

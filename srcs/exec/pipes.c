@@ -30,13 +30,13 @@ void	exec(char **args, t_env **env)
 	{
 		perror("command not found");
 		ft_free(args);
-		exit(EXIT_FAILURE);
+		exit(127);
 	}
 	envp = lst_to_array(env);
 	if (execve(path, args, envp) == -1)
 	{
 		ft_free(args);
-		exit(EXIT_FAILURE);
+		exit(126);
 	}
 	free(path);
 }

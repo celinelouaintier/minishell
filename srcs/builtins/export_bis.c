@@ -54,13 +54,15 @@ void	ft_export(t_token *token, t_env **envp)
 {
 	t_env	*new;
 
-	if (token->next && token->next->index == ARG)
+	if (!token->next || token->next->index != ARG)
+		print_export(*envp);
+	while (token->next && token->next->index == ARG)
 	{
 		if (!check_name(token->next->str))
 		{
-			ft_printf("minishell: export: `%s': not a valid identifier\n",
-				token->next->str);
-			return ;
+			ft_printf("`%s' not a valid identifier\n", token->next->str);
+			token = token->next;
+			continue ;
 		}
 		if (!ft_update_var(token, envp))
 		{
@@ -73,9 +75,8 @@ void	ft_export(t_token *token, t_env **envp)
 			new->next = *envp;
 			*envp = new;
 		}
+		token = token->next;
 	}
-	else
-		print_export(*envp);
 }
 
 void	update_shlvl(t_env *env)

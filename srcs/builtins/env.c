@@ -84,30 +84,32 @@ t_env	*init_env(char **env)
 	return (head);
 }
 
-void	ft_unset(t_token *token, t_env **env)
+void	ft_unset(t_token *t, t_env **env)
 {
 	t_env	*tmp;
 	t_env	*prev;
-	char	*name;
 
-	tmp = *env;
-	name = token->next->str;
-	prev = NULL;
-	while (tmp)
+	t = t->next;
+	while (t)
 	{
-		if (!ft_strncmp(tmp->name, name, ft_strlen(name) + 1))
+		tmp = *env;
+		prev = NULL;
+		while (tmp)
 		{
-			if (prev)
-				prev->next = tmp->next;
-			else
-				*env = tmp->next;
-			free(tmp->name);
-			free(tmp->value);
-			free(tmp);
-			return ;
+			if (!ft_strncmp(tmp->name, t->str, ft_strlen(t->str) + 1))
+			{
+				if (prev)
+					prev->next = tmp->next;
+				else
+					*env = tmp->next;
+				free_env_var(tmp);
+				break ;
+			}
+			prev = tmp;
+			tmp = tmp->next;
 		}
-		prev = tmp;
-		tmp = tmp->next;
+		if (!tmp)
+			ft_printf("unset: `%s': not a valid identifier\n", t->str);
+		t = t->next;
 	}
-	ft_printf("minishell: unset: `%s': not a valid identifier\n", name);
 }

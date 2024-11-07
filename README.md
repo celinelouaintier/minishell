@@ -6,7 +6,6 @@ PS : J'ai peut etre casse la norm du parsing du env et du export au passage ^^
 - gerer les leaks
 
 - Regler la petite erreur d'export
-==> doit pouvoir exporter plusieurs variables sur la meme ligne et unset aussi : "Minishell> export test=test coucou=coucou" = export test="test" ET export coucou="coucou"
 
 - LES COMMANDES FONCTIONNENT QUAND ON UNSET PATH ????
 

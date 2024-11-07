@@ -29,6 +29,7 @@ void	exec_builtin(t_token *token, t_env **env, int fd, t_exec *exec)
 		ft_unset(token, env);
 	else if (token && !ft_strncmp(token->str, "exit", 5))
 		ft_exit(token);
+	update_exit_status(*env, exec->exit_status);
 }
 
 int	is_builtin(t_token *token)

@@ -3,6 +3,8 @@
 - Le $? est dans le env donc tu peux l'afficher faut juste le modifier la valeur (il ne s'affiche pas quand on fait env ou export tkt)
 PS : J'ai peut etre casse la norm du parsing du env et du export au passage ^^
 ==> valeur modifiee ! Faut juste que ca renvoie les bonnes valeurs maintenant <3
+-> 127, 126 et 0 c'est bon.
+-> Il reste le Ctrl C, le 2 et le 1
 
 - gerer les leaks
 

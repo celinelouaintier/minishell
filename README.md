@@ -7,8 +7,6 @@ PS : J'ai peut etre casse la norm du parsing du env et du export au passage ^^
 
 - Regler la petite erreur d'export
 
-- LES COMMANDES FONCTIONNENT QUAND ON UNSET PATH ????
-
 - !!!!!!!!!!! > bonjour echo hola devrait renvoyer hola !!!!!!!!!!!
 ==> pareil pour ca je pense : - revoir INPUT  : < includes/minishell.h cat 
 

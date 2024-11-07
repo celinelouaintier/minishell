@@ -41,7 +41,7 @@ char	**init_args(t_token *token)
 	return (args);
 }
 
-char	*get_command_path(char *command)
+char	*get_command_path(char *command, t_env *env)
 {
 	char	**paths;
 	char	*tmp_path;
@@ -49,7 +49,7 @@ char	*get_command_path(char *command)
 	int		i;
 	char	*env_path;
 
-	env_path = getenv("PATH");
+	env_path = get_env_value(env, "PATH");
 	if (!env_path)
 		return (NULL);
 	paths = ft_split(env_path, ':');

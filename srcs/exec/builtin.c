@@ -34,12 +34,12 @@ void	exec_builtin(t_token *token, t_env **env, int fd, t_exec *exec)
 int	is_builtin(t_token *token)
 {
 	if (!ft_strncmp(token->str, "pwd", 4)
-			|| !ft_strncmp(token->str, "cd", 3)
-			|| !ft_strncmp(token->str, "echo", 5)
-			|| !ft_strncmp(token->str, "exit", 5)
-			|| !ft_strncmp(token->str, "env", 4)
-			|| !ft_strncmp(token->str, "export", 7)
-			|| !ft_strncmp(token->str, "unset", 6))
+		|| !ft_strncmp(token->str, "cd", 3)
+		|| !ft_strncmp(token->str, "echo", 5)
+		|| !ft_strncmp(token->str, "exit", 5)
+		|| !ft_strncmp(token->str, "env", 4)
+		|| !ft_strncmp(token->str, "export", 7)
+		|| !ft_strncmp(token->str, "unset", 6))
 		return (1);
 	else
 		return (0);

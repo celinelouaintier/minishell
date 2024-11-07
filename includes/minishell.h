@@ -110,11 +110,12 @@ t_env	*init_env_var(t_env *new, char *env_var);
 t_env	*init_env(char **env);
 t_env	*add_env_var(char *env_var);
 void	update_shlvl(t_env *env);
+char	*get_env_value(t_env *env, const char *var);
 
 /*		Utils			*/
 
 char	**init_args(t_token *token);
-char	*get_command_path(char *command);
+char	*get_command_path(char *command, t_env *env);
 void	ft_free(char **array);
 int		count_pipes(t_token *token);
 char	**lst_to_array(t_env **env);

@@ -18,7 +18,7 @@ void	exec(char **args, t_env **env)
 	char	**envp;
 
 	if (access(args[0], X_OK) != 0)
-		path = get_command_path(args[0]);
+		path = get_command_path(args[0], *env);
 	else
 		path = args[0];
 	if (!path)

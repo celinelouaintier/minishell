@@ -71,3 +71,14 @@ t_env	*init_env_var(t_env *new, char *env_var)
 	new->next = NULL;
 	return (new);
 }
+
+char	*get_env_value(t_env *env, const char *var)
+{
+	while (env)
+	{
+		if (!ft_strncmp(env->name, var, ft_strlen(var) + 1))
+			return (env->value);
+		env = env->next;
+	}
+	return (NULL);
+}

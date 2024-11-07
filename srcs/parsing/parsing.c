@@ -154,4 +154,3 @@ void	parsing(char *line, t_token **token, t_env *env)
 	}
 	print_token(*token);
 }
-

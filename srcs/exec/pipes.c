@@ -111,7 +111,6 @@ void	process_pipes(t_token *token, t_env **envp)
 	int		status;
 	t_exec	exec;
 	pid_t	pid;
-	int		exit_status;
 
 	exec = init_exec(token);
 	i = 0;
@@ -130,7 +129,7 @@ void	process_pipes(t_token *token, t_env **envp)
 		if (pid == -1)
 			break ;
 		if (WIFEXITED(status))
-			exit_status = WEXITSTATUS(status);
+			exec.exit_status = WEXITSTATUS(status);
 	}
-	ft_printf("exit status %d\n", exit_status);
+	update_exit_status(*envp, exec.exit_status);
 }

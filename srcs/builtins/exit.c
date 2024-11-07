@@ -56,3 +56,20 @@ void	ft_exit(t_token *token)
 		exit(EXIT_SUCCESS);
 	}
 }
+
+void	update_exit_status(t_env *envp, int exit_stat)
+{
+	t_env	*tmp;
+
+	tmp = envp;
+	while (tmp)
+	{
+		if (!ft_strncmp(tmp->name, "?", 2))
+		{
+			free(tmp->value);
+			tmp->value = ft_itoa(exit_stat);
+			break ;
+		}
+		tmp = tmp->next;
+	}
+}

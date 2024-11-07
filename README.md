@@ -2,6 +2,7 @@
 
 - Le $? est dans le env donc tu peux l'afficher faut juste le modifier la valeur (il ne s'affiche pas quand on fait env ou export tkt)
 PS : J'ai peut etre casse la norm du parsing du env et du export au passage ^^
+==> valeur modifiee ! Faut juste que ca renvoie les bonnes valeurs maintenant <3
 
 - gerer les leaks
 

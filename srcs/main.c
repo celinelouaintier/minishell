@@ -19,6 +19,7 @@ t_exec	init_exec(t_token *token)
 	exec.pipe_num = count_pipes(token);
 	exec.pipe_fd = create_pipes(exec.pipe_num);
 	exec.saved_stdout = -1;
+	exec.exit_status = 0;
 	return (exec);
 }
 

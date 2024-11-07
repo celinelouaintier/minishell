@@ -52,7 +52,6 @@ typedef struct s_exec
 {
 	int		**pipe_fd;
 	int		pipe_num;
-	char	**env;
 	int		saved_stdout;
 	int		exit_status;
 }				t_exec;
@@ -110,6 +109,7 @@ t_env	*init_env_var(t_env *new, char *env_var);
 t_env	*init_env(char **env);
 t_env	*add_env_var(char *env_var);
 void	update_shlvl(t_env *env);
+void	update_exit_status(t_env *envp, int exit_stat);
 char	*get_env_value(t_env *env, const char *var);
 
 /*		Utils			*/

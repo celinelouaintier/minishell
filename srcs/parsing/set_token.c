@@ -23,8 +23,11 @@ t_token	*lstnew(char *content, int index)
 		return (NULL);
 	element->index = index;
 	element->str = content;
+	content = NULL;
+	free(content);
 	element->next = NULL;
 	element->prev = NULL;
+
 	return (element);
 }
 

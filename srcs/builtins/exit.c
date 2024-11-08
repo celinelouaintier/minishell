@@ -53,6 +53,7 @@ void	ft_exit(t_token *token)
 	else
 	{
 		ft_printf("exit\n");
+		clear_history();
 		exit(EXIT_SUCCESS);
 	}
 }

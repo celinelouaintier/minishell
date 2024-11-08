@@ -61,6 +61,8 @@ char	*set_arg(char *arg, char *line, int *i, t_env *env)
 			}
 			env = env->next;
 		}
+		free(env_var);
+		env_var = NULL;
 		(*i) += j - 1;
 	}
 	else
@@ -72,9 +74,10 @@ char	*strarg(char *line, int *i, t_env *env)
 {
 	char	quote;
 	char	*arg;
+	char	*tmp;
 
 	quote = 0;
-	arg = ft_strdup("");
+	arg = NULL;
 	while (line[*i])
 	{
 		if (!quote && (line[*i] == '\'' || line[*i] == '\"'))
@@ -87,7 +90,11 @@ char	*strarg(char *line, int *i, t_env *env)
 		if (line[*i] == '$' && quote != '\'')
 			arg = set_arg(arg, line, i, env);
 		else
-			arg = ft_strjoin(arg, ft_substr(line, *i, 1));
+		{
+			tmp = ft_substr(line, *i, 1);
+			arg = ft_strjoin(arg, tmp);
+			free(tmp);
+		}
 		(*i)++;
 		if (line[*i] == quote)
 		{
@@ -147,8 +154,6 @@ int	set_index(char *line, int *i, t_env *env, t_token **token)
 		if (lstlast(*token)->index == HEREDOX || lstlast(*token)->index == APPEND || lstlast(*token)->index == TRUNC || lstlast(*token)->index == INPUT)
 			cmd = 1;
 		lstadd_back(token, lstnew(arg, ARG));
-		arg = NULL;
-		free(arg);
 	}
 	return (1);
 }

@@ -90,14 +90,16 @@ void	child_process(t_token *token, t_exec *execp, int i, t_env **envp)
 {
 	char	**args;
 
+	handle_redirections(token, execp);
+	while (token && token->index != CMD)
+		token = token->next;
 	if (i > 0)
 		dup2(execp->pipe_fd[i - 1][0], STDIN_FILENO);
 	if (i < execp->pipe_num)
 		dup2(execp->pipe_fd[i][1], STDOUT_FILENO);
-	handle_redirections(token, execp);
 	close_pipes(execp->pipe_fd, execp->pipe_num, i);
 	args = init_args(token);
-	if (!is_builtin(token))
+	if (!is_builtin(token) && token->index == CMD)
 		exec(args, envp);
 	else
 	{

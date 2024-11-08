@@ -12,30 +12,30 @@
 
 #include "minishell.h"
 
-// void	print_token(t_token *token)
-// {
-// 	while (token)
-// 	{
-// 		if (token->index == CMD)
-// 			ft_printf("CMD	");
-// 		else if (token->index == ARG)
-// 			ft_printf("ARG	");
-// 		else if (token->index == PIPE)
-// 			ft_printf("PIPE	");
-// 		else if (token->index == HEREDOX)
-// 			ft_printf("HEREDOX	");
-// 		else if (token->index == APPEND)
-// 			ft_printf("APPEND	");
-// 		else if (token->index == INPUT)
-// 			ft_printf("INPUT	");
-// 		else if (token->index == TRUNC)
-// 			ft_printf("TRUNC	");
-// 		else
-// 			ft_printf("%d	", token->index);
-// 		ft_printf("/////	%s\n", token->str);
-// 		token = token->next;
-// 	}
-// }
+void	print_token(t_token *token)
+{
+	while (token)
+	{
+		if (token->index == CMD)
+			ft_printf("CMD	");
+		else if (token->index == ARG)
+			ft_printf("ARG	");
+		else if (token->index == PIPE)
+			ft_printf("PIPE	");
+		else if (token->index == HEREDOX)
+			ft_printf("HEREDOX	");
+		else if (token->index == APPEND)
+			ft_printf("APPEND	");
+		else if (token->index == INPUT)
+			ft_printf("INPUT	");
+		else if (token->index == TRUNC)
+			ft_printf("TRUNC	");
+		else
+			ft_printf("%d	", token->index);
+		ft_printf("/////	%s\n", token->str);
+		token = token->next;
+	}
+}
 
 char	*set_arg(char *arg, char *line, int *i, t_env *env)
 {
@@ -103,22 +103,49 @@ char	*strarg(char *line, int *i, t_env *env)
 int	set_index(char *line, int *i, t_env *env, t_token **token)
 {
 	char	*arg;
+	static int	cmd = 0;
 
 	if (line[*i] == '<' && line[*i + 1] == '<')
+	{
 		lstadd_back(token, lstnew(ft_substr(line, *i, 2), HEREDOX));
+		cmd = 0;
+	}
 	else if (line[*i] == '>' && line[*i + 1] == '>')
+	{
 		lstadd_back(token, lstnew(ft_substr(line, *i, 2), APPEND));
+		cmd = 0;
+	}
 	else if (line[*i] == '>')
+	{
 		lstadd_back(token, lstnew(ft_substr(line, *i, 1), TRUNC));
+		cmd = 0;
+	}
 	else if (line[*i] == '<')
+	{
 		lstadd_back(token, lstnew(ft_substr(line, *i, 1), INPUT));
+		cmd = 0;
+	}
 	else if (line[*i] == '|')
+	{
+		cmd = 1;
 		lstadd_back(token, lstnew(ft_substr(line, *i, 1), PIPE));
+	}
+	else if (cmd || *token == NULL)
+	{
+		int	j;
+		j = *i;
+		while (line[*i] && end_check(line[*i]))
+			(*i)++;
+		lstadd_back(token, lstnew(ft_substr(line, j, *i - j), CMD));
+		cmd = 0;
+	}
 	else
 	{
 		arg = strarg(line, i, env);
 		if (!arg)
 			return (0);
+		if (lstlast(*token)->index == HEREDOX || lstlast(*token)->index == APPEND || lstlast(*token)->index == TRUNC || lstlast(*token)->index == INPUT)
+			cmd = 1;
 		lstadd_back(token, lstnew(arg, ARG));
 		arg = NULL;
 		free(arg);
@@ -151,4 +178,5 @@ void	parsing(char *line, t_token **token, t_env *env)
 		while (line[i] == ' ' || line[i] == '\t')
 			i++;
 	}
+	print_token(*token);
 }

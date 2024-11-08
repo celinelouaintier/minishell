@@ -6,21 +6,11 @@
 /*   By: nferrad <nferrad@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/26 05:46:17 by nferrad           #+#    #+#             */
-/*   Updated: 2024/11/01 23:23:53 by nferrad          ###   ########.fr       */
+/*   Updated: 2024/11/08 03:00:02 by nferrad          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
-
-void	add_command(char *line, int *i, t_token **token)
-{
-	int	j;
-
-	j = *i;
-	while (line[*i] && end_check(line[*i]))
-		(*i)++;
-	lstadd_back(token, lstnew(ft_substr(line, j, *i - j), CMD));
-}
 
 int	end_check(char c)
 {
@@ -29,7 +19,7 @@ int	end_check(char c)
 	return (1);
 }
 
-int	check_quote(char *line, int i, char quote)
+int	check_quote(char *line, int i, char quote, t_env *envp)
 {
 	while (line[i])
 	{
@@ -38,5 +28,6 @@ int	check_quote(char *line, int i, char quote)
 		i++;
 	}
 	ft_printf(ERR_QUOTE, quote);
+	update_exit_status(envp, 2);
 	return (0);
 }

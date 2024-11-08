@@ -6,7 +6,7 @@
 /*   By: nferrad <nferrad@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/25 18:17:35 by clouaint          #+#    #+#             */
-/*   Updated: 2024/11/06 20:02:05 by nferrad          ###   ########.fr       */
+/*   Updated: 2024/11/08 02:52:12 by nferrad          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -58,7 +58,7 @@ int	ft_update_var(t_token *token, t_env **envp)
 	quote = 0;
 	if (equal_sign && (equal_sign[1] == '\'' || equal_sign[1] == '\"'))
 	{
-		if (!check_quote(equal_sign, 2, equal_sign[1]))
+		if (!check_quote(equal_sign, 2, equal_sign[1], *envp))
 			return (-1);
 		quote++;
 	}

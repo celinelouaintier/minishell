@@ -6,36 +6,36 @@
 /*   By: nferrad <nferrad@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/08 15:41:56 by nferrad           #+#    #+#             */
-/*   Updated: 2024/11/06 19:56:18 by nferrad          ###   ########.fr       */
+/*   Updated: 2024/11/08 03:14:43 by nferrad          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-void	print_token(t_token *token)
-{
-	while (token)
-	{
-		if (token->index == CMD)
-			ft_printf("CMD	");
-		else if (token->index == ARG)
-			ft_printf("ARG	");
-		else if (token->index == PIPE)
-			ft_printf("PIPE	");
-		else if (token->index == HEREDOX)
-			ft_printf("HEREDOX	");
-		else if (token->index == APPEND)
-			ft_printf("APPEND	");
-		else if (token->index == INPUT)
-			ft_printf("INPUT	");
-		else if (token->index == TRUNC)
-			ft_printf("TRUNC	");
-		else
-			ft_printf("%d	", token->index);
-		ft_printf("/////	%s\n", token->str);
-		token = token->next;
-	}
-}
+// void	print_token(t_token *token)
+// {
+// 	while (token)
+// 	{
+// 		if (token->index == CMD)
+// 			ft_printf("CMD	");
+// 		else if (token->index == ARG)
+// 			ft_printf("ARG	");
+// 		else if (token->index == PIPE)
+// 			ft_printf("PIPE	");
+// 		else if (token->index == HEREDOX)
+// 			ft_printf("HEREDOX	");
+// 		else if (token->index == APPEND)
+// 			ft_printf("APPEND	");
+// 		else if (token->index == INPUT)
+// 			ft_printf("INPUT	");
+// 		else if (token->index == TRUNC)
+// 			ft_printf("TRUNC	");
+// 		else
+// 			ft_printf("%d	", token->index);
+// 		ft_printf("/////	%s\n", token->str);
+// 		token = token->next;
+// 	}
+// }
 
 char	*set_arg(char *arg, char *line, int *i, t_env *env)
 {
@@ -68,7 +68,6 @@ char	*set_arg(char *arg, char *line, int *i, t_env *env)
 	return (arg);
 }
 
-// need to free arg when strjoin
 char	*strarg(char *line, int *i, t_env *env)
 {
 	char	quote;
@@ -82,7 +81,7 @@ char	*strarg(char *line, int *i, t_env *env)
 		{
 			quote = line[*i];
 			(*i)++;
-			if (!check_quote(line, *i, quote))
+			if (!check_quote(line, *i, quote, env))
 				return (NULL);
 		}
 		if (line[*i] == '$' && quote != '\'')
@@ -152,5 +151,4 @@ void	parsing(char *line, t_token **token, t_env *env)
 		while (line[i] == ' ' || line[i] == '\t')
 			i++;
 	}
-	print_token(*token);
 }

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: clouaint <clouaint@student.42.fr>          +#+  +:+       +#+        */
+/*   By: nferrad <nferrad@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/01 14:34:52 by clouaint          #+#    #+#             */
-/*   Updated: 2024/11/02 12:38:51 by clouaint         ###   ########.fr       */
+/*   Updated: 2024/11/08 02:52:21 by nferrad          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,6 +38,8 @@ Unclosed quote, expected (%c) in your argument.\n"
 # define INPUT		6
 # define TRUNC		7
 
+extern int	g_sig;
+
 /*		Structures		*/
 
 typedef struct s_token
@@ -66,9 +68,8 @@ typedef struct s_env
 /*		Parsing			*/
 
 void	parsing(char *line, t_token **token, t_env *env);
-void	add_command(char *line, int *i, t_token **token);
 int		end_check(char c);
-int		check_quote(char *line, int i, char quote);
+int		check_quote(char *line, int i, char quote, t_env *env);
 
 /*		Token			*/
 

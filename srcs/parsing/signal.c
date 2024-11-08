@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   signal.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: clouaint <clouaint@student.42.fr>          +#+  +:+       +#+        */
+/*   By: nferrad <nferrad@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/01 21:13:45 by clouaint          #+#    #+#             */
-/*   Updated: 2024/11/01 21:18:57 by clouaint         ###   ########.fr       */
+/*   Updated: 2024/11/08 02:48:48 by nferrad          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,6 +16,7 @@ void	signal_handler(int signum)
 {
 	if (signum == SIGINT)
 	{
+		g_sig = signum;
 		ft_printf("\n");
 		rl_replace_line("", 0);
 		rl_on_new_line();
@@ -31,6 +32,7 @@ void	set_sig(void)
 
 void	cmd_sig_handler(int signum)
 {
+	g_sig = signum;
 	if (signum == SIGINT)
 		ft_printf("\n");
 	else if (signum == SIGQUIT)

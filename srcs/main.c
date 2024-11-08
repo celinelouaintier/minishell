@@ -3,14 +3,16 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: clouaint <clouaint@student.42.fr>          +#+  +:+       +#+        */
+/*   By: nferrad <nferrad@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/07 16:26:03 by clouaint          #+#    #+#             */
-/*   Updated: 2024/11/02 12:43:26 by clouaint         ###   ########.fr       */
+/*   Updated: 2024/11/08 03:01:25 by nferrad          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
+
+int	g_sig = 0;
 
 t_exec	init_exec(t_token *token)
 {
@@ -43,7 +45,7 @@ int	is_token_position_valid(t_token *token)
 	return (1);
 }
 
-int	check_syntax(t_token *token)
+int	check_syntax(t_env *envp, t_token *token)
 {
 	t_token	*tmp;
 
@@ -54,7 +56,10 @@ int	check_syntax(t_token *token)
 			|| tmp->index == HEREDOX || tmp->index == PIPE)
 		{
 			if (!is_token_position_valid(tmp))
+			{
+				update_exit_status(envp, 2);
 				return (0);
+			}
 		}
 		tmp = tmp->next;
 	}
@@ -67,13 +72,18 @@ void	do_exec(char *line, t_token *token, t_env *envp, t_exec *exec)
 	{
 		set_sig();
 		line = readline("\001\033[0;34m\x1b[1m\002Minishell> \001\033[0m\002");
+		if (g_sig)
+		{
+			update_exit_status(envp, g_sig + 128);
+			g_sig = 0;
+		}
 		if (line && line[0] != '\0')
 		{
 			parsing(line, &token, envp);
 			if (token)
 			{
 				add_history(line);
-				if (check_syntax(token))
+				if (check_syntax(envp, token))
 				{
 					if (is_builtin(token) && !has_pipe(token))
 						exec_builtin(token, &envp, STDOUT_FILENO, exec);

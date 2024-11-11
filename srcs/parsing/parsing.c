@@ -69,12 +69,13 @@ char	*set_arg(char *arg, char *line, int *i, t_env *env)
 		arg = ft_strdup("$");
 	return (arg);
 }
-// ligne 104 tu endcheck apres le \0, d'ou le invalid read <3
+
 char	*strarg(char *line, int *i, t_env *env)
 {
 	char	quote;
 	char	*arg;
 	char	*tmp;
+	char 	*tmp2;
 
 	quote = 0;
 	arg = NULL;
@@ -92,10 +93,14 @@ char	*strarg(char *line, int *i, t_env *env)
 		else
 		{
 			tmp = ft_substr(line, *i, 1);
-			arg = ft_strjoin(arg, tmp);
+			tmp2 = ft_strjoin(arg, tmp);
+			free(arg);
+			arg = tmp2;
 			free(tmp);
 		}
 		(*i)++;
+		if (!line[*i])
+			break;
 		if (line[*i] == quote)
 		{
 			quote = 0;

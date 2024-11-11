@@ -1,7 +1,7 @@
 # minishell
 
 - gerer les leaks
-==> va voir strarg, j'ai mis un petit commentaire
+==> elucider les still reachable ?
 
 - Regler la petite erreur d'export
 

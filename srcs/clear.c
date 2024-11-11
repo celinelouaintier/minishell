@@ -62,3 +62,17 @@ int	has_pipe(t_token *token)
 	}
 	return (0);
 }
+
+void free_env(t_env *envp)
+{
+    t_env *tmp;
+
+    while (envp)
+    {
+        tmp = envp->next;
+        free(envp->name);
+        free(envp->value);
+        free(envp);
+        envp = tmp;
+    }
+}

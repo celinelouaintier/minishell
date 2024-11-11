@@ -112,6 +112,7 @@ t_env	*add_env_var(char *env_var);
 void	update_shlvl(t_env *env);
 void	update_exit_status(t_env *envp, int exit_stat);
 char	*get_env_value(t_env *env, const char *var);
+void	free_env(t_env *envp);
 
 /*		Utils			*/
 

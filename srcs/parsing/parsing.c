@@ -69,7 +69,7 @@ char	*set_arg(char *arg, char *line, int *i, t_env *env)
 		arg = ft_strdup("$");
 	return (arg);
 }
-
+// ligne 104 tu endcheck apres le \0, d'ou le invalid read <3
 char	*strarg(char *line, int *i, t_env *env)
 {
 	char	quote;
@@ -143,6 +143,7 @@ int	set_index(char *line, int *i, t_env *env, t_token **token)
 		j = *i;
 		while (line[*i] && end_check(line[*i]))
 			(*i)++;
+		printf("fin : %d\n", *i);
 		lstadd_back(token, lstnew(ft_substr(line, j, *i - j), CMD));
 		cmd = 0;
 	}
@@ -175,7 +176,7 @@ void	parsing(char *line, t_token **token, t_env *env)
 		}
 		if (lstlast(*token)->index == HEREDOX
 			|| lstlast(*token)->index == APPEND)
-			i += 2;
+				i += 2;
 		else if (lstlast(*token)->index == PIPE
 			|| lstlast(*token)->index == TRUNC
 			|| lstlast(*token)->index == INPUT)

@@ -1,7 +1,7 @@
 .SILENT:
 
 CC 		= cc
-CFLAGS 	= -Wall -Wextra -Werror -I./includes
+CFLAGS 	= -Wall -Wextra -Werror -g3 -I./includes
 LIBFT = libft.a
 LIBPATH = lib
 SRCS_DIR	= srcs/

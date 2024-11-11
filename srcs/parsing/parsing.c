@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   parsing.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: nferrad <nferrad@student.42.fr>            +#+  +:+       +#+        */
+/*   By: clouaint <clouaint@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/08 15:41:56 by nferrad           #+#    #+#             */
-/*   Updated: 2024/11/08 03:14:43 by nferrad          ###   ########.fr       */
+/*   Updated: 2024/11/11 20:29:14 by clouaint         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -75,7 +75,7 @@ char	*strarg(char *line, int *i, t_env *env)
 	char	quote;
 	char	*arg;
 	char	*tmp;
-	char 	*tmp2;
+	char	*tmp2;
 
 	quote = 0;
 	arg = NULL;
@@ -100,7 +100,7 @@ char	*strarg(char *line, int *i, t_env *env)
 		}
 		(*i)++;
 		if (!line[*i])
-			break;
+			break ;
 		if (line[*i] == quote)
 		{
 			quote = 0;
@@ -114,7 +114,7 @@ char	*strarg(char *line, int *i, t_env *env)
 
 int	set_index(char *line, int *i, t_env *env, t_token **token)
 {
-	char	*arg;
+	char		*arg;
 	static int	cmd = 0;
 
 	if (line[*i] == '<' && line[*i + 1] == '<')
@@ -181,7 +181,7 @@ void	parsing(char *line, t_token **token, t_env *env)
 		}
 		if (lstlast(*token)->index == HEREDOX
 			|| lstlast(*token)->index == APPEND)
-				i += 2;
+			i += 2;
 		else if (lstlast(*token)->index == PIPE
 			|| lstlast(*token)->index == TRUNC
 			|| lstlast(*token)->index == INPUT)

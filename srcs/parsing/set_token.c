@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   set_token.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: nferrad <nferrad@student.42.fr>            +#+  +:+       +#+        */
+/*   By: clouaint <clouaint@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/14 03:46:52 by nferrad           #+#    #+#             */
-/*   Updated: 2024/10/30 19:54:29 by nferrad          ###   ########.fr       */
+/*   Updated: 2024/11/11 20:27:23 by clouaint         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,7 +27,6 @@ t_token	*lstnew(char *content, int index)
 	free(content);
 	element->next = NULL;
 	element->prev = NULL;
-
 	return (element);
 }
 

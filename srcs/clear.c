@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   clear.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: nferrad <nferrad@student.42.fr>            +#+  +:+       +#+        */
+/*   By: clouaint <clouaint@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/14 16:21:02 by clouaint          #+#    #+#             */
-/*   Updated: 2024/10/30 19:26:08 by nferrad          ###   ########.fr       */
+/*   Updated: 2024/11/11 20:31:53 by clouaint         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -63,16 +63,17 @@ int	has_pipe(t_token *token)
 	return (0);
 }
 
-void free_env(t_env *envp)
+void	free_env(t_env *envp)
 {
-    t_env *tmp;
+	t_env	*tmp;
 
-    while (envp)
-    {
-        tmp = envp->next;
-        free(envp->name);
-        free(envp->value);
-        free(envp);
-        envp = tmp;
-    }
+	while (envp)
+	{
+		tmp = envp->next;
+		free(envp->name);
+		if (envp->value)
+			free(envp->value);
+		free(envp);
+		envp = tmp;
+	}
 }

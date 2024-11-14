@@ -8,3 +8,4 @@
 
 - Regler la petite erreur d'export
 
+- Faire une redirection dans un DOSSIER ferme le shell au lieu de juste print une erreur (ex : echo tg > includes)

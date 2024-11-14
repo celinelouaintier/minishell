@@ -6,7 +6,7 @@
 /*   By: nferrad <nferrad@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/08 15:41:56 by nferrad           #+#    #+#             */
-/*   Updated: 2024/11/11 22:19:10 by nferrad          ###   ########.fr       */
+/*   Updated: 2024/11/14 01:59:47 by nferrad          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -102,9 +102,11 @@ char	*strarg(char *line, int *i, t_env *env)
 {
 	char	quote;
 	char	*arg;
+	char	*tmp;
 
 	quote = 0;
 	arg = NULL;
+	tmp = NULL;
 	while (line[*i])
 	{
 		if (line[*i] == quote)
@@ -124,7 +126,12 @@ char	*strarg(char *line, int *i, t_env *env)
 		if (line[*i] == '$' && quote != '\'')
 			arg = set_arg(arg, line, i, env);
 		else
-			arg = addback(tmp, line[*i]);
+		{
+			if (arg)
+				tmp = arg;
+ 			arg = addback(tmp, line[*i]);
+			free(tmp);
+		}
 		(*i)++;
 	}
 	return (arg);

@@ -65,6 +65,8 @@ int	ft_update_var(t_token *token, t_env **envp)
 	if (equal_sign)
 	{
 		tmp = *envp;
+		if (!tmp)
+			return (0);
 		while (tmp)
 		{
 			if (!ft_strncmp(tmp->name, token->next->str,
@@ -81,6 +83,7 @@ void	print_export(t_env *envp)
 {
 	t_env	*copy;
 	t_env	*tmp;
+	t_env	*next;
 
 	copy = copy_env_list(envp);
 	sort_env(&copy);
@@ -99,11 +102,12 @@ void	print_export(t_env *envp)
 	tmp = copy;
 	while (tmp)
 	{
+		next = tmp->next;
 		free(tmp->name);
 		if (tmp->value)
 			free(tmp->value);
 		free(tmp);
-		tmp = tmp->next;
+		tmp = next;
 	}
 }
 

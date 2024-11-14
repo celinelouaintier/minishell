@@ -48,8 +48,15 @@ t_env	*set_exit_status(void)
 	new = malloc(sizeof(t_env));
 	if (!new)
 		exit(EXIT_FAILURE);
+	new->name = NULL;
+	new->value = NULL;
+	new->next = NULL;
 	new->name = ft_strdup("?");
+	if (!new->name)
+			exit(EXIT_FAILURE);
 	new->value = ft_strdup("0");
+	if (!new->value)
+		exit(EXIT_FAILURE);
 	return (new);
 }
 

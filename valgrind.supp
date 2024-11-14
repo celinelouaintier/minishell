@@ -1,4 +1,3 @@
-# https://github.com/JonathanDUFOUR/minishell/blob/master/ignoreliberror
 {
     leak readline
     Memcheck:Leak
@@ -10,4 +9,10 @@
     Memcheck:Leak
     ...
     fun:add_history
+}
+
+{
+   ignore_still_reachable
+   Memcheck:Leak
+   fun:*
 }

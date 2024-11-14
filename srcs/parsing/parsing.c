@@ -6,7 +6,7 @@
 /*   By: nferrad <nferrad@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/08 15:41:56 by nferrad           #+#    #+#             */
-/*   Updated: 2024/11/14 01:59:47 by nferrad          ###   ########.fr       */
+/*   Updated: 2024/11/14 03:26:00 by nferrad          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,53 +16,24 @@ char	*addback(char *s1, char c)
 {
 	size_t	i;
 	char	*str;
-	size_t	len;
 
 	i = 0;
-	len = 2;
-	if (s1 != NULL)
-		len += ft_strlen(s1);
-	str = malloc(len * sizeof(char));
+	str = malloc((ft_strlen(s1) + 2) * sizeof(char));
 	if (!str)
 		return (NULL);
-	if (s1 != NULL)
+	if (s1)
 	{
 		while (s1[i])
 		{
 			str[i] = s1[i];
 			i++;
 		}
-		// free(s1);
-		// s1 = NULL;
+		free(s1);
+		s1 = NULL;
 	}
 	str[i] = c;
 	str[i + 1] = '\0';
 	return (str);
-}
-
-void	print_token(t_token *token)
-{
-	while (token)
-	{
-		if (token->index == CMD)
-			ft_printf("CMD	");
-		else if (token->index == ARG)
-			ft_printf("ARG	");
-		else if (token->index == PIPE)
-			ft_printf("PIPE	");
-		else if (token->index == HEREDOX)
-			ft_printf("HEREDOX	");
-		else if (token->index == APPEND)
-			ft_printf("APPEND	");
-		else if (token->index == INPUT)
-			ft_printf("INPUT	");
-		else if (token->index == TRUNC)
-			ft_printf("TRUNC	");
-		else
-			ft_printf("%d	", token->index);
-		ft_printf("/////	%s\n", token->str);
-		token = token->next;
-	}
 }
 
 char	*set_arg(char *arg, char *line, int *i, t_env *env)
@@ -102,11 +73,11 @@ char	*strarg(char *line, int *i, t_env *env)
 {
 	char	quote;
 	char	*arg;
-	char	*tmp;
+	// char	*tmp;
 
 	quote = 0;
 	arg = NULL;
-	tmp = NULL;
+	// tmp = NULL;
 	while (line[*i])
 	{
 		if (line[*i] == quote)
@@ -127,10 +98,8 @@ char	*strarg(char *line, int *i, t_env *env)
 			arg = set_arg(arg, line, i, env);
 		else
 		{
-			if (arg)
-				tmp = arg;
- 			arg = addback(tmp, line[*i]);
-			free(tmp);
+			// tmp = arg;
+ 			arg = addback(arg, line[*i]);
 		}
 		(*i)++;
 	}
@@ -170,8 +139,6 @@ int	set_index(char *line, int *i, t_env *env, t_token **token)
 	else
 	{
 		arg = strarg(line, i, env);
-		if (!arg)
-			return (0);
 		if (cmd || !(*token))
 		{
 			lstadd_back(token, lstnew(arg, CMD));
@@ -183,6 +150,8 @@ int	set_index(char *line, int *i, t_env *env, t_token **token)
 				cmd = 1;
 			lstadd_back(token, lstnew(arg, ARG));
 		}
+		// free(arg);
+		// arg = NULL;
 	}
 	return (1);
 }
@@ -212,5 +181,4 @@ void	parsing(char *line, t_token **token, t_env *env)
 		while (line[i] == ' ' || line[i] == '\t')
 			i++;
 	}
-	print_token(*token);
 }

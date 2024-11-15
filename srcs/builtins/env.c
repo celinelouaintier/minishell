@@ -6,7 +6,7 @@
 /*   By: nferrad <nferrad@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/14 12:51:49 by clouaint          #+#    #+#             */
-/*   Updated: 2024/11/06 20:00:34 by nferrad          ###   ########.fr       */
+/*   Updated: 2024/11/15 22:39:08 by nferrad          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -53,7 +53,7 @@ t_env	*set_exit_status(void)
 	new->next = NULL;
 	new->name = ft_strdup("?");
 	if (!new->name)
-			exit(EXIT_FAILURE);
+		exit(EXIT_FAILURE);
 	new->value = ft_strdup("0");
 	if (!new->value)
 		exit(EXIT_FAILURE);

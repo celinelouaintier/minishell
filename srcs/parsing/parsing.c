@@ -6,68 +6,11 @@
 /*   By: nferrad <nferrad@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/08 15:41:56 by nferrad           #+#    #+#             */
-/*   Updated: 2024/11/15 20:08:53 by nferrad          ###   ########.fr       */
+/*   Updated: 2024/11/15 22:37:18 by nferrad          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
-
-char	*addback(char *s1, char c)
-{
-	size_t	i;
-	char	*str;
-
-	i = 0;
-	str = malloc((ft_strlen(s1) + 2) * sizeof(char));
-	if (!str)
-		return (NULL);
-	if (s1)
-	{
-		while (s1[i])
-		{
-			str[i] = s1[i];
-			i++;
-		}
-		free(s1);
-		s1 = NULL;
-	}
-	str[i] = c;
-	str[i + 1] = '\0';
-	return (str);
-}
-
-char	*set_arg(char *arg, char *line, int *i, t_env *env)
-{
-	int		j;
-	char	*env_var;
-
-	j = *i + 1;
-	if (line[j] != '?')
-		while (line[j] && (ft_isalnum(line[j]) || line[j] == '_'))
-			j++;
-	else
-		j++;
-	j -= *i;
-	if (j > 1)
-	{
-		env_var = ft_substr(line, *i + 1, j - 1);
-		while (env)
-		{
-			if (!ft_strncmp(env->name, env_var, j - 1))
-			{
-				arg = ft_strjoin(arg, env->value);
-				break ;
-			}
-			env = env->next;
-		}
-		free(env_var);
-		env_var = NULL;
-		(*i) += j - 1;
-	}
-	else
-		arg = ft_strdup("$");
-	return (arg);
-}
 
 char	*strarg(char *line, int *i, t_env *env)
 {
@@ -78,14 +21,7 @@ char	*strarg(char *line, int *i, t_env *env)
 	arg = NULL;
 	while (line[*i])
 	{
-		if (line[*i] == quote)
-		{
-			quote = 0;
-			(*i)++;
-			if (*i == (int)ft_strlen(line))
-				break ;
-		}
-		if (!quote && !end_check(line[*i]))
+		if (!last_quote(&quote, line, i) || (!quote && !end_check(line[*i])))
 			break ;
 		if (!quote && (line[*i] == '\'' || line[*i] == '\"'))
 		{
@@ -97,10 +33,48 @@ char	*strarg(char *line, int *i, t_env *env)
 		if (line[*i] == '$' && quote != '\'')
 			arg = set_arg(arg, line, i, env);
 		else
- 			arg = addback(arg, line[*i]);
+			arg = addback(arg, line[*i]);
 		(*i)++;
 	}
 	return (arg);
+}
+
+int	set_index3(int *cmd, char *line, int *i, t_token **token)
+{
+	if (line[*i] == '|')
+	{
+		(*cmd) = 1;
+		lstadd_back(token, lstnew(ft_substr(line, *i, 1), PIPE));
+		return (1);
+	}
+	return (0);
+}
+
+int	set_index2(int *cmd, char *line, int *i, t_token **token)
+{
+	if (line[*i] == '<' && line[*i + 1] == '<')
+	{
+		(*cmd) = 0;
+		lstadd_back(token, lstnew(ft_substr(line, *i, 2), HEREDOX));
+	}
+	else if (line[*i] == '>' && line[*i + 1] == '>')
+	{
+		(*cmd) = 0;
+		lstadd_back(token, lstnew(ft_substr(line, *i, 2), APPEND));
+	}
+	else if (line[*i] == '>')
+	{
+		(*cmd) = 0;
+		lstadd_back(token, lstnew(ft_substr(line, *i, 1), TRUNC));
+	}
+	else if (line[*i] == '<')
+	{
+		(*cmd) = 0;
+		lstadd_back(token, lstnew(ft_substr(line, *i, 1), INPUT));
+	}
+	else
+		return (0);
+	return (1);
 }
 
 int	set_index(char *line, int *i, t_env *env, t_token **token)
@@ -108,34 +82,11 @@ int	set_index(char *line, int *i, t_env *env, t_token **token)
 	char		*arg;
 	static int	cmd = 0;
 
-	if (line[*i] == '<' && line[*i + 1] == '<')
-	{
-		lstadd_back(token, lstnew(ft_substr(line, *i, 2), HEREDOX));
-		cmd = 0;
-	}
-	else if (line[*i] == '>' && line[*i + 1] == '>')
-	{
-		lstadd_back(token, lstnew(ft_substr(line, *i, 2), APPEND));
-		cmd = 0;
-	}
-	else if (line[*i] == '>')
-	{
-		lstadd_back(token, lstnew(ft_substr(line, *i, 1), TRUNC));
-		cmd = 0;
-	}
-	else if (line[*i] == '<')
-	{
-		lstadd_back(token, lstnew(ft_substr(line, *i, 1), INPUT));
-		cmd = 0;
-	}
-	else if (line[*i] == '|')
-	{
-		cmd = 1;
-		lstadd_back(token, lstnew(ft_substr(line, *i, 1), PIPE));
-	}
-	else
+	if (!set_index2(&cmd, line, i, token) && !set_index3(&cmd, line, i, token))
 	{
 		arg = strarg(line, i, env);
+		if (!arg)
+			return (0);
 		if (cmd || !(*token))
 		{
 			lstadd_back(token, lstnew(arg, CMD));
@@ -143,7 +94,10 @@ int	set_index(char *line, int *i, t_env *env, t_token **token)
 		}
 		else
 		{
-			if (lstlast(*token)->index == HEREDOX || lstlast(*token)->index == APPEND || lstlast(*token)->index == TRUNC || lstlast(*token)->index == INPUT)
+			if (lstlast(*token)->index == HEREDOX
+				|| lstlast(*token)->index == APPEND
+				|| lstlast(*token)->index == TRUNC
+				|| lstlast(*token)->index == INPUT)
 				cmd = 1;
 			lstadd_back(token, lstnew(arg, ARG));
 		}
@@ -176,4 +130,5 @@ void	parsing(char *line, t_token **token, t_env *env)
 		while (line[i] == ' ' || line[i] == '\t')
 			i++;
 	}
+	print_token(*token);
 }

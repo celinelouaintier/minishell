@@ -10,7 +10,7 @@ SRCS_DIR	= srcs/
 
 PROG		= minishell
 
-SRCS		= 	main.c parsing/parsing.c parsing/set_token.c builtins/cd.c builtins/echo.c clear.c exec/utils.c exec/pipes.c exec/builtin.c builtins/exit.c builtins/env.c exec/redirect.c parsing/parsing_utils.c \
+SRCS		= 	main.c parsing/parsing.c parsing/set_token.c builtins/cd.c builtins/echo.c clear.c exec/utils.c exec/pipes.c exec/builtin.c builtins/exit.c builtins/env.c exec/redirect.c parsing/parsing_utils.c parsing/parsing_utils2.c \
 				builtins/export.c exec/heredoc.c parsing/signal.c builtins/export_bis.c builtins/env_bis.c
 SRC 		= ${addprefix ${SRCS_DIR}, ${SRCS}}
 OBJS 		= ${SRC:.c=.o}

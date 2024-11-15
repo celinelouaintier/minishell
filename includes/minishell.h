@@ -6,7 +6,7 @@
 /*   By: nferrad <nferrad@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/01 14:34:52 by clouaint          #+#    #+#             */
-/*   Updated: 2024/11/11 17:55:17 by nferrad          ###   ########.fr       */
+/*   Updated: 2024/11/15 18:08:37 by nferrad          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -70,6 +70,7 @@ typedef struct s_env
 void	parsing(char *line, t_token **token, t_env *env);
 int		end_check(char c);
 int		check_quote(char *line, int i, char quote, t_env *env);
+void	print_token(t_token *token);
 
 /*		Token			*/
 

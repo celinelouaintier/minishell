@@ -6,7 +6,7 @@
 /*   By: nferrad <nferrad@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/08 15:41:56 by nferrad           #+#    #+#             */
-/*   Updated: 2024/11/14 03:26:00 by nferrad          ###   ########.fr       */
+/*   Updated: 2024/11/15 20:08:53 by nferrad          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -73,17 +73,17 @@ char	*strarg(char *line, int *i, t_env *env)
 {
 	char	quote;
 	char	*arg;
-	// char	*tmp;
 
 	quote = 0;
 	arg = NULL;
-	// tmp = NULL;
 	while (line[*i])
 	{
 		if (line[*i] == quote)
 		{
 			quote = 0;
 			(*i)++;
+			if (*i == (int)ft_strlen(line))
+				break ;
 		}
 		if (!quote && !end_check(line[*i]))
 			break ;
@@ -97,10 +97,7 @@ char	*strarg(char *line, int *i, t_env *env)
 		if (line[*i] == '$' && quote != '\'')
 			arg = set_arg(arg, line, i, env);
 		else
-		{
-			// tmp = arg;
  			arg = addback(arg, line[*i]);
-		}
 		(*i)++;
 	}
 	return (arg);
@@ -150,8 +147,6 @@ int	set_index(char *line, int *i, t_env *env, t_token **token)
 				cmd = 1;
 			lstadd_back(token, lstnew(arg, ARG));
 		}
-		// free(arg);
-		// arg = NULL;
 	}
 	return (1);
 }

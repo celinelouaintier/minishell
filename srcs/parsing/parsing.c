@@ -6,7 +6,7 @@
 /*   By: nferrad <nferrad@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/08 15:41:56 by nferrad           #+#    #+#             */
-/*   Updated: 2024/11/15 22:37:18 by nferrad          ###   ########.fr       */
+/*   Updated: 2024/11/16 15:58:08 by nferrad          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,6 +27,8 @@ char	*strarg(char *line, int *i, t_env *env)
 		{
 			quote = line[*i];
 			(*i)++;
+			if (empty_quote(i, line, quote, &arg))
+				break;
 			if (!check_quote(line, *i, quote, env))
 				return (NULL);
 		}

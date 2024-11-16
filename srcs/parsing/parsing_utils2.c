@@ -6,7 +6,7 @@
 /*   By: nferrad <nferrad@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/15 22:33:27 by nferrad           #+#    #+#             */
-/*   Updated: 2024/11/15 22:38:43 by nferrad          ###   ########.fr       */
+/*   Updated: 2024/11/16 15:57:12 by nferrad          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -85,4 +85,15 @@ int	last_quote(char *quote, char *line, int *i)
 			return (0);
 	}
 	return (1);
+}
+
+int	empty_quote(int *i, char *line, char quote, char **arg)
+{
+	if (line[*i] == quote)
+	{
+		(*i)++;
+		*arg = ft_strdup("");
+		return (1);
+	}
+	return (0);
 }

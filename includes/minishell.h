@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: clouaint <clouaint@student.42.fr>          +#+  +:+       +#+        */
+/*   By: nferrad <nferrad@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/01 14:34:52 by clouaint          #+#    #+#             */
-/*   Updated: 2024/11/16 14:09:30 by clouaint         ###   ########.fr       */
+/*   Updated: 2024/11/16 16:03:36 by nferrad          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -75,6 +75,7 @@ int		last_quote(char *quote, char *line, int *i);
 char	*set_arg(char *arg, char *line, int *i, t_env *env);
 char	*check_env_variable(t_env *env, char *arg, char *env_var, int j);
 char	*addback(char *s1, char c);
+int		empty_quote(int *i, char *line, char quote, char **arg);
 
 /*		Token			*/
 

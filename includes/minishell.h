@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: nferrad <nferrad@student.42.fr>            +#+  +:+       +#+        */
+/*   By: clouaint <clouaint@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/01 14:34:52 by clouaint          #+#    #+#             */
-/*   Updated: 2024/11/15 22:35:02 by nferrad          ###   ########.fr       */
+/*   Updated: 2024/11/16 14:09:30 by clouaint         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -98,7 +98,7 @@ t_exec	init_exec(t_token *token);
 /*		Builtins		*/
 
 void	ft_cd(t_token *token, t_env **envp);
-void	echo(t_token *token, int fd);
+void	echo(t_token *token, int fd, int error);
 void	ft_exit(t_token *token);
 void	ft_export(t_token *token, t_env **envp);
 void	print_env(t_env *env);
@@ -130,7 +130,7 @@ char	**lst_to_array(t_env **env);
 /*		Redirections	*/
 
 void	here_doc(char *limiter);
-void	handle_redirections(t_token *token, t_exec *exec);
+int		handle_redirections(t_token *token, t_exec *exec);
 void	restore_stdout(int *saved_stdout);
 
 /*		Signals			*/

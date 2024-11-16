@@ -3,20 +3,22 @@
 /*                                                        :::      ::::::::   */
 /*   echo.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: nferrad <nferrad@student.42.fr>            +#+  +:+       +#+        */
+/*   By: clouaint <clouaint@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/14 12:54:43 by clouaint          #+#    #+#             */
-/*   Updated: 2024/11/01 00:47:35 by nferrad          ###   ########.fr       */
+/*   Updated: 2024/11/16 14:07:30 by clouaint         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-void	echo(t_token *token, int fd)
+void	echo(t_token *token, int fd, int error)
 {
 	int		skip_line;
 	t_token	*tmp;
 
+	if (error)
+		return ;
 	tmp = token->next;
 	skip_line = 0;
 	while (tmp != NULL && !ft_strncmp(tmp->str, "-n", 3) && tmp->index == ARG)

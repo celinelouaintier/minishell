@@ -3,16 +3,16 @@
 /*                                                        :::      ::::::::   */
 /*   redirect.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: clouaint <clouaint@student.42.fr>          #+#  +:+       +#+        */
+/*   By: clouaint <clouaint@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2024-10-23 08:07:41 by clouaint          #+#    #+#             */
-/*   Updated: 2024-10-23 08:07:41 by clouaint         ###   ########.fr       */
+/*   Created: 2024/10/23 08:07:41 by clouaint          #+#    #+#             */
+/*   Updated: 2024/11/16 14:05:55 by clouaint         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-void	redirect_trunc(t_token *token, int *saved_stdout)
+int	redirect_trunc(t_token *token, int *saved_stdout)
 {
 	int			fd;
 
@@ -20,13 +20,13 @@ void	redirect_trunc(t_token *token, int *saved_stdout)
 	if (!token || !token->str)
 	{
 		perror("expected file after '>'");
-		exit(EXIT_FAILURE);
+		return (-1);
 	}
 	fd = open(token->str, O_WRONLY | O_CREAT | O_TRUNC, 0644);
 	if (fd == -1)
 	{
 		perror("open");
-		exit(EXIT_FAILURE);
+		return (-1);
 	}
 	if (*saved_stdout == -1)
 		*saved_stdout = dup(STDOUT_FILENO);
@@ -34,9 +34,10 @@ void	redirect_trunc(t_token *token, int *saved_stdout)
 	{
 		perror("dup2");
 		close(fd);
-		exit(EXIT_FAILURE);
+		return (-1);
 	}
 	close(fd);
+	return (0);
 }
 
 void	redirect_append(t_token	*token, int *saved_stdout)
@@ -101,12 +102,12 @@ void	restore_stdout(int *saved_stdout)
 	}
 }
 
-void	handle_redirections(t_token *token, t_exec *exec)
+int	handle_redirections(t_token *token, t_exec *exec)
 {
 	while (token)
 	{
-		if (token->index == TRUNC)
-			redirect_trunc(token, &exec->saved_stdout);
+		if (token->index == TRUNC && redirect_trunc(token, &exec->saved_stdout) == -1)
+			return (-1);
 		else if (token->index == APPEND)
 			redirect_append(token, &exec->saved_stdout);
 		else if (token->index == INPUT)
@@ -115,4 +116,5 @@ void	handle_redirections(t_token *token, t_exec *exec)
 			here_doc(token->next->str);
 		token = token->next;
 	}
+	return (0);
 }

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   builtin.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: nferrad <nferrad@student.42.fr>            +#+  +:+       +#+        */
+/*   By: clouaint <clouaint@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/16 16:12:37 by clouaint          #+#    #+#             */
-/*   Updated: 2024/11/06 18:47:48 by nferrad          ###   ########.fr       */
+/*   Updated: 2024/11/16 14:08:53 by clouaint         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,11 +14,15 @@
 
 void	exec_builtin(t_token *token, t_env **env, int fd, t_exec *exec)
 {
-	handle_redirections(token, exec);
+	int	error;
+
+	error = 0;
+	if (handle_redirections(token, exec) == -1)
+		error = 1;
 	if (token && !ft_strncmp(token->str, "cd", 3))
 		ft_cd(token, env);
 	else if (token && !ft_strncmp(token->str, "echo", 5))
-		echo(token, fd);
+		echo(token, fd, error);
 	else if (token && !ft_strncmp(token->str, "pwd", 4))
 		ft_printf("%s\n", getcwd(NULL, 0));
 	else if (token && !ft_strncmp(token->str, "export", 7))

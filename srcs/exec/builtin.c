@@ -6,7 +6,7 @@
 /*   By: clouaint <clouaint@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/16 16:12:37 by clouaint          #+#    #+#             */
-/*   Updated: 2024/11/16 14:08:53 by clouaint         ###   ########.fr       */
+/*   Updated: 2024/11/18 14:32:56 by clouaint         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,7 +18,10 @@ void	exec_builtin(t_token *token, t_env **env, int fd, t_exec *exec)
 
 	error = 0;
 	if (handle_redirections(token, exec) == -1)
+	{
 		error = 1;
+		exec->exit_status = 1;
+	}
 	if (token && !ft_strncmp(token->str, "cd", 3))
 		ft_cd(token, env);
 	else if (token && !ft_strncmp(token->str, "echo", 5))

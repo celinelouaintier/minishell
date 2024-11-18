@@ -6,7 +6,7 @@
 /*   By: clouaint <clouaint@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/02 12:22:46 by clouaint          #+#    #+#             */
-/*   Updated: 2024/11/02 12:27:41 by clouaint         ###   ########.fr       */
+/*   Updated: 2024/11/18 14:42:28 by clouaint         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -50,6 +50,20 @@ void	sort_env(t_env **env)
 	*env = sorted;
 }
 
+t_env	*find_env_var(t_env *env, char *name)
+{
+	t_env	*tmp;
+
+	tmp = env;
+	while (tmp)
+	{
+		if (!ft_strncmp(tmp->name, name, ft_strlen(name) + 1))
+			return (tmp);
+		tmp = tmp->next;
+	}
+	return (NULL);
+}
+
 void	ft_export(t_token *token, t_env **envp)
 {
 	t_env	*new;
@@ -66,6 +80,12 @@ void	ft_export(t_token *token, t_env **envp)
 		}
 		if (!ft_update_var(token, envp))
 		{
+			if (!ft_strchr(token->next->str, '=') && find_env_var(*envp,
+					token->next->str))
+			{
+				token = token->next;
+				continue ;
+			}
 			new = add_env_var(token->next->str);
 			if (!new)
 			{
@@ -98,3 +118,4 @@ void	update_shlvl(t_env *env)
 		tmp = tmp->next;
 	}
 }
+

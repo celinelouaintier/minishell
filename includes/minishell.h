@@ -100,7 +100,7 @@ t_exec	init_exec(t_token *token);
 
 void	ft_cd(t_token *token, t_env **envp);
 void	echo(t_token *token, int fd, int error);
-void	ft_exit(t_token *token);
+void	ft_exit(t_token *token, t_env *envp);
 void	ft_export(t_token *token, t_env **envp);
 void	print_env(t_env *env);
 void	ft_unset(t_token *token, t_env **env);

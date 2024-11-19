@@ -36,7 +36,7 @@ int	check_exit_arg(t_token *token, char *str)
 	return (1);
 }
 
-void	ft_exit(t_token *token)
+void	ft_exit(t_token *token, t_env *envp)
 {
 	char	*str;
 	int		exit_code;
@@ -47,12 +47,15 @@ void	ft_exit(t_token *token)
 		if (check_exit_arg(token, str))
 		{
 			exit_code = ft_atoi(str);
+			free_env(envp);
+			clear_history();
 			exit(exit_code);
 		}
 	}
 	else
 	{
 		ft_printf("exit\n");
+		free_env(envp);
 		clear_history();
 		exit(EXIT_SUCCESS);
 	}

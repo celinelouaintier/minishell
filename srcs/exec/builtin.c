@@ -35,7 +35,7 @@ void	exec_builtin(t_token *token, t_env **env, int fd, t_exec *exec)
 	else if (token && !ft_strncmp(token->str, "unset", 6))
 		ft_unset(token, env);
 	else if (token && !ft_strncmp(token->str, "exit", 5))
-		ft_exit(token);
+		ft_exit(token, *env);
 	update_exit_status(*env, exec->exit_status);
 }
 

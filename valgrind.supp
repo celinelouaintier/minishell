@@ -10,9 +10,3 @@
     ...
     fun:add_history
 }
-
-{
-   ignore_still_reachable
-   Memcheck:Leak
-   fun:*
-}

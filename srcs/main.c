@@ -92,7 +92,7 @@ void	do_exec(char *line, t_token *token, t_env *envp, t_exec *exec)
 			}
 		}
 		else if (!line)
-			ft_exit(token);
+			ft_exit(token, envp);
 		free(line);
 	}
 }
@@ -109,13 +109,12 @@ int	main(int argc, char **argv, char *env[])
 		return (-1);
 	line = NULL;
 	token = NULL;
-	envp = init_env(env);
-	exec = init_exec(token);
-	if (!envp)
+	if (!*env)
 	{
 		ft_printf(ERR_ENV);
 		return (-1);
 	}
+	envp = init_env(env);
+	exec = init_exec(token);
 	do_exec(line, token, envp, &exec);
-	free_env(envp);
 }

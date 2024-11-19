@@ -64,41 +64,6 @@ t_env	*find_env_var(t_env *env, char *name)
 	return (NULL);
 }
 
-void	ft_export(t_token *token, t_env **envp)
-{
-	t_env	*new;
-
-	if (!token->next || token->next->index != ARG)
-		print_export(*envp);
-	while (token->next && token->next->index == ARG)
-	{
-		if (!check_name(token->next->str))
-		{
-			ft_printf("`%s' not a valid identifier\n", token->next->str);
-			token = token->next;
-			continue ;
-		}
-		if (!ft_update_var(token, envp))
-		{
-			if (!ft_strchr(token->next->str, '=') && find_env_var(*envp,
-					token->next->str))
-			{
-				token = token->next;
-				continue ;
-			}
-			new = add_env_var(token->next->str);
-			if (!new)
-			{
-				perror("export");
-				return ;
-			}
-			new->next = *envp;
-			*envp = new;
-		}
-		token = token->next;
-	}
-}
-
 void	update_shlvl(t_env *env)
 {
 	t_env	*tmp;
@@ -119,3 +84,25 @@ void	update_shlvl(t_env *env)
 	}
 }
 
+int	check_name(char *name)
+{
+	int	i;
+
+	i = 0;
+	if (!name[0] || (!ft_isalpha(name[0]) && name[0] != '_'))
+	{
+		ft_printf("`%s' not a valid identifier\n", name);
+		return (0);
+	}
+	i++;
+	while (name[i] && name[i] != '=')
+	{
+		if (!ft_isalnum(name[i]) && name[i] != '_')
+		{
+			ft_printf("`%s' not a valid identifier\n", name);
+			return (0);
+		}
+		i++;
+	}
+	return (1);
+}

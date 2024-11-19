@@ -6,7 +6,7 @@
 /*   By: clouaint <clouaint@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/07 16:26:03 by clouaint          #+#    #+#             */
-/*   Updated: 2024/11/11 20:53:40 by clouaint         ###   ########.fr       */
+/*   Updated: 2024/11/18 16:14:25 by clouaint         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -73,13 +73,7 @@ void	do_exec(char *line, t_token *token, t_env *envp, t_exec *exec)
 {
 	while (1)
 	{
-		set_sig();
-		line = readline("\001\033[0;34m\x1b[1m\002Minishell> \001\033[0m\002");
-		if (g_sig)
-		{
-			update_exit_status(envp, g_sig + 128);
-			g_sig = 0;
-		}
+		line = set_line(line, envp);
 		if (line && line[0] != '\0')
 		{
 			parsing(line, &token, envp);

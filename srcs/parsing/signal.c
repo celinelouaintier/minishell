@@ -38,3 +38,15 @@ void	cmd_sig_handler(int signum)
 	else if (signum == SIGQUIT)
 		ft_printf("Quit (core dumped)\n");
 }
+
+char	*set_line(char *line, t_env *envp)
+{
+	set_sig();
+	line = readline("\001\033[0;34m\x1b[1m\002Minishell> \001\033[0m\002");
+	if (g_sig)
+	{
+		update_exit_status(envp, g_sig + 128);
+		g_sig = 0;
+	}
+	return (line);
+}

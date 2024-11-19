@@ -54,7 +54,7 @@ int	ft_update_var(t_token *token, t_env **envp)
 	t_env	*tmp;
 	int		quote;
 
-	equal_sign = ft_strchr(token->next->str, '=');
+	equal_sign = ft_strchr(token->str, '=');
 	quote = 0;
 	if (equal_sign && (equal_sign[1] == '\'' || equal_sign[1] == '\"'))
 	{
@@ -65,13 +65,11 @@ int	ft_update_var(t_token *token, t_env **envp)
 	if (equal_sign)
 	{
 		tmp = *envp;
-		if (!tmp)
-			return (0);
 		while (tmp)
 		{
-			if (!ft_strncmp(tmp->name, token->next->str,
-					equal_sign - token->next->str)
-				&& tmp->name[equal_sign - token->next->str] == '\0')
+			if (!ft_strncmp(tmp->name, token->str,
+					equal_sign - token->str)
+				&& tmp->name[equal_sign - token->str] == '\0')
 				return (update_env_value(tmp, equal_sign, quote));
 			tmp = tmp->next;
 		}
@@ -83,7 +81,6 @@ void	print_export(t_env *envp)
 {
 	t_env	*copy;
 	t_env	*tmp;
-	t_env	*next;
 
 	copy = copy_env_list(envp);
 	sort_env(&copy);
@@ -100,30 +97,33 @@ void	print_export(t_env *envp)
 		tmp = tmp->next;
 	}
 	tmp = copy;
-	while (tmp)
-	{
-		next = tmp->next;
-		free(tmp->name);
-		if (tmp->value)
-			free(tmp->value);
-		free(tmp);
-		tmp = next;
-	}
+	free_env(copy);
 }
 
-int	check_name(char *name)
+void	ft_export(t_token *token, t_env **envp)
 {
-	int	i;
+	t_env	*new;
 
-	i = 0;
-	if (!name[0] || (!ft_isalpha(name[0]) && name[0] != '_'))
-		return (0);
-	i++;
-	while (name[i] && name[i] != '=')
+	if (!token->next || token->next->index != ARG)
+		print_export(*envp);
+	while (token->next && token->next->index == ARG)
 	{
-		if (!ft_isalnum(name[i]) && name[i] != '_')
-			return (0);
-		i++;
+		token = token->next;
+		if (!check_name(token->str))
+			continue ;
+		if (!ft_update_var(token, envp))
+		{
+			if (!ft_strchr(token->str, '=') && find_env_var(*envp,
+					token->str))
+				continue ;
+			new = add_env_var(token->str);
+			if (!new)
+			{
+				perror("export");
+				return ;
+			}
+			new->next = *envp;
+			*envp = new;
+		}
 	}
-	return (1);
 }

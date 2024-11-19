@@ -108,9 +108,11 @@ int	handle_redirections(t_token *token, t_exec *exec)
 {
 	while (token)
 	{
-		if (token->index == TRUNC && redirect_trunc(token, &exec->saved_stdout) == -1)
+		if (token->index == TRUNC
+			&& redirect_trunc(token, &exec->saved_stdout) == -1)
 			return (-1);
-		else if (token->index == APPEND && redirect_append(token, &exec->saved_stdout) == -1)
+		else if (token->index == APPEND
+			&& redirect_append(token, &exec->saved_stdout) == -1)
 			return (-1);
 		else if (token->index == INPUT && redirect_input(token) == -1)
 			return (-1);

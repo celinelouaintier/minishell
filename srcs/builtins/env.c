@@ -60,6 +60,15 @@ t_env	*set_exit_status(void)
 	return (new);
 }
 
+void	finalize_env(t_env *head, t_env *tmp)
+{
+	t_env	*new;
+
+	new = set_exit_status();
+	tmp->next = new;
+	update_shlvl(head);
+}
+
 t_env	*init_env(char **env)
 {
 	t_env	*head;
@@ -85,38 +94,6 @@ t_env	*init_env(char **env)
 		}
 		i++;
 	}
-	new = set_exit_status();
-	tmp->next = new;
-	update_shlvl(head);
+	finalize_env(head, tmp);
 	return (head);
-}
-
-void	ft_unset(t_token *t, t_env **env)
-{
-	t_env	*tmp;
-	t_env	*prev;
-
-	t = t->next;
-	while (t)
-	{
-		tmp = *env;
-		prev = NULL;
-		while (tmp)
-		{
-			if (!ft_strncmp(tmp->name, t->str, ft_strlen(t->str) + 1))
-			{
-				if (prev)
-					prev->next = tmp->next;
-				else
-					*env = tmp->next;
-				free_env_var(tmp);
-				break ;
-			}
-			prev = tmp;
-			tmp = tmp->next;
-		}
-		if (!tmp)
-			ft_printf("unset: `%s': not a valid identifier\n", t->str);
-		t = t->next;
-	}
 }

@@ -36,3 +36,38 @@ void	echo(t_token *token, int fd, int error)
 	if (!skip_line)
 		ft_putstr_fd("\n", fd);
 }
+
+void	check_unset_error(t_token *t, t_env *tmp)
+{
+	if (!tmp)
+		ft_printf("unset: `%s': not a valid identifier\n", t->str);
+}
+
+void	ft_unset(t_token *t, t_env **env)
+{
+	t_env	*tmp;
+	t_env	*prev;
+
+	t = t->next;
+	while (t)
+	{
+		tmp = *env;
+		prev = NULL;
+		while (tmp)
+		{
+			if (!ft_strncmp(tmp->name, t->str, ft_strlen(t->str) + 1))
+			{
+				if (prev)
+					prev->next = tmp->next;
+				else
+					*env = tmp->next;
+				free_env_var(tmp);
+				break ;
+			}
+			prev = tmp;
+			tmp = tmp->next;
+		}
+		check_unset_error(t, tmp);
+		t = t->next;
+	}
+}

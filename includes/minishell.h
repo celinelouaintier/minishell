@@ -119,6 +119,7 @@ void	update_shlvl(t_env *env);
 void	update_exit_status(t_env *envp, int exit_stat);
 char	*get_env_value(t_env *env, const char *var);
 void	free_env(t_env *envp);
+t_env	*find_env_var(t_env *env, char *name);
 
 /*		Utils			*/
 
@@ -139,5 +140,6 @@ void	restore_stdout(int *saved_stdout);
 void	signal_handler(int signum);
 void	set_sig(void);
 void	cmd_sig_handler(int signum);
+char	*set_line(char *line, t_env *envp);
 
 #endif

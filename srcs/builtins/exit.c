@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   exit.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: clouaint <clouaint@student.42.fr>          +#+  +:+       +#+        */
+/*   By: nferrad <nferrad@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/18 12:52:11 by clouaint          #+#    #+#             */
-/*   Updated: 2024/11/20 12:47:00 by clouaint         ###   ########.fr       */
+/*   Updated: 2024/11/20 16:25:31 by nferrad          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -56,10 +56,11 @@ void	ft_exit(t_token *token, t_env *envp)
 	else
 	{
 		ft_printf("exit\n");
+		exit_code = ft_atoi(get_env_value(envp, "?"));
 		free_env(envp);
 		clear_history();
 		free_tokens(&token);
-		exit(EXIT_SUCCESS);
+		exit(exit_code);
 	}
 }
 

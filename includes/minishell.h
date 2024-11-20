@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: nferrad <nferrad@student.42.fr>            +#+  +:+       +#+        */
+/*   By: clouaint <clouaint@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/01 14:34:52 by clouaint          #+#    #+#             */
-/*   Updated: 2024/11/16 16:03:36 by nferrad          ###   ########.fr       */
+/*   Updated: 2024/11/20 13:01:50 by clouaint         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -109,6 +109,7 @@ int		check_name(char *name);
 void	print_export(t_env *envp);
 void	sort_env(t_env **env);
 void	free_env_var(t_env *env_var);
+void	ft_pwd(void);
 t_env	*init_env_var(t_env *new, char *env_var);
 
 /* 		Environment		*/

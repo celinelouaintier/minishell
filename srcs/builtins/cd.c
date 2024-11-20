@@ -6,7 +6,7 @@
 /*   By: clouaint <clouaint@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/11 12:49:18 by clouaint          #+#    #+#             */
-/*   Updated: 2024/11/02 12:41:51 by clouaint         ###   ########.fr       */
+/*   Updated: 2024/11/20 13:01:28 by clouaint         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -63,4 +63,16 @@ void	ft_cd(t_token *token, t_env **envp)
 	if (current_pwd)
 		update_pwd(envp, current_pwd);
 	free(current_pwd);
+}
+
+void ft_pwd(void)
+{
+    char *cwd = getcwd(NULL, 0);
+    if (cwd)
+    {
+        ft_printf("%s\n", cwd);
+        free(cwd);
+    }
+    else
+        perror("getcwd");
 }

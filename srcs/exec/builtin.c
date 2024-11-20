@@ -6,7 +6,7 @@
 /*   By: clouaint <clouaint@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/16 16:12:37 by clouaint          #+#    #+#             */
-/*   Updated: 2024/11/18 14:32:56 by clouaint         ###   ########.fr       */
+/*   Updated: 2024/11/20 13:02:08 by clouaint         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,7 +27,7 @@ void	exec_builtin(t_token *token, t_env **env, int fd, t_exec *exec)
 	else if (token && !ft_strncmp(token->str, "echo", 5))
 		echo(token, fd, error);
 	else if (token && !ft_strncmp(token->str, "pwd", 4))
-		ft_printf("%s\n", getcwd(NULL, 0));
+		ft_pwd();
 	else if (token && !ft_strncmp(token->str, "export", 7))
 		ft_export(token, env);
 	else if (token && !ft_strncmp(token->str, "env", 4))

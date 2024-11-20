@@ -6,7 +6,7 @@
 /*   By: clouaint <clouaint@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/14 16:21:02 by clouaint          #+#    #+#             */
-/*   Updated: 2024/11/11 20:31:53 by clouaint         ###   ########.fr       */
+/*   Updated: 2024/11/20 12:50:45 by clouaint         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,15 +16,17 @@ void	free_tokens(t_token **token)
 {
 	t_token	*tmp;
 
-	if (token)
+	if (token && *token)
 	{
 		while (*token)
 		{
 			tmp = *token;
 			*token = (*token)->next;
-			free(tmp->str);
+			if (tmp->str)
+				free(tmp->str);
 			free(tmp);
 		}
+		*token = NULL;
 	}
 }
 

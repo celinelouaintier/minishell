@@ -6,7 +6,7 @@
 /*   By: clouaint <clouaint@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/18 12:52:11 by clouaint          #+#    #+#             */
-/*   Updated: 2024/11/02 12:42:24 by clouaint         ###   ########.fr       */
+/*   Updated: 2024/11/20 12:47:00 by clouaint         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -49,6 +49,7 @@ void	ft_exit(t_token *token, t_env *envp)
 			exit_code = ft_atoi(str);
 			free_env(envp);
 			clear_history();
+			free_tokens(&token);
 			exit(exit_code);
 		}
 	}
@@ -57,6 +58,7 @@ void	ft_exit(t_token *token, t_env *envp)
 		ft_printf("exit\n");
 		free_env(envp);
 		clear_history();
+		free_tokens(&token);
 		exit(EXIT_SUCCESS);
 	}
 }

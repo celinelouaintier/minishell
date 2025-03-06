@@ -1,3 +1,2 @@
 # minishell
-- dev/stdout
-- $? quand tu exit sans rien doit renvoyer le dernier status et pas 0
+=> Shell en bash --posix fait maison avec ses qualités et ses défauts 🤗 (mais presque parfait)
